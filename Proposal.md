@@ -49,18 +49,20 @@ Proposal
 ``` r
 data.frame(Date=c("Nov 8","Nov 8-10","Nov 12","Nov 13-14","Nov 15-18","Nov 30","Dec 4","Dec 10","Dec 10","Dec 12-14","Dec 15"),
            Description=c("Brainstorm","Together work on proposal","Submit the proposal","Distribute tasks","Project reviewing meeting","Finish the coding part","Start to construct a webpage","Report&webpage and screencast","Peer assessment","Practice for presentation","In class discussion of project"),
-           Due=c("NA","NA","Nov 12 1:00 pm","NA","Nov 15-18","NA","NA","Dec 10 11:59 pm","Dec 10 11:59 pm","NA","Dec 15"))
+           Due=c("NA","NA","Nov 12 1:00 pm","NA","Nov 15-18","NA","NA","Dec 10 11:59 pm","Dec 10 11:59 pm","NA","Dec 15")) %>% 
+  knitr::kable()
 ```
 
-    ##         Date                    Description             Due
-    ## 1      Nov 8                     Brainstorm              NA
-    ## 2   Nov 8-10      Together work on proposal              NA
-    ## 3     Nov 12            Submit the proposal  Nov 12 1:00 pm
-    ## 4  Nov 13-14               Distribute tasks              NA
-    ## 5  Nov 15-18      Project reviewing meeting       Nov 15-18
-    ## 6     Nov 30         Finish the coding part              NA
-    ## 7      Dec 4   Start to construct a webpage              NA
-    ## 8     Dec 10  Report&webpage and screencast Dec 10 11:59 pm
-    ## 9     Dec 10                Peer assessment Dec 10 11:59 pm
-    ## 10 Dec 12-14      Practice for presentation              NA
-    ## 11    Dec 15 In class discussion of project          Dec 15
+| Date      | Description                    | Due             |
+|:----------|:-------------------------------|:----------------|
+| Nov 8     | Brainstorm                     | NA              |
+| Nov 8-10  | Together work on proposal      | NA              |
+| Nov 12    | Submit the proposal            | Nov 12 1:00 pm  |
+| Nov 13-14 | Distribute tasks               | NA              |
+| Nov 15-18 | Project reviewing meeting      | Nov 15-18       |
+| Nov 30    | Finish the coding part         | NA              |
+| Dec 4     | Start to construct a webpage   | NA              |
+| Dec 10    | Report&webpage and screencast  | Dec 10 11:59 pm |
+| Dec 10    | Peer assessment                | Dec 10 11:59 pm |
+| Dec 12-14 | Practice for presentation      | NA              |
+| Dec 15    | In class discussion of project | Dec 15          |
