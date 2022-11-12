@@ -25,7 +25,7 @@ Proposal
 ### The intended final products
 
 -   A report summarizing analysis results on the leading causes of death
-    in NYC,and predicted leading causes related deaths in NYC.
+    in NYC, and predicting leading causes related deaths in NYC.
 -   A dashboard providing tips and recommendations for physical and
     mental health, and some details about the relationship between
     leading causes and deaths will be given.
