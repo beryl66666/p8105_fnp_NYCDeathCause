@@ -5,6 +5,7 @@ output: github_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
 ```
 
 ### Group member
@@ -36,6 +37,11 @@ https://www.cdc.gov/nchs/pressroom/states/newyork/ny.htm#lcod
 - The causes of death are too widely distribution
 
 ### The planned timeline
+```{r}
+data.frame(Date=c("Nov 8","Nov 8-10","Nov 12","Nov 13-14","Nov 15-18","Nov 30","Dec 4","Dec 10","Dec 10","Dec 12-14","Dec 15"),
+           Description=c("Brainstorm","Together work on proposal","Submit the proposal","Distribute tasks","Project reviewing meeting","Finish the coding part","Start to construct a webpage","Report&webpage and screencast","Peer assessment","Practice for presentation","In class discussion of project"),
+           Due=c("NA","NA","Nov 12 1:00 pm","NA","Nov 15-18","NA","NA","Dec 10 11:59 pm","Dec 10 11:59 pm","NA","Dec 15"))
+```
 
 
 
