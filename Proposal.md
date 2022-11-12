@@ -24,10 +24,13 @@ Proposal
 
 ### The intended final products
 
--   A report summarizing exploratory analysis results, recommendation
-    algorithms used, and predicted leading causes related deaths in NYC
--   A wonderful dashboard giving movie details about the relationship
-    between leading causes and deaths.
+-   A report summarizing analysis results on the leading causes of death
+    in NYC,and predicted leading causes related deaths in NYC.
+-   A dashboard providing tips and recommendations for physical and
+    mental health, and some details about the relationship between
+    leading causes and deaths will be given.
+-   An “instagram filter” has random death causes popping up with
+    recommended algorithms used.
 
 ### The anticipated data sources
 
