@@ -14,8 +14,6 @@ cause_death_nyc =
   janitor::clean_names() %>%
   filter(year == 2019) %>%
   arrange(desc(deaths))
-
-write.csv(cause_death_nyc,"D:/OneDrive/OneDrive - cumc.columbia.edu/Data Science R/p8105_fnp_NYCDeathCause/data/cause_death_nyc.csv", row.names = FALSE)
 ```
 
 

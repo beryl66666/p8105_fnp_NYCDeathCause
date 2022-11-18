@@ -19,7 +19,3 @@ cause_death_nyc =
     ## 
     ## ℹ Use `spec()` to retrieve the full column specification for this data.
     ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
-
-``` r
-write.csv(cause_death_nyc,"D:/OneDrive/OneDrive - cumc.columbia.edu/Data Science R/p8105_fnp_NYCDeathCause/data/cause_death_nyc.csv", row.names = FALSE)
-```
