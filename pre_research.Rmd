@@ -1,0 +1,28 @@
+---
+title: "Pre-research"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+```
+
+```{r}
+cause_death_nyc = 
+  read_csv("./data/New_York_City_Leading_Causes_of_Death.csv", na = ".") %>%
+  janitor::clean_names() %>%
+  filter(year == 2019) %>%
+  arrange(desc(deaths))
+
+write.csv(cause_death_nyc,"D:/OneDrive/OneDrive - cumc.columbia.edu/Data Science R/p8105_fnp_NYCDeathCause/data/cause_death_nyc.csv", row.names = FALSE)
+```
+
+
+
+
+
+
+
+
+

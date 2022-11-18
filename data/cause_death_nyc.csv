@@ -1,0 +1,179 @@
+"year","leading_cause","sex","race_ethnicity","deaths","death_rate","age_adjusted_death_rate"
+2019,"Diseases of Heart (I00-I09, I11, I13, I20-I51)","Male","Non-Hispanic White",4034,307.7768198,224.9990183
+2019,"Diseases of Heart (I00-I09, I11, I13, I20-I51)","Female","Non-Hispanic White",4001,291.7699153,141.5642319
+2019,"Malignant Neoplasms (Cancer: C00-C97)","Male","Non-Hispanic White",2785,212.4835011,163.7927192
+2019,"Malignant Neoplasms (Cancer: C00-C97)","Female","Non-Hispanic White",2655,193.6138778,124.3381382
+2019,"Diseases of Heart (I00-I09, I11, I13, I20-I51)","Female","Non-Hispanic Black",2483,249.0161705,173.1869461
+2019,"All Other Causes","Male","Non-Hispanic White",2366,180.5156063,139.6400628
+2019,"Diseases of Heart (I00-I09, I11, I13, I20-I51)","Male","Non-Hispanic Black",2315,279.3451137,279.643801
+2019,"All Other Causes","Female","Non-Hispanic White",2264,165.1004969,96.12840989
+2019,"Malignant Neoplasms (Cancer: C00-C97)","Female","Non-Hispanic Black",1753,175.805617,132.4018003
+2019,"Diseases of Heart (I00-I09, I11, I13, I20-I51)","Male","Hispanic",1603,136.8029917,176.783287
+2019,"All Other Causes","Female","Non-Hispanic Black",1578,158.2551418,123.7629009
+2019,"Diseases of Heart (I00-I09, I11, I13, I20-I51)","Female","Hispanic",1574,125.7357217,111.7353368
+2019,"All Other Causes","Male","Non-Hispanic Black",1507,181.8458256,182.6826072
+2019,"Malignant Neoplasms (Cancer: C00-C97)","Male","Non-Hispanic Black",1421,171.4684262,168.4803046
+2019,"All Other Causes","Male","Hispanic",1395,119.0518861,143.485633
+2019,"All Other Causes","Female","Hispanic",1279,102.1702593,93.37882892
+2019,"Malignant Neoplasms (Cancer: C00-C97)","Female","Hispanic",1182,94.42161568,87.06528773
+2019,"Malignant Neoplasms (Cancer: C00-C97)","Male","Hispanic",1164,99.3379179,121.5817693
+2019,"Diseases of Heart (I00-I09, I11, I13, I20-I51)","Male","Asian and Pacific Islander",731,124.7523299,119.3723376
+2019,"Malignant Neoplasms (Cancer: C00-C97)","Male","Asian and Pacific Islander",671,114.5127406,105.9242636
+2019,"Diseases of Heart (I00-I09, I11, I13, I20-I51)","Female","Asian and Pacific Islander",623,96.18932777,78.8163246
+2019,"Malignant Neoplasms (Cancer: C00-C97)","Female","Asian and Pacific Islander",582,89.85905098,75.79927081
+2019,"All Other Causes","Male","Asian and Pacific Islander",549,93.69224232,90.70089869
+2019,"Chronic Lower Respiratory Diseases (J40-J47)","Female","Non-Hispanic White",480,35.00363892,19.22599409
+2019,"Mental and Behavioral Disorders due to Accidental Poisoning and Other Psychoactive Substance Use (F11-F16, F18-F19, X40-X42, X44)","Male","Hispanic",423,36.09960418,35.70789583
+2019,"Mental and Behavioral Disorders due to Accidental Poisoning and Other Psychoactive Substance Use (F11-F16, F18-F19, X40-X42, X44)","Male","Non-Hispanic White",418,31.89159908,28.91253713
+2019,"All Other Causes","Female","Asian and Pacific Islander",401,61.91319492,53.34011786
+2019,"Cerebrovascular Disease (Stroke: I60-I69)","Female","Non-Hispanic White",390,28.44045662,14.41986136
+2019,"Diabetes Mellitus (E10-E14)","Female","Non-Hispanic Black",383,38.41046851,27.78150486
+2019,"Diabetes Mellitus (E10-E14)","Male","Non-Hispanic Black",377,45.49162327,44.92295145
+2019,"Chronic Lower Respiratory Diseases (J40-J47)","Male","Non-Hispanic White",373,28.45829296,20.77153997
+2019,"Influenza (Flu) and Pneumonia (J09-J18)","Male","Non-Hispanic White",342,26.09312652,19.10848654
+2019,"Alzheimer's Disease (G30)","Female","Non-Hispanic White",341,24.86716848,10.50871683
+2019,"Cerebrovascular Disease (Stroke: I60-I69)","Female","Non-Hispanic Black",316,31.69114373,22.36321122
+2019,"Influenza (Flu) and Pneumonia (J09-J18)","Female","Non-Hispanic White",308,22.46066831,11.14077883
+2019,"Mental and Behavioral Disorders due to Accidental Poisoning and Other Psychoactive Substance Use (F11-F16, F18-F19, X40-X42, X44)","Male","Non-Hispanic Black",294,35.4762261,32.35415157
+2019,"Essential Hypertension and Renal Diseases (I10, I12)","Female","Non-Hispanic Black",290,29.08364456,20.45669126
+2019,"Accidents Except Drug Poisoning (V01-X39, X43, X45-X59, Y85-Y86)","Male","Non-Hispanic White",272,20.75242811,16.68493048
+2019,"Cerebrovascular Disease (Stroke: I60-I69)","Male","Non-Hispanic White",266,20.29465396,14.85203326
+2019,"Cerebrovascular Disease (Stroke: I60-I69)","Female","Hispanic",249,19.89084797,17.65789189
+2019,"Diabetes Mellitus (E10-E14)","Male","Non-Hispanic White",248,18.92133151,14.48032854
+2019,"Diabetes Mellitus (E10-E14)","Male","Hispanic",245,20.9087542,25.40934387
+2019,"Chronic Lower Respiratory Diseases (J40-J47)","Female","Non-Hispanic Black",242,24.26979995,18.07759942
+2019,"Alzheimer's Disease (G30)","Female","Hispanic",231,18.45295535,15.93330728
+2019,"Cerebrovascular Disease (Stroke: I60-I69)","Male","Non-Hispanic Black",228,27.51217534,27.14739223
+2019,"Essential Hypertension and Renal Diseases (I10, I12)","Female","Non-Hispanic White",228,16.62672849,8.218487701
+2019,"Influenza (Flu) and Pneumonia (J09-J18)","Female","Non-Hispanic Black",227,22.7654735,16.24829465
+2019,"Diabetes Mellitus (E10-E14)","Female","Hispanic",214,17.09494565,15.49801993
+2019,"Influenza (Flu) and Pneumonia (J09-J18)","Male","Non-Hispanic Black",211,25.46082894,25.79699843
+2019,"Chronic Lower Respiratory Diseases (J40-J47)","Male","Non-Hispanic Black",210,25.3401615,25.6023163
+2019,"Diabetes Mellitus (E10-E14)","Female","Non-Hispanic White",197,14.36607681,8.62864342
+2019,"Intentional Self-Harm (Suicide: U03, X60-X84, Y87.0)","Male","Non-Hispanic White",194,14.80136417,13.5805479
+2019,"Diseases of Heart (I00-I09, I11, I13, I20-I51)","Male","Not Stated/Unknown",193,237.3748555,414.5944733
+2019,"Essential Hypertension and Renal Diseases (I10, I12)","Male","Non-Hispanic Black",185,22.32347561,22.76463114
+2019,"Influenza (Flu) and Pneumonia (J09-J18)","Male","Hispanic",182,15.5322174,19.85821025
+2019,"Cerebrovascular Disease (Stroke: I60-I69)","Male","Hispanic",182,15.5322174,19.55837808
+2019,"Essential Hypertension and Renal Diseases (I10, I12)","Male","Non-Hispanic White",181,13.80952018,10.0100868
+2019,"Chronic Lower Respiratory Diseases (J40-J47)","Female","Hispanic",178,14.2191604,12.85579621
+2019,"Accidents Except Drug Poisoning (V01-X39, X43, X45-X59, Y85-Y86)","Male","Hispanic",174,14.84948257,16.10828575
+2019,"Chronic Liver Disease and Cirrhosis (K70, K73-K74)","Male","Hispanic",171,14.59345701,15.95641278
+2019,"Alzheimer's Disease (G30)","Female","Non-Hispanic Black",171,17.14932145,10.82707992
+2019,"Chronic Lower Respiratory Diseases (J40-J47)","Male","Hispanic",170,14.50811516,18.82042264
+2019,"Accidents Except Drug Poisoning (V01-X39, X43, X45-X59, Y85-Y86)","Female","Non-Hispanic White",167,12.17834937,7.049815954
+2019,"Assault (Homicide: U01-U02, Y87.1, X85-Y09)","Male","Non-Hispanic Black",156,18.82411997,18.99230593
+2019,"Influenza (Flu) and Pneumonia (J09-J18)","Female","Hispanic",156,12.46173608,11.18444404
+2019,"Essential Hypertension and Renal Diseases (I10, I12)","Female","Hispanic",151,12.06232146,10.7897817
+2019,"Accidents Except Drug Poisoning (V01-X39, X43, X45-X59, Y85-Y86)","Male","Non-Hispanic Black",150,18.10011536,17.77687704
+2019,"Essential Hypertension and Renal Diseases (I10, I12)","Male","Hispanic",135,11.52115027,15.71279828
+2019,"All Other Causes","Male","Not Stated/Unknown",125,153.7401914,251.283561
+2019,"Mental and Behavioral Disorders due to Accidental Poisoning and Other Psychoactive Substance Use (F11-F16, F18-F19, X40-X42, X44)","Female","Non-Hispanic White",125,9.115530969,8.755260544
+2019,"Mental and Behavioral Disorders due to Accidental Poisoning and Other Psychoactive Substance Use (F11-F16, F18-F19, X40-X42, X44)","Female","Non-Hispanic Black",120,12.03461154,10.40042785
+2019,"Cerebrovascular Disease (Stroke: I60-I69)","Female","Asian and Pacific Islander",110,16.98366943,14.15550557
+2019,"Diseases of Heart (I00-I09, I11, I13, I20-I51)","Female","Not Stated/Unknown",110,121.6074291,161.6351392
+2019,"Cerebrovascular Disease (Stroke: I60-I69)","Male","Asian and Pacific Islander",105,17.91928132,16.87065413
+2019,"Mental and Behavioral Disorders due to Accidental Poisoning and Other Psychoactive Substance Use (F11-F16, F18-F19, X40-X42, X44)","Female","Hispanic",104,8.307824053,8.039053498
+2019,"Accidents Except Drug Poisoning (V01-X39, X43, X45-X59, Y85-Y86)","Female","Hispanic",98,7.828526512,7.322347649
+2019,"Nephritis, Nephrotic Syndrome and Nephrisis (N00-N07, N17-N19, N25-N27)","Female","Non-Hispanic Black",96,9.627689234,7.092763442
+2019,"Influenza (Flu) and Pneumonia (J09-J18)","Male","Asian and Pacific Islander",92,15.70070363,15.27352088
+2019,"Chronic Lower Respiratory Diseases (J40-J47)","Male","Asian and Pacific Islander",80,13.65278577,13.41842449
+2019,"Diabetes Mellitus (E10-E14)","Female","Asian and Pacific Islander",78,12.0429656,9.944715133
+2019,"Diabetes Mellitus (E10-E14)","Male","Asian and Pacific Islander",76,12.97014648,11.96179248
+2019,"Malignant Neoplasms (Cancer: C00-C97)","Male","Not Stated/Unknown",75,92.24411483,146.1092186
+2019,"Influenza (Flu) and Pneumonia (J09-J18)","Female","Asian and Pacific Islander",67,10.34459865,8.518144202
+2019,"Diseases of Heart (I00-I09, I11, I13, I20-I51)","Male","Other Race/ Ethnicity",66,NA,NA
+2019,"Essential Hypertension and Renal Diseases (I10, I12)","Female","Asian and Pacific Islander",66,10.19020166,8.354977901
+2019,"All Other Causes","Female","Not Stated/Unknown",64,70.7534133,88.7919256
+2019,"Malignant Neoplasms (Cancer: C00-C97)","Female","Not Stated/Unknown",61,67.43684705,90.59242339
+2019,"Essential Hypertension and Renal Diseases (I10, I12)","Male","Asian and Pacific Islander",56,9.556950036,9.228507274
+2019,"Accidents Except Drug Poisoning (V01-X39, X43, X45-X59, Y85-Y86)","Male","Asian and Pacific Islander",52,8.874310748,8.389708675
+2019,"Alzheimer's Disease (G30)","Female","Asian and Pacific Islander",50,7.719849741,6.207494885
+2019,"Intentional Self-Harm (Suicide: U03, X60-X84, Y87.0)","Male","Asian and Pacific Islander",48,8.191671459,7.848126622
+2019,"Alzheimer's Disease (G30)","Male","Asian and Pacific Islander",41,6.997052705,7.415199568
+2019,"Chronic Lower Respiratory Diseases (J40-J47)","Female","Asian and Pacific Islander",40,6.175879793,5.084314882
+2019,"Intentional Self-Harm (Suicide: U03, X60-X84, Y87.0)","Female","Asian and Pacific Islander",40,6.175879793,5.346443053
+2019,"Accidents Except Drug Poisoning (V01-X39, X43, X45-X59, Y85-Y86)","Female","Asian and Pacific Islander",40,6.175879793,5.373332294
+2019,"Diseases of Heart (I00-I09, I11, I13, I20-I51)","Female","Other Race/ Ethnicity",39,NA,NA
+2019,"Malignant Neoplasms (Cancer: C00-C97)","Female","Other Race/ Ethnicity",35,NA,NA
+2019,"Diabetes Mellitus (E10-E14)","Male","Not Stated/Unknown",34,41.81733205,65.49320907
+2019,"Malignant Neoplasms (Cancer: C00-C97)","Male","Other Race/ Ethnicity",32,NA,NA
+2019,"Diseases of Heart (I00-I09, I11, I13, I20-I51)","Female","Other Race/ Ethnicity",30,NA,NA
+2019,"All Other Causes","Female","Other Race/ Ethnicity",28,NA,NA
+2019,"All Other Causes","Male","Other Race/ Ethnicity",27,NA,NA
+2019,"Chronic Lower Respiratory Diseases (J40-J47)","Male","Not Stated/Unknown",22,27.05827368,48.36535015
+2019,"Diseases of Heart (I00-I09, I11, I13, I20-I51)","Male","Other Race/ Ethnicity",19,NA,NA
+2019,"Mental and Behavioral Disorders due to Accidental Poisoning and Other Psychoactive Substance Use (F11-F16, F18-F19, X40-X42, X44)","Male","Not Stated/Unknown",17,20.90866603,27.20905858
+2019,"Malignant Neoplasms (Cancer: C00-C97)","Female","Other Race/ Ethnicity",17,NA,NA
+2019,"All Other Causes","Female","Other Race/ Ethnicity",17,NA,NA
+2019,"Malignant Neoplasms (Cancer: C00-C97)","Male","Other Race/ Ethnicity",15,NA,NA
+2019,"Accidents Except Drug Poisoning (V01-X39, X43, X45-X59, Y85-Y86)","Male","Not Stated/Unknown",15,18.44882297,28.63593587
+2019,"Diabetes Mellitus (E10-E14)","Female","Not Stated/Unknown",15,16.58283124,21.71794941
+2019,"Influenza (Flu) and Pneumonia (J09-J18)","Male","Not Stated/Unknown",14,17.21890143,28.51477435
+2019,"Mental and Behavioral Disorders due to Use of Alcohol (F10)","Male","Not Stated/Unknown",14,17.21890143,21.0146938
+2019,"Certain Conditions originating in the Perinatal Period (P00-P96)","Male","Not Stated/Unknown",14,17.21890143,12.84231049
+2019,"Chronic Liver Disease and Cirrhosis (K70, K73-K74)","Male","Not Stated/Unknown",14,17.21890143,24.15790476
+2019,"Diabetes Mellitus (E10-E14)","Female","Other Race/ Ethnicity",14,NA,NA
+2019,"Chronic Lower Respiratory Diseases (J40-J47)","Female","Not Stated/Unknown",12,13.26626499,18.86074635
+2019,"Cerebrovascular Disease (Stroke: I60-I69)","Female","Not Stated/Unknown",11,12.16074291,15.98649499
+2019,"All Other Causes","Male","Other Race/ Ethnicity",10,NA,NA
+2019,"Essential Hypertension and Renal Diseases (I10, I12)","Female","Not Stated/Unknown",10,11.05522083,14.64331729
+2019,"Intentional Self-Harm (Suicide: U03, X60-X84, Y87.0)","Male","Other Race/ Ethnicity",9,NA,NA
+2019,"Diabetes Mellitus (E10-E14)","Male","Other Race/ Ethnicity",9,NA,NA
+2019,"Cerebrovascular Disease (Stroke: I60-I69)","Female","Other Race/ Ethnicity",9,NA,NA
+2019,"Accidents Except Drug Poisoning (V01-X39, X43, X45-X59, Y85-Y86)","Female","Not Stated/Unknown",9,9.949698745,12.73357975
+2019,"Cerebrovascular Disease (Stroke: I60-I69)","Male","Other Race/ Ethnicity",8,NA,NA
+2019,"Influenza (Flu) and Pneumonia (J09-J18)","Female","Not Stated/Unknown",8,8.844176662,12.14778648
+2019,"Certain Conditions originating in the Perinatal Period (P00-P96)","Female","Not Stated/Unknown",7,7.73865458,6.390793995
+2019,"Influenza (Flu) and Pneumonia (J09-J18)","Male","Other Race/ Ethnicity",6,NA,NA
+2019,"Essential Hypertension and Renal Diseases (I10, I12)","Male","Other Race/ Ethnicity",5,NA,NA
+2019,"Mental and Behavioral Disorders due to Accidental Poisoning and Other Psychoactive Substance Use (F11-F16, F18-F19, X40-X42, X44)","Male","Other Race/ Ethnicity",5,NA,NA
+2019,"Mental and Behavioral Disorders due to Accidental Poisoning and Other Psychoactive Substance Use (F11-F16, F18-F19, X40-X42, X44)","Male","Other Race/ Ethnicity",5,NA,NA
+2019,"Essential Hypertension and Renal Diseases (I10, I12)","Female","Other Race/ Ethnicity",5,NA,NA
+2019,"Influenza (Flu) and Pneumonia (J09-J18)","Female","Other Race/ Ethnicity",5,NA,NA
+2019,"Mental and Behavioral Disorders due to Accidental Poisoning and Other Psychoactive Substance Use (F11-F16, F18-F19, X40-X42, X44)","Female","Not Stated/Unknown",5,5.527610414,6.724040882
+2019,"Intentional Self-Harm (Suicide: U03, X60-X84, Y87.0)","Female","Not Stated/Unknown",5,5.527610414,6.979219825
+2019,"Chronic Lower Respiratory Diseases (J40-J47)","Male","Other Race/ Ethnicity",4,NA,NA
+2019,"Influenza (Flu) and Pneumonia (J09-J18)","Male","Other Race/ Ethnicity",4,NA,NA
+2019,"Mental and Behavioral Disorders due to Use of Alcohol (F10)","Male","Other Race/ Ethnicity",4,NA,NA
+2019,"Accidents Except Drug Poisoning (V01-X39, X43, X45-X59, Y85-Y86)","Male","Other Race/ Ethnicity",4,NA,NA
+2019,"Chronic Liver Disease and Cirrhosis (K70, K73-K74)","Male","Other Race/ Ethnicity",4,NA,NA
+2019,"Diabetes Mellitus (E10-E14)","Male","Other Race/ Ethnicity",3,NA,NA
+2019,"Congenital Malformations, Deformations, and Chromosomal Abnormalities (Q00-Q99)","Male","Other Race/ Ethnicity",3,NA,NA
+2019,"Mental and Behavioral Disorders due to Accidental Poisoning and Other Psychoactive Substance Use (F11-F16, F18-F19, X40-X42, X44)","Female","Other Race/ Ethnicity",3,NA,NA
+2019,"Assault (Homicide: U01-U02, Y87.1, X85-Y09)","Female","Other Race/ Ethnicity",3,NA,NA
+2019,"Accidents Except Drug Poisoning (V01-X39, X43, X45-X59, Y85-Y86)","Female","Other Race/ Ethnicity",3,NA,NA
+2019,"Alzheimer's Disease (G30)","Female","Other Race/ Ethnicity",3,NA,NA
+2019,"Alzheimer's Disease (G30)","Female","Other Race/ Ethnicity",3,NA,NA
+2019,"Assault (Homicide: U01-U02, Y87.1, X85-Y09)","Male","Other Race/ Ethnicity",2,NA,NA
+2019,"Aortic Aneurysm and Dissection (I71)","Male","Other Race/ Ethnicity",2,NA,NA
+2019,"Intentional Self-Harm (Suicide: U03, X60-X84, Y87.0)","Male","Other Race/ Ethnicity",2,NA,NA
+2019,"Influenza (Flu) and Pneumonia (J09-J18)","Female","Other Race/ Ethnicity",2,NA,NA
+2019,"Complications of Medical and Surgical Care (Y40-Y84, Y88)","Female","Other Race/ Ethnicity",2,NA,NA
+2019,"Septicemia (A40-A41)","Female","Other Race/ Ethnicity",2,NA,NA
+2019,"Insitu or Benign / Uncertain Neoplasms (D00-D48)","Female","Other Race/ Ethnicity",2,NA,NA
+2019,"Chronic Lower Respiratory Diseases (J40-J47)","Female","Other Race/ Ethnicity",2,NA,NA
+2019,"Cerebrovascular Disease (Stroke: I60-I69)","Female","Other Race/ Ethnicity",2,NA,NA
+2019,"Essential Hypertension and Renal Diseases (I10, I12)","Female","Other Race/ Ethnicity",2,NA,NA
+2019,"Nephritis, Nephrotic Syndrome and Nephrisis (N00-N07, N17-N19, N25-N27)","Female","Other Race/ Ethnicity",2,NA,NA
+2019,"Viral Hepatitis (B15-B19)","Male","Other Race/ Ethnicity",1,NA,NA
+2019,"Septicemia (A40-A41)","Male","Other Race/ Ethnicity",1,NA,NA
+2019,"Mental and Behavioral Disorders due to Use of Alcohol (F10)","Male","Other Race/ Ethnicity",1,NA,NA
+2019,"Complications of Medical and Surgical Care (Y40-Y84, Y88)","Male","Other Race/ Ethnicity",1,NA,NA
+2019,"Essential Hypertension and Renal Diseases (I10, I12)","Male","Other Race/ Ethnicity",1,NA,NA
+2019,"Accidents Except Drug Poisoning (V01-X39, X43, X45-X59, Y85-Y86)","Male","Other Race/ Ethnicity",1,NA,NA
+2019,"Cerebrovascular Disease (Stroke: I60-I69)","Male","Other Race/ Ethnicity",1,NA,NA
+2019,"Human Immunodeficiency Virus Disease (HIV: B20-B24)","Male","Other Race/ Ethnicity",1,NA,NA
+2019,"Alzheimer's Disease (G30)","Male","Other Race/ Ethnicity",1,NA,NA
+2019,"Cholelithiasis and Disorders of Gallbladder (K80-K82)","Male","Other Race/ Ethnicity",1,NA,NA
+2019,"Mental and Behavioral Disorders due to Accidental Poisoning and Other Psychoactive Substance Use (F11-F16, F18-F19, X40-X42, X44)","Female","Other Race/ Ethnicity",1,NA,NA
+2019,"Mental and Behavioral Disorders due to Use of Alcohol (F10)","Female","Other Race/ Ethnicity",1,NA,NA
+2019,"Diabetes Mellitus (E10-E14)","Female","Other Race/ Ethnicity",1,NA,NA
+2019,"Intentional Self-Harm (Suicide: U03, X60-X84, Y87.0)","Female","Other Race/ Ethnicity",1,NA,NA
+2019,"Accidents Except Drug Poisoning (V01-X39, X43, X45-X59, Y85-Y86)","Female","Other Race/ Ethnicity",1,NA,NA
+2019,"Congenital Malformations, Deformations, and Chromosomal Abnormalities (Q00-Q99)","Female","Other Race/ Ethnicity",1,NA,NA
+2019,"Septicemia (A40-A41)","Female","Other Race/ Ethnicity",1,NA,NA
+2019,"Anemias (D50-D64)","Female","Other Race/ Ethnicity",1,NA,NA
+2019,"Cholelithiasis and Disorders of Gallbladder (K80-K82)","Female","Other Race/ Ethnicity",1,NA,NA
+2019,"Parkinson's Disease (G20)","Female","Other Race/ Ethnicity",1,NA,NA
+2019,"Peptic Ulcer (K25-K28)","Female","Other Race/ Ethnicity",1,NA,NA
