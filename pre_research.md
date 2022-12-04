@@ -2,20 +2,31 @@ Pre-research
 ================
 
 ``` r
-cause_death_nyc = 
-  read_csv("./data/New_York_City_Leading_Causes_of_Death.csv", na = ".") %>%
-  janitor::clean_names() %>%
-  filter(year == 2019) %>%
-  arrange(desc(deaths))
+nypd_complaint_2020_data = 
+  read_csv("./data/nypd_complaint_2020_data.csv")
 ```
 
-    ## Warning: One or more parsing issues, see `problems()` for details
-
-    ## Rows: 1272 Columns: 7
+    ## Rows: 88484 Columns: 37
     ## ── Column specification ────────────────────────────────────────────────────────
     ## Delimiter: ","
-    ## chr (3): Leading Cause, Sex, Race Ethnicity
-    ## dbl (4): Year, Deaths, Death Rate, Age Adjusted Death Rate
+    ## chr  (21): cmplnt_to_dt, rpt_dt, ofns_desc, pd_desc, crm_atpt_cptd_cd, law_c...
+    ## dbl  (14): cmplnt_num, month, day, year, addr_pct_cd, ky_cd, pd_cd, jurisdic...
+    ## time  (2): cmplnt_fr_tm, cmplnt_to_tm
+    ## 
+    ## ℹ Use `spec()` to retrieve the full column specification for this data.
+    ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+
+``` r
+nypd_complaint_2021_data = 
+  read_csv("./data/nypd_complaint_2021_data.csv")
+```
+
+    ## Rows: 101990 Columns: 37
+    ## ── Column specification ────────────────────────────────────────────────────────
+    ## Delimiter: ","
+    ## chr  (21): cmplnt_to_dt, rpt_dt, ofns_desc, pd_desc, crm_atpt_cptd_cd, law_c...
+    ## dbl  (14): cmplnt_num, month, day, year, addr_pct_cd, ky_cd, pd_cd, jurisdic...
+    ## time  (2): cmplnt_fr_tm, cmplnt_to_tm
     ## 
     ## ℹ Use `spec()` to retrieve the full column specification for this data.
     ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.

@@ -9,11 +9,11 @@ library(tidyverse)
 ```
 
 ```{r}
-cause_death_nyc = 
-  read_csv("./data/New_York_City_Leading_Causes_of_Death.csv", na = ".") %>%
-  janitor::clean_names() %>%
-  filter(year == 2019) %>%
-  arrange(desc(deaths))
+nypd_complaint_2020_data = 
+  read_csv("./data/nypd_complaint_2020_data.csv")
+
+nypd_complaint_2021_data = 
+  read_csv("./data/nypd_complaint_2021_data.csv")
 ```
 
 
