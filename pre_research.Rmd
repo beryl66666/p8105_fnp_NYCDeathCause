@@ -15,8 +15,8 @@ nypd_complaint_2020_data =
 nypd_complaint_2021_data = 
   read_csv("./data/nypd_complaint_2021_data.csv")
 
-nypd_complaint_2021_2022_data = 
-  read_csv("./data/nypd_complaint_2020_2021_data.csv")
+nypd_complaint_two_year_data = 
+  read_csv("./data/nypd_complaint_two_year_data.csv")
 ```
 
 
