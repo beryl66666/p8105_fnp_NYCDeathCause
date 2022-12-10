@@ -1,5 +1,5 @@
 ---
-title: "Statistical Analysis"
+title: "Additional Analysis"
 always_allow_html: true
 output: 
   html_document:
@@ -12,68 +12,81 @@ output:
 library(tidyverse)
 library(broom)
 library(kableExtra)
+library(gplots)
+library(corrplot)
+library(dplyr)
 ```
+
+
 
 ### Test Independence between Victim Sex and Suspect Sex
 
 Now we want to test whether there is a relationship between the victim sex and suspect sex, and we are going to use chi-square test.
-The columns indicate the 
+
 
 ```{r echo=TRUE, message=FALSE, warning=FALSE}
 sex_data = read_csv("./data/nypd_complaint_two_year_data.csv") %>% 
-  select(vic_sex, susp_sex) %>% 
-  na.omit() 
+  group_by(vic_sex, susp_sex) %>% 
+  summarise(obs = n()) %>% 
+  na.omit() %>% 
+  pivot_wider(names_from = vic_sex, values_from = obs )
 
-vF_sF = sex_data %>% 
-  filter(vic_sex == "F") %>% 
-  filter(susp_sex == "F") %>% 
-  count()
-  
-vM_sF = sex_data %>% 
-  filter(vic_sex == "M") %>% 
-  filter(susp_sex == "F") %>% 
-  count()
-  
-vF_sM =sex_data %>% 
-  filter(vic_sex == "F") %>% 
-  filter(susp_sex == "M") %>% 
-  count()
-  
-vM_sM = sex_data %>% 
-  filter(vic_sex == "M") %>% 
-  filter(susp_sex == "M") %>% 
-  count()
-
-sex = matrix(c(9850,6199,29030, 26307), ncol = 2, byrow = T) 
-colnames(sex) = c("Female","Male")
-rownames(sex) = c("Female","Male")
-sex %>% 
-  kbl(caption = "Horizontal: Victim, Vertical: Suspect", ) %>% 
+table_sex = sex_data %>% 
+  as.matrix() %>% 
+  kbl(caption = "Victim Sex Corresponding to Suspect Sex", align = "c") %>% 
   kable_classic(full_width = F, html_font = "Cambria")
+
+table_sex
 ```
 
 * Ho: sex of victim and sex of suspect are independent
 * Ha: sex of victim and sex of suspect are not independent 
 
-```{r}
-test_sex = matrix(c(9850,6199,29030, 26307), ncol = 2, byrow = T) 
+```{r echo=TRUE, message=FALSE, warning=FALSE}
+matrix_sex =  as.matrix(sex_data) %>% 
+  as.integer() %>% 
+  na.omit()
 
-chisq.test(test_sex)
+chisq.test(matrix_sex)
 ```
+
 
 As we can see that the p-value of chi-square test is much smaller than alpha = 0.05, we **reject H0**. 
 We can conclude that sex of victim and sex of suspect are *not independent* at 0.05 significance level. 
 
 
-### Test Independence between Victim Sex and Suspect Sex
+
+### Test Independence between Victim Race and Suspect Race
 
 ```{r echo=TRUE, message=FALSE, warning=FALSE}
-
 race_data = read_csv("./data/nypd_complaint_two_year_data.csv") %>% 
   group_by(vic_race, susp_race) %>% 
-  summarise(n()) %>% 
-  na.omit() 
+  summarise(obs = n()) %>% 
+  na.omit() %>% 
+  pivot_wider(names_from = vic_race, values_from = obs)
 
-table(race_data$vic_race, race_data$susp_race)
+table_race = race_data %>% 
+  as.matrix() %>% 
+  kbl(caption = "Victim Race Corresponding to Suspect Race", align = "c") %>% 
+  kable_classic(full_width = F, html_font = "Cambria")
+
+table_race
 ```
+
+
+* Ho: race of victim and race of suspect are independent
+* Ha: race of victim and race of suspect are not independent 
+
+
+```{r echo=TRUE, message=FALSE, warning=FALSE}
+matrix_race =  as.matrix(race_data) %>% 
+  as.integer() %>% 
+  na.omit()
+
+chisq.test(matrix_race)
+```
+
+
+As we can see that the p-value of chi-square test is much smaller than alpha = 0.05, we **reject H0**. 
+We can conclude that race of victim and race of suspect are *not independent* at 0.05 significance level. 
 

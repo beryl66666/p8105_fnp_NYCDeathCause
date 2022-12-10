@@ -11,7 +11,7 @@
 
 
 
-<title>Statistical Analysis</title>
+<title>Additional Analysis</title>
 
 <script src="site_libs/header-attrs-2.16/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
@@ -338,16 +338,16 @@ div.tocify {
   <a href="proposal.html">About Us</a>
 </li>
 <li>
-  <a href="descriptive_statistics.html">Descriptive Statistics</a>
+  <a href="stats.html">Descriptive Statistics</a>
 </li>
 <li>
-  <a href="Comparing_Patterns_2020_vs_2021.html">Patterns</a>
+  <a href="patterns.html">Patterns</a>
 </li>
 <li>
-  <a href="shiny_dashboard.html">Shiny App</a>
+  <a href="shiny.html">Shiny App</a>
 </li>
 <li>
-  <a href="report.html">Final Project Report</a>
+  <a href="Final_project_report.html">Final Project Report</a>
 </li>
       </ul>
     </div><!--/.nav-collapse -->
@@ -366,7 +366,7 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Statistical Analysis</h1>
+<h1 class="title toc-ignore">Additional Analysis</h1>
 
 </div>
 
@@ -375,75 +375,92 @@ div.tocify {
 class="section level3">
 <h3>Test Independence between Victim Sex and Suspect Sex</h3>
 <p>Now we want to test whether there is a relationship between the
-victim sex and suspect sex, and we are going to use chi-square test. The
-columns indicate the</p>
+victim sex and suspect sex, and we are going to use chi-square test.</p>
 <pre class="r"><code>sex_data = read_csv(&quot;./data/nypd_complaint_two_year_data.csv&quot;) %&gt;% 
-  select(vic_sex, susp_sex) %&gt;% 
-  na.omit() 
+  group_by(vic_sex, susp_sex) %&gt;% 
+  summarise(obs = n()) %&gt;% 
+  na.omit() %&gt;% 
+  pivot_wider(names_from = vic_sex, values_from = obs )
 
-vF_sF = sex_data %&gt;% 
-  filter(vic_sex == &quot;F&quot;) %&gt;% 
-  filter(susp_sex == &quot;F&quot;) %&gt;% 
-  count()
-  
-vM_sF = sex_data %&gt;% 
-  filter(vic_sex == &quot;M&quot;) %&gt;% 
-  filter(susp_sex == &quot;F&quot;) %&gt;% 
-  count()
-  
-vF_sM =sex_data %&gt;% 
-  filter(vic_sex == &quot;F&quot;) %&gt;% 
-  filter(susp_sex == &quot;M&quot;) %&gt;% 
-  count()
-  
-vM_sM = sex_data %&gt;% 
-  filter(vic_sex == &quot;M&quot;) %&gt;% 
-  filter(susp_sex == &quot;M&quot;) %&gt;% 
-  count()
+table_sex = sex_data %&gt;% 
+  as.matrix() %&gt;% 
+  kbl(caption = &quot;Victim Sex Corresponding to Suspect Sex&quot;, align = &quot;c&quot;) %&gt;% 
+  kable_classic(full_width = F, html_font = &quot;Cambria&quot;)
 
-sex = matrix(c(9850,6199,29030, 26307), ncol = 2, byrow = T) 
-colnames(sex) = c(&quot;Female&quot;,&quot;Male&quot;)
-rownames(sex) = c(&quot;Female&quot;,&quot;Male&quot;)
-sex %&gt;% 
-  kbl(caption = &quot;Horizontal: Victim, Vertical: Suspect&quot;, ) %&gt;% 
-  kable_classic(full_width = F, html_font = &quot;Cambria&quot;)</code></pre>
+table_sex</code></pre>
 <table class=" lightable-classic" style="font-family: Cambria; width: auto !important; margin-left: auto; margin-right: auto;">
 <caption>
-Horizontal: Victim, Vertical: Suspect
+Victim Sex Corresponding to Suspect Sex
 </caption>
 <thead>
 <tr>
-<th style="text-align:left;">
+<th style="text-align:center;">
+susp_sex
 </th>
-<th style="text-align:right;">
-Female
+<th style="text-align:center;">
+D
 </th>
-<th style="text-align:right;">
-Male
+<th style="text-align:center;">
+E
+</th>
+<th style="text-align:center;">
+F
+</th>
+<th style="text-align:center;">
+M
 </th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align:left;">
-Female
+<td style="text-align:center;">
+F
 </td>
-<td style="text-align:right;">
+<td style="text-align:center;">
+4575
+</td>
+<td style="text-align:center;">
+1065
+</td>
+<td style="text-align:center;">
 9850
 </td>
-<td style="text-align:right;">
+<td style="text-align:center;">
 6199
 </td>
 </tr>
 <tr>
-<td style="text-align:left;">
-Male
+<td style="text-align:center;">
+M
 </td>
-<td style="text-align:right;">
+<td style="text-align:center;">
+31248
+</td>
+<td style="text-align:center;">
+8789
+</td>
+<td style="text-align:center;">
 29030
 </td>
-<td style="text-align:right;">
+<td style="text-align:center;">
 26307
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+U
+</td>
+<td style="text-align:center;">
+9297
+</td>
+<td style="text-align:center;">
+1810
+</td>
+<td style="text-align:center;">
+15765
+</td>
+<td style="text-align:center;">
+19867
 </td>
 </tr>
 </tbody>
@@ -452,55 +469,271 @@ Male
 <li>Ho: sex of victim and sex of suspect are independent</li>
 <li>Ha: sex of victim and sex of suspect are not independent</li>
 </ul>
-<pre class="r"><code>test_sex = matrix(c(9850,6199,29030, 26307), ncol = 2, byrow = T) 
+<pre class="r"><code>matrix_sex =  as.matrix(sex_data) %&gt;% 
+  as.integer() %&gt;% 
+  na.omit()
 
-chisq.test(test_sex)</code></pre>
+chisq.test(matrix_sex)</code></pre>
 <pre><code>## 
-##  Pearson&#39;s Chi-squared test with Yates&#39; continuity correction
+##  Chi-squared test for given probabilities
 ## 
-## data:  test_sex
-## X-squared = 398.25, df = 1, p-value &lt; 2.2e-16</code></pre>
+## data:  matrix_sex
+## X-squared = 91062, df = 11, p-value &lt; 2.2e-16</code></pre>
 <p>As we can see that the p-value of chi-square test is much smaller
 than alpha = 0.05, we <strong>reject H0</strong>. We can conclude that
 sex of victim and sex of suspect are <em>not independent</em> at 0.05
 significance level.</p>
 </div>
-<div id="test-independence-between-victim-sex-and-suspect-sex-1"
+<div id="test-independence-between-victim-race-and-suspect-race"
 class="section level3">
-<h3>Test Independence between Victim Sex and Suspect Sex</h3>
+<h3>Test Independence between Victim Race and Suspect Race</h3>
 <pre class="r"><code>race_data = read_csv(&quot;./data/nypd_complaint_two_year_data.csv&quot;) %&gt;% 
   group_by(vic_race, susp_race) %&gt;% 
-  summarise(n()) %&gt;% 
-  na.omit() 
+  summarise(obs = n()) %&gt;% 
+  na.omit() %&gt;% 
+  pivot_wider(names_from = vic_race, values_from = obs)
 
-table(race_data$vic_race, race_data$susp_race)</code></pre>
-<pre><code>##                                 
-##                                  AMERICAN INDIAN/ALASKAN NATIVE
-##   AMERICAN INDIAN/ALASKAN NATIVE                              1
-##   ASIAN / PACIFIC ISLANDER                                    1
-##   BLACK                                                       1
-##   BLACK HISPANIC                                              1
-##   UNKNOWN                                                     1
-##   WHITE                                                       1
-##   WHITE HISPANIC                                              1
-##                                 
-##                                  ASIAN / PACIFIC ISLANDER BLACK BLACK HISPANIC
-##   AMERICAN INDIAN/ALASKAN NATIVE                        1     1              1
-##   ASIAN / PACIFIC ISLANDER                              1     1              1
-##   BLACK                                                 1     1              1
-##   BLACK HISPANIC                                        1     1              1
-##   UNKNOWN                                               1     1              1
-##   WHITE                                                 1     1              1
-##   WHITE HISPANIC                                        1     1              1
-##                                 
-##                                  UNKNOWN WHITE WHITE HISPANIC
-##   AMERICAN INDIAN/ALASKAN NATIVE       1     1              1
-##   ASIAN / PACIFIC ISLANDER             1     1              1
-##   BLACK                                1     1              1
-##   BLACK HISPANIC                       1     1              1
-##   UNKNOWN                              1     1              1
-##   WHITE                                1     1              1
-##   WHITE HISPANIC                       1     1              1</code></pre>
+table_race = race_data %&gt;% 
+  as.matrix() %&gt;% 
+  kbl(caption = &quot;Victim Race Corresponding to Suspect Race&quot;, align = &quot;c&quot;) %&gt;% 
+  kable_classic(full_width = F, html_font = &quot;Cambria&quot;)
+
+table_race</code></pre>
+<table class=" lightable-classic" style="font-family: Cambria; width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>
+Victim Race Corresponding to Suspect Race
+</caption>
+<thead>
+<tr>
+<th style="text-align:center;">
+susp_race
+</th>
+<th style="text-align:center;">
+AMERICAN INDIAN/ALASKAN NATIVE
+</th>
+<th style="text-align:center;">
+ASIAN / PACIFIC ISLANDER
+</th>
+<th style="text-align:center;">
+BLACK
+</th>
+<th style="text-align:center;">
+BLACK HISPANIC
+</th>
+<th style="text-align:center;">
+UNKNOWN
+</th>
+<th style="text-align:center;">
+WHITE
+</th>
+<th style="text-align:center;">
+WHITE HISPANIC
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center;">
+AMERICAN INDIAN/ALASKAN NATIVE
+</td>
+<td style="text-align:center;">
+28
+</td>
+<td style="text-align:center;">
+28
+</td>
+<td style="text-align:center;">
+38
+</td>
+<td style="text-align:center;">
+9
+</td>
+<td style="text-align:center;">
+76
+</td>
+<td style="text-align:center;">
+46
+</td>
+<td style="text-align:center;">
+25
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+ASIAN / PACIFIC ISLANDER
+</td>
+<td style="text-align:center;">
+8
+</td>
+<td style="text-align:center;">
+961
+</td>
+<td style="text-align:center;">
+263
+</td>
+<td style="text-align:center;">
+54
+</td>
+<td style="text-align:center;">
+834
+</td>
+<td style="text-align:center;">
+562
+</td>
+<td style="text-align:center;">
+233
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+BLACK
+</td>
+<td style="text-align:center;">
+179
+</td>
+<td style="text-align:center;">
+2699
+</td>
+<td style="text-align:center;">
+17206
+</td>
+<td style="text-align:center;">
+1591
+</td>
+<td style="text-align:center;">
+25616
+</td>
+<td style="text-align:center;">
+6588
+</td>
+<td style="text-align:center;">
+5838
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+BLACK HISPANIC
+</td>
+<td style="text-align:center;">
+21
+</td>
+<td style="text-align:center;">
+296
+</td>
+<td style="text-align:center;">
+987
+</td>
+<td style="text-align:center;">
+1486
+</td>
+<td style="text-align:center;">
+3287
+</td>
+<td style="text-align:center;">
+859
+</td>
+<td style="text-align:center;">
+1788
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+UNKNOWN
+</td>
+<td style="text-align:center;">
+218
+</td>
+<td style="text-align:center;">
+4029
+</td>
+<td style="text-align:center;">
+9702
+</td>
+<td style="text-align:center;">
+2375
+</td>
+<td style="text-align:center;">
+14251
+</td>
+<td style="text-align:center;">
+13753
+</td>
+<td style="text-align:center;">
+7897
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+WHITE
+</td>
+<td style="text-align:center;">
+49
+</td>
+<td style="text-align:center;">
+932
+</td>
+<td style="text-align:center;">
+1283
+</td>
+<td style="text-align:center;">
+241
+</td>
+<td style="text-align:center;">
+8066
+</td>
+<td style="text-align:center;">
+4896
+</td>
+<td style="text-align:center;">
+1254
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+WHITE HISPANIC
+</td>
+<td style="text-align:center;">
+45
+</td>
+<td style="text-align:center;">
+797
+</td>
+<td style="text-align:center;">
+2419
+</td>
+<td style="text-align:center;">
+1050
+</td>
+<td style="text-align:center;">
+9413
+</td>
+<td style="text-align:center;">
+2371
+</td>
+<td style="text-align:center;">
+7155
+</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Ho: race of victim and race of suspect are independent</li>
+<li>Ha: race of victim and race of suspect are not independent</li>
+</ul>
+<pre class="r"><code>matrix_race =  as.matrix(race_data) %&gt;% 
+  as.integer() %&gt;% 
+  na.omit()
+
+chisq.test(matrix_race)</code></pre>
+<pre><code>## 
+##  Chi-squared test for given probabilities
+## 
+## data:  matrix_race
+## X-squared = 397531, df = 48, p-value &lt; 2.2e-16</code></pre>
+<p>As we can see that the p-value of chi-square test is much smaller
+than alpha = 0.05, we <strong>reject H0</strong>. We can conclude that
+race of victim and race of suspect are <em>not independent</em> at 0.05
+significance level.</p>
 </div>
 
 
