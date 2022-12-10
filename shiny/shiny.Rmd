@@ -10,10 +10,9 @@ library(flexdashboard)
 library(shiny)
 library(tidyverse)
 library(plotly)
-library(p8105.datasets)
 
 nypd_complaint = 
-  read_csv("./shiny/nypd_complaint_two_year_data.csv")
+  read_csv("/Users/sophiechen/Desktop/8105/p8105_fnp_NYPDComplaint/shiny/nypd_complaint_two_year_data.csv")
 
 complaint_select=nypd_complaint %>% 
   janitor::clean_names() %>% 
@@ -27,43 +26,124 @@ crime_type=complaint_select %>%
   group_by(ofns_desc,year) %>% 
   summarise(obs=n()) %>% 
   filter(obs>5000)
+
+min_longitude=complaint_select %>% distinct(longitude) %>% min()
+max_longitude=complaint_select %>% distinct(longitude) %>% max()
+
+min_latitude=complaint_select %>% distinct(latitude) %>% min()
+max_latitude=complaint_select %>% distinct(latitude) %>% max()
+
+complaint_select %>% distinct(date) %>% pull()
+
+crime_type %>% distinct(ofns_desc) %>% pull()
 ```
 
 Column {.sidebar}
 -----------------------------------------------------------------------
 
-```{r, eval = FALSE}
-date_range= complaint_select %>% distinct(date) %>% pull() %>% as.factor()
-dateRangeInput("date", 
-               label = h3("Date Range"),
-               start = "2020-1-1",
-               end   = "2021-9-9",
-               format = "mm/dd/yy",
-               separator = " - ")
+```{r}
+
+      #sliderInput
+      sliderInput("longitude_start", 
+                  label = h3("Longitude Start"), 
+                  min = min_longitude, 
+                  max = max_longitude,
+                  value = -74
+      )
+
+      sliderInput("longitude_end", 
+                  label = h3("Longitude End"), 
+                  min = min_longitude, 
+                  max = max_longitude,
+                  value = -74
+      )    
+       
+      sliderInput("latitude_start", 
+                  label = h3("Latitude Start"), 
+                  min = min_latitude, 
+                  max = max_latitude,
+                  value = 40.6
+      )
+ 
+      sliderInput("latitude_end", 
+                  label = h3("Latitude End"), 
+                  min = min_latitude, 
+                  max = max_latitude,
+                  value = 40.6
+      )     
+      #dateRangeInput
+      dateRangeInput("start_date", 
+                     label = h3("Date Range Start"),
+                     start = "2020-1-1",
+                     end   = "2021-9-9",
+                     min = "2020-1-1",
+                     max = "2021-9-9")
+
+      #dateRangeInput
+      dateRangeInput("end_date", 
+                     label = h3("Date Range End"),
+                     start = "2020-1-1",
+                     end   = "2021-9-9",
+                     min = "2020-1-1",
+                     max = "2021-9-9")
+            
+      #checkboxInput
+      checkboxGroupInput("Crime_Type", 
+                         label = h3("Crime Type"), 
+                         choices = list("ASSAULT 3 & RELATED OFFENSES" = 1, 
+                                        "CRIMINAL MISCHIEF & RELATED OF" = 2, 
+                                        "GRAND LARCENY" = 3,
+                                        "HARRASSMENT 2" =4,
+                                        "PETIT LARCENY"=5
+                         ),
+                         selected = 1)
 ```
 
 Column {data-width=650}
 -----------------------------------------------------------------------
 
-### Chart A
+### NYPD Complaints of Location VS Crime
 
-```{r, eval = FALSE}
-
+```{r}
+renderPlotly({
+    complaint_select %>% 
+    filter(
+      longitude <= max(input[["longitude_start"]], input[["longitude_end"]]) & longitude >= min(input[["longitude_start"]], input[["longitude_end"]]),
+      latitude <= max(input[["latitude_start"]],input[["latitude_end"]]) & latitude >= min(input[["latitude_start"]],input[["latitude_end"]]),
+      ofns_desc == input[["Crime_Type"]]
+      ) %>%
+      mutate(text_label = str_c("Crime: ", ofns_desc, '\nLongitude: ', longitude, '\nLatitude: ', latitude)) %>% 
+      plot_ly(
+        x = ~longitude, y = ~latitude, type = "scatter", mode = "markers",
+        alpha = 0.5, color = ~ofns_desc, text = ~text_label)
+  })
 ```
 
 
 Column {data-width=350}
 -----------------------------------------------------------------------
 
-### Chart B
+### Complaints of Date VS Crime
 
 ```{r}
-
+renderPlotly({
+    complaint_select %>% 
+    filter(
+      date >= input[["start_date"]][1] & date <= input[["end_date"]][2],
+      ofns_desc == input[["Crime_Type"]]
+      ) %>%
+    group_by(ofns_desc,date) %>% 
+    summarise(obs=n()) %>% 
+    mutate(text_label=str_c("Crime: ", ofns_desc, '\nDate: ', date)) %>% 
+      plot_ly(
+        x = ~date, type = "bar",
+        alpha = 0.5, color = ~ofns_desc, text = ~text_label)
+  })
 ```
 
-### Chart C
+### Crime Type Result
 
 ```{r}
-
+renderPrint({ input$Crime_Type })
 ```
 
