@@ -30,7 +30,7 @@ Since gun violence and various incidents happen pretty frequently during pandemi
 * NYPD Complaint Data Historic https://data.cityofnewyork.us/Public-Safety/NYPD-Complaint-Data-Historic/qgea-i56i
 
 ### The planned analyses/visualizations/coding challenges
-- The biggest challenge is that there is too little reference data
+- The biggest challenge is that there is too much reference data
 - Difficulties in comparing different data tables and clear the data
 - The causes of complaint are too widely distribution
 
