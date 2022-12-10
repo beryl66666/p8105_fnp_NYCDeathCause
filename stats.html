@@ -11,7 +11,7 @@
 
 
 
-<title>About Our Project</title>
+<title>Descriptive Statistics</title>
 
 <script src="site_libs/header-attrs-2.16/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
@@ -364,71 +364,140 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">About Our Project</h1>
+<h1 class="title toc-ignore">Descriptive Statistics</h1>
 
 </div>
 
 
-<div id="little-about-our-project" class="section level3">
-<h3>Little About Our Project</h3>
-<p><em>Insert Screencast here</em></p>
+<pre class="r"><code>nypd_complaint_2020_data = 
+  read_csv(&quot;./data/nypd_complaint_2020_data.csv&quot;)
+
+nypd_complaint_2021_data = 
+  read_csv(&quot;./data/nypd_complaint_2021_data.csv&quot;)
+
+nypd_complaint_two_year_data = 
+  read_csv(&quot;./data/nypd_complaint_two_year_data.csv&quot;)</code></pre>
+<pre class="r"><code>complaint_df = nypd_complaint_two_year_data %&gt;% 
+  janitor::clean_names() %&gt;% 
+  filter(
+    !susp_age_group == c(&quot;UNKNNOWN&quot;),
+     susp_age_group == c(&quot;&lt;18&quot;, &quot;18-24&quot;,&quot;25-44&quot;,&quot;45-64&quot;,&quot;65+&quot;),
+    vic_age_group == c(&quot;&lt;18&quot;, &quot;18-24&quot;,&quot;25-44&quot;,&quot;45-64&quot;,&quot;65+&quot;)
+  ) %&gt;% 
+  mutate(
+    susp_age_group = ifelse(susp_age_group %in% c(&quot;&lt;18&quot;, &quot;18-24&quot;, &quot;25-44&quot;, &quot;45-64&quot;, &quot;65+&quot;), susp_age_group, &quot;UNKNOWN&quot;),
+    vic_age_group = ifelse(vic_age_group %in% c(&quot;&lt;18&quot;, &quot;18-24&quot;, &quot;25-44&quot;, &quot;45-64&quot;, &quot;65+&quot;), vic_age_group, &quot;UNKNOWN&quot;),
+    vic_race = ifelse(is.na(vic_race), &quot;UNKNOWN&quot;, vic_race),
+    vic_sex = ifelse(vic_sex %in% c(&quot;F&quot;, &quot;M&quot;), vic_sex, &quot;U&quot;),
+    susp_sex = ifelse(susp_sex %in% c(&quot;F&quot;, &quot;M&quot;), susp_sex, &quot;U&quot;),
+    susp_age_group = factor(susp_age_group),
+    susp_race = factor(susp_race),
+    susp_sex = factor(susp_sex),
+    vic_age_group = factor(vic_age_group),
+    vic_race = factor(vic_race),
+    vic_sex = factor(vic_sex),
+    boro_nm = factor(boro_nm)
+  ) 
+complaint_1 = 
+  select(complaint_df, c(&quot;month&quot;, &quot;year&quot;, &quot;day&quot;, &quot;susp_age_group&quot; , &quot;boro_nm&quot; , &quot;loc_of_occur_desc&quot;, &quot;susp_sex&quot;, &quot;vic_age_group&quot;, &quot;vic_age_group&quot;, &quot;vic_sex&quot;)) 
+complaint_1 = complaint_1 %&gt;% 
+  mutate(
+    month = as.numeric(month),
+    month = str_pad(month,width = 2,side = &#39;left&#39;,pad = &#39;0&#39;),
+    day = str_pad(day,width = 2,side = &#39;left&#39;,pad = &#39;0&#39;),
+    month_day = str_c(month, &quot;-&quot;, day),
+    month_day = factor(month_day)
+    )
+complaint_1 = complaint_1&lt;-cbind(complaint_1[10],complaint_1[,1:9])
+complaint_1 = arrange_dt(complaint_1,dt)</code></pre>
+<div id="compare-the-number-of-complaint-in-2020-and-2021"
+class="section level2">
+<h2>Compare the Number of Complaint in 2020 and 2021</h2>
+<pre class="r"><code>complaint_1 %&gt;% 
+  group_by(month_day, year) %&gt;% 
+  summarize(obs = n()) %&gt;% 
+  ggplot(aes(x = month_day, y = obs, group = year, color = as.factor(year)))+
+  geom_line() + 
+  geom_smooth(se = FALSE) +
+  labs(title = &quot;Number of Complaint in 2020 and 2021&quot;, x = &quot;Complaint Date&quot;, y = &quot;Number of Complaint&quot;, col = &quot;Year&quot;) + 
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1, color = rep(c(&quot;black&quot;, rep(&quot;transparent&quot;, each = 15))))) +
+  theme(plot.title = element_text(hjust = 0.5))</code></pre>
+<p><img src="stats_files/figure-html/unnamed-chunk-3-1.png" width="672" />
+According to the information in the figure, we can know that the average
+daily complaint volume in Manhattan in 2021 has exceeded that in 2020
+since about February, and continued to the end of 2021. Moreover, the
+highest monthly complaint volume peaked in 2021, for example, from May
+to October in 2021. So we can guess that in 2020, people may be unable
+to go out due to the pandemic, leading to a decrease in the number of
+complaints.</p>
 </div>
-<div id="general-overview" class="section level3">
-<h3>General Overview</h3>
-<p>This website includes the complaints patterns across NYC changed
-during the pandemic that we use data analytically algorithms and plots
-to see what variables are closely related to NYPD complaints and more
-importantly, the changes of complaint during the pandemic time is
-investigated. The data set described complaint number across different
-time periods, and some other key variables include the location in which
-the incident occurred, Victim’s Age Group, Victim’s Race and Victim’s
-Sex. Our whole date set total has 7,830,000 observations and 35
-variables. Since we mainly focus on the complaints during pandemic
-within these two years, we abstract the data into two separate data set:
-containing the the complaints for the year 2020 and the other containing
-the complaints for the year 2021.</p>
-<p><strong>For <a href="proposal.html">About Us</a>, we have our
-proposal listed:</strong></p>
-<ul>
-<li>Group members</li>
-<li>The motivation for this project</li>
-<li>The intended final products</li>
-<li>The anticipated data sources</li>
-<li>The planned analyses/visualizations/coding challenges</li>
-<li>The planned timeline</li>
-</ul>
-<p><strong>For <a href="stats.html">Descriptive Statistics</a>, we
-have</strong></p>
-<ul>
-<li><p>Compare the Number of Complaint in Manhattan 2020 and
-2021</p></li>
-<li><p>Number of complaint(suspects) in Manhattan 2020 and 2021 by Age
-Group and Gender</p></li>
-<li><p>Number of complaint(victims) in Manhattan 2020 and 2021 by Age
-Group and Gender</p></li>
-<li><p>Prime suspected victim site in 2020 and 2021 <strong>For <a
-href="patterns.html">Patterns</a>, we have</strong></p></li>
-<li><p>Number of Complaints in Manhattan 2020 vs 2021</p></li>
-<li><p>Number of Complaints by Types 2020 vs 2021</p></li>
-<li><p>Types of Complaints 2020 vs 2021</p></li>
-<li><p>Complaint Locations in Manhattan 2020 vs 2021</p></li>
-</ul>
-<p><strong>For <a href="shiny.html">Shiny App</a>, we have</strong></p>
-<ul>
-<li></li>
-</ul>
-<p><strong>For <a href="Final_project_report.html">Final Project
-Report</a></strong></p>
-<ul>
-<li></li>
-</ul>
-<p><strong>Collaborators</strong></p>
-<ul>
-<li>Binyue Hu bh2849</li>
-<li>Hengxuan Ma hm2900</li>
-<li>Xin Ren xr2160</li>
-<li>Sophie Chen jc5924</li>
-</ul>
+<div
+id="number-of-complaintsuspects-in-2020-and-2021-by-age-group-and-gender"
+class="section level2">
+<h2>Number of complaint(suspects) in 2020 and 2021 by Age Group and
+Gender:</h2>
+<pre class="r"><code>complaint_1 %&gt;% 
+  group_by(susp_age_group, susp_sex) %&gt;% 
+  summarize(obs = n()) %&gt;% 
+  
+  ggplot(aes(x = as.factor(susp_age_group), y = obs, group = susp_sex, color = as.factor(susp_sex))) +
+  geom_line() + 
+  geom_smooth() +
+  labs(title = &quot;Number of complaint(suspects) in 2020 and 2021 by Age Group and Gender&quot;, x = &quot;Age group&quot;, y = &quot;Number of Complaint&quot;, col = &quot;Gender&quot;) </code></pre>
+<p><img src="stats_files/figure-html/unnamed-chunk-4-1.png" width="672" />
+As we can see from the graph, the number of suspects who were complained
+about were much larger than the number of females and unknown gender. A
+large number of the complained suspects are in the 25-44 age group, so
+we should be careful of 25-44 year old males in case of danger.</p>
+<pre class="r"><code>complaint_2 = complaint_1 %&gt;% 
+  drop_na(susp_age_group, susp_sex) %&gt;% 
+  group_by(susp_age_group, susp_sex) %&gt;% 
+  summarize(obs = n())
+  ggplot(complaint_2, aes(susp_age_group, y = obs,fill = susp_sex)) +
+  geom_bar(position = &quot;dodge&quot;,stat = &quot;identity&quot;,colour = &quot;black&quot;)+
+  
+  labs(title = &quot;Number of complaint(suspects) in 2020 and 2021 by Age Group and Gender&quot;, x = &quot;Age group&quot;, y = &quot;Number of Complaint&quot;, col = &quot;Gender&quot;) </code></pre>
+<p><img src="stats_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p>Through the bar chart we can clearly see that the number of suspects
+is more than double the number of men than women in 2020 and 2021.</p>
+</div>
+<div
+id="number-of-complaintvictims-in-2020-and-2021-by-age-group-and-gender"
+class="section level2">
+<h2>Number of complaint(victims) in 2020 and 2021 by Age Group and
+Gender:</h2>
+<pre class="r"><code>complaint_1 %&gt;% 
+  group_by(vic_age_group, vic_sex) %&gt;% 
+  summarize(obs = n()) %&gt;% 
+  ggplot(aes(x = vic_age_group, y = obs, group = vic_sex, color = vic_sex)) +
+  geom_line() + 
+  geom_smooth() +
+  labs(title = &quot;Number of complaint(victims) in 2020 and 2021 by Age Group and Gender&quot;, x = &quot;Age group&quot;, y = &quot;Number of Complaint&quot;, col = &quot;Gender&quot;) </code></pre>
+<p><img src="stats_files/figure-html/unnamed-chunk-6-1.png" width="672" />
+As can be seen from the graph, the number of Manhattan victims in 2020
+and 2021 is much higher for female than male, and the victim group is
+heavily concentrated in the age group of 25-44. Therefore, women aged
+25-44 years old need to pay extra attention to their personal safety in
+Manhattan.</p>
+</div>
+<div id="prime-suspected-victim-site-in-2020-and-2021"
+class="section level2">
+<h2>Prime suspected victim site in 2020 and 2021：</h2>
+<pre class="r"><code>complaint_df %&gt;% 
+  group_by(prem_typ_desc) %&gt;% 
+  count(prem_typ_desc) %&gt;% 
+  filter(n &gt; 2) %&gt;% 
+  mutate(prem_typ_desc = fct_reorder(prem_typ_desc, n)) %&gt;% 
+  ggplot(aes(x = prem_typ_desc, y = n )) + 
+  geom_point(aes(color=n),alpha=0.5) + 
+  geom_smooth( se = FALSE)+
+  labs(title = &quot;Prime suspected victim site in 2020 and 2021&quot;,x = &quot;Location &quot;, y = &quot;Frequency&quot;) +
+  theme(axis.text.x = element_text(angle = 60, hjust = 1))+
+  theme(plot.title = element_text(hjust = 0.5))</code></pre>
+<p><img src="stats_files/figure-html/unnamed-chunk-7-1.png" width="672" />
+Analysis of the graphs shows that the frequency of crime locations is
+home is the highest in 2020 and 2021, followed by street and public
+housing.</p>
 </div>
 
 

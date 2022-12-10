@@ -14,6 +14,12 @@ library(viridis)
 library(plotly)
 ```
 
+```{r importing data}
+nypd_complaint_two_year_data = 
+  read_csv("./data/nypd_complaint_two_year_data.csv") %>% 
+  drop_na()
+```
+
 Column {.sidebar}
 -----------------------------------------------------------------------
 

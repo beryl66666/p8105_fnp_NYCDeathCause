@@ -261,7 +261,7 @@ $(document).ready(function () {
   <a href="descriptive_statistics.html">Descriptive Statistics</a>
 </li>
 <li>
-  <a href="patterns.html">Patterns</a>
+  <a href="Comparing_Patterns_2020_vs_2021.html">Patterns</a>
 </li>
 <li>
   <a href="shiny_dashboard.html">Shiny App</a>
@@ -320,13 +320,154 @@ site, or something we discussed in class.)</p>
 class="uri">https://maps.nyc.gov/crime/</a></em></p>
 <p>Inspired by our regularly received crime alerts from Columbia
 University Department of Public Safety, when we mentioned the crime rate
-of NYC, all of our teammates showed great interest. After some initial
-exploring, we successfully found that resources about NYC crime and
-complaint data are sufficient and detailed.</p>
-<p>Based on the information we have gathered, we decided to conduct our
-analysis on the most recently published NYPD Compliant Data, which
-contained plenty of attributes correlated with each complaint of crime
-happened and recorded in the New York City.</p>
+of NYC, all of our teammates showed great interest. When we googled it
+for more information, the NYC Crime Map gave us a shock on the actual
+number of crimes around us just from January 2021 to October 2022.</p>
+<p>After some initial exploring, we successfully found that resources
+about NYC crime and complaint data are sufficient and detailed. Based on
+the information we have gathered, we decided to conduct our analysis on
+the most recently published NYPD Compliant Data, which contained plenty
+of attributes correlated with each complaint of crime happened and
+recorded in the New York City.</p>
+</div>
+<div id="initial-questions" class="section level1">
+<h1>Initial Questions</h1>
+<p>(Initial questions: What questions are you trying to answer? How did
+these questions evolve over the course of the project? What new
+questions did you consider in the course of your analysis?)</p>
+</div>
+<div id="data" class="section level1">
+<h1>Data</h1>
+<p>(Data: Source, scraping method, cleaning, etc.)</p>
+<p>The raw data we used was from <strong>NYC OpenData: NYPD Complaint
+Data Historic</strong>: <a
+href="https://data.cityofnewyork.us/Public-Safety/NYPD-Complaint-Data-Historic/qgea-i56i"
+class="uri">https://data.cityofnewyork.us/Public-Safety/NYPD-Complaint-Data-Historic/qgea-i56i</a></p>
+<p>The NYPD Complaint Data is public and readily available. The data
+includes all valid felony, misdemeanor, and violation crimes reported to
+the New York City Police Department (NYPD) from 2006 to the last updated
+date, which was June 9, 2022 when we started our project.</p>
+<p>The first and the most difficult challenge we have encountered was
+that the original data was too large to be downloaded and analyzed - the
+size was over 2 GB! It took us more than half an hour to obtain the
+whole raw data, which contained 35 variables and more than 7 million
+observations.</p>
+<p>Then the first step to handle such a huge data set was to tidy out
+the part that we wanted to focuse on:</p>
+<pre class="r"><code>nypd_complaint_data = 
+  read_csv(&quot;./data/NYPD_Complaint_Data_Historic.csv&quot;) %&gt;%
+  janitor::clean_names() %&gt;%
+  drop_na(cmplnt_to_dt,cmplnt_to_tm) %&gt;%
+  separate(cmplnt_fr_dt, into = c(&quot;month&quot;, &quot;day&quot;, &quot;year&quot;)) %&gt;%
+  mutate(year = as.numeric(year),month = as.numeric(month), day = as.numeric(day)) %&gt;%
+  filter(year &gt;= 2020)
+
+write_csv(nypd_complaint_data, &quot;./data/2020_nypd_complaint_data.csv&quot;)
+
+nypd_complaint_2020_data = 
+  read_csv(&quot;./data/nypd_complaint_data.csv&quot;) %&gt;%
+  filter(year == &quot;2020&quot;, boro_nm == &quot;MANHATTAN&quot;)
+
+nypd_complaint_2021_data = 
+  read_csv(&quot;./data/nypd_complaint_data.csv&quot;) %&gt;%
+  filter(year == &quot;2021&quot;, boro_nm == &quot;MANHATTAN&quot;)
+
+nypd_complaint_two_year_data = 
+  read_csv(&quot;./data/nypd_complaint_data.csv&quot;) %&gt;%
+  filter(year %in% c(&quot;2020&quot;, &quot;2021&quot;), boro_nm == &quot;MANHATTAN&quot;)
+
+write_csv(nypd_complaint_2020_data, &quot;./data/nypd_complaint_2020_data.csv&quot;)
+
+write_csv(nypd_complaint_2021_data, &quot;./data/nypd_complaint_2021_data.csv&quot;)
+
+write_csv(nypd_complaint_two_year_data, &quot;./data/nypd_complaint_two_year_data.csv&quot;)</code></pre>
+<p><em>Since the original data was too large to be uploaded online, we
+only kept it in our local repository.</em> After the initial cleaning of
+data, we made the following changes:</p>
+<ul>
+<li>clean all the variables’ name to be tidy enough to read,
+<strong>drop those complaint records without exact ending date or time
+of occurrence</strong></li>
+<li>separate the <strong>exact date of occurrence for the reported
+event</strong> into <strong>month, day, year</strong> for further
+analysis</li>
+<li>keep only complaints occurred and recorded in year
+<strong>2020</strong> and <strong>2021</strong> (i.e., closely related
+with COVID-19 pandemic)</li>
+<li>choose the borough of <strong>Manhattan</strong> as our study of
+interest (i.e., strict the pattern to where we live)</li>
+<li>build new data frames from the resulted data and name as
+<strong>nypd_complaint_2020_data</strong>,
+<strong>nypd_complaint_2021_data</strong>,
+<strong>nypd_complaint_two_year_data</strong> for further analysis</li>
+</ul>
+<pre class="r"><code>nypd_complaint_2020_data = 
+  read_csv(&quot;./data/nypd_complaint_2020_data.csv&quot;)</code></pre>
+<pre><code>## Rows: 88484 Columns: 37
+## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr  (21): cmplnt_to_dt, rpt_dt, ofns_desc, pd_desc, crm_atpt_cptd_cd, law_c...
+## dbl  (14): cmplnt_num, month, day, year, addr_pct_cd, ky_cd, pd_cd, jurisdic...
+## time  (2): cmplnt_fr_tm, cmplnt_to_tm
+## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<pre class="r"><code>nypd_complaint_2021_data = 
+  read_csv(&quot;./data/nypd_complaint_2021_data.csv&quot;)</code></pre>
+<pre><code>## Rows: 101990 Columns: 37
+## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr  (21): cmplnt_to_dt, rpt_dt, ofns_desc, pd_desc, crm_atpt_cptd_cd, law_c...
+## dbl  (14): cmplnt_num, month, day, year, addr_pct_cd, ky_cd, pd_cd, jurisdic...
+## time  (2): cmplnt_fr_tm, cmplnt_to_tm
+## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<pre class="r"><code>nypd_complaint_two_year_data = 
+  read_csv(&quot;./data/nypd_complaint_two_year_data.csv&quot;)</code></pre>
+<pre><code>## Rows: 190474 Columns: 37
+## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr  (21): cmplnt_to_dt, rpt_dt, ofns_desc, pd_desc, crm_atpt_cptd_cd, law_c...
+## dbl  (14): cmplnt_num, month, day, year, addr_pct_cd, ky_cd, pd_cd, jurisdic...
+## time  (2): cmplnt_fr_tm, cmplnt_to_tm
+## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<p>After we obtained the three data sets above,
+<strong>nypd_complaint_2020_data</strong> had 88,484 observations of
+complaint data and <strong>nypd_complaint_2021_data</strong> had 101,990
+observations of complaint data.
+<strong>nypd_complaint_two_year_data</strong> was the combination of
+data from both 2020 and 2021, which had 190,474 observations. Here were
+some of the important variables within all of the three data sets:</p>
+<ul>
+<li><code>cmplnt_num</code>: Randomly generated persistent ID for each
+complaint</li>
+<li><code>month</code>: Exact month of occurrence for the reported
+event</li>
+<li><code>day</code>: Exact day of occurrence for the reported
+event</li>
+<li><code>year</code>: Exact year of occurrence for the reported
+event</li>
+<li><code>addr_pct_cd</code>: The precinct in which the incident
+occurred</li>
+<li><code>ky_cd</code>: Three digit offense classification code</li>
+<li><code>ofns_desc</code>: Description of offense corresponding with
+key code</li>
+<li><code>BORO_NM</code>: The name of the borough in which the incident
+occurred</li>
+<li><code>susp_age_group</code>: Suspect’s Age Group</li>
+<li><code>susp_race</code>: Suspect’s Race Description</li>
+<li><code>susp_sex</code>: Suspect’s Sex Description</li>
+<li><code>latitude</code>: Midblock Latitude coordinate for Global
+Coordinate System, WGS 1984, decimal degrees (EPSG 4326)</li>
+<li><code>longitude</code>: Midblock Longitude coordinate for Global
+Coordinate System, WGS 1984, decimal degrees (EPSG 4326)</li>
+<li><code>vic_age_group</code>: Victim’s Age Group</li>
+<li><code>vic_race</code>: Victim’s Race Description</li>
+<li><code>vic_sex</code>: Victim’s Sex Description</li>
+</ul>
 </div>
 
 

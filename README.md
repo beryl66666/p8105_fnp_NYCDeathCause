@@ -1,3 +1,3 @@
-# p8105_fnp_NYCDeathCause
+# p8105_fnp_NYPDComplaint
 
-This is a project of analyses on leading causes of death in the New York City.
+This is a project of analyses on NYPD Complaint Data in Mahanttan from 2020 to 2021.
