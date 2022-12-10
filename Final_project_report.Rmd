@@ -24,6 +24,8 @@ library(tidyfst)
 library(zoo)
 library(plotly)
 library(lubridate)
+library(broom)
+library(kableExtra)
 ```
 
 # Motivation 
@@ -429,7 +431,50 @@ new_month_gif
 
 # Additional Analysis
 
-(Additional analysis: If you undertake formal statistical analyses, describe these in detail)
+In order to enhance the confidence of our "safety suggestions", we used the chi-square test to explore whether there is a relationship between the victim sex and suspect sex:
+
+* Ho: sex of victim and sex of suspect are independent
+* Ha: sex of victim and sex of suspect are not independent 
+
+As results, the p-value of chi-square test was much smaller than alpha = 0.05, we **reject H0**. We draw the conclusion that sex of victim and sex of suspect are *not independent* at 0.05 significance level, which might indicate that young male suspects and yong female victims had the higher likelihood to be correlated with each other.
+
+```{r message=FALSE, warning=FALSE}
+sex_data = read_csv("./data/nypd_complaint_two_year_data.csv") %>% 
+  select(vic_sex, susp_sex) %>% 
+  na.omit() 
+
+vF_sF = sex_data %>% 
+  filter(vic_sex == "F") %>% 
+  filter(susp_sex == "F") %>% 
+  count()
+  
+vM_sF = sex_data %>% 
+  filter(vic_sex == "M") %>% 
+  filter(susp_sex == "F") %>% 
+  count()
+  
+vF_sM = sex_data %>% 
+  filter(vic_sex == "F") %>% 
+  filter(susp_sex == "M") %>% 
+  count()
+  
+vM_sM = sex_data %>% 
+  filter(vic_sex == "M") %>% 
+  filter(susp_sex == "M") %>% 
+  count()
+
+sex = matrix(c(9850,6199,29030, 26307), ncol = 2, byrow = T) 
+colnames(sex) = c("Female","Male")
+rownames(sex) = c("Female","Male")
+sex %>% 
+  kbl(caption = "Horizontal: Victim, Vertical: Suspect", ) %>% 
+  kable_classic(full_width = F, html_font = "Cambria")
+
+test_sex = matrix(c(9850,6199,29030, 26307), ncol = 2, byrow = T) 
+
+chisq.test(test_sex)
+```
+
 
 
 # Discussion
