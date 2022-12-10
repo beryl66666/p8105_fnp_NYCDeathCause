@@ -9,11 +9,9 @@
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
-<meta name="author" content="Binyue Hu" />
 
-<meta name="date" content="2022-12-04" />
 
-<title>Comparing Patterns 2020 vs 2021</title>
+<title>Compare 2020 vs 2021</title>
 
 <script src="site_libs/header-attrs-2.16/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
@@ -32,6 +30,7 @@
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 
@@ -225,6 +224,9 @@ $(document).ready(function () {
 </style>
 
 <!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
 
 
 
@@ -258,9 +260,6 @@ $(document).ready(function () {
   <a href="proposal.html">About Us</a>
 </li>
 <li>
-  <a href="report.html">Final Project Report</a>
-</li>
-<li>
   <a href="descriptive_statistics.html">Descriptive Statistics</a>
 </li>
 <li>
@@ -269,6 +268,9 @@ $(document).ready(function () {
 <li>
   <a href="shiny_dashboard.html">Shiny App</a>
 </li>
+<li>
+  <a href="report.html">Final Project Report</a>
+</li>
       </ul>
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
@@ -276,23 +278,28 @@ $(document).ready(function () {
 
 <div id="header">
 
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
 
 
-<h1 class="title toc-ignore">Comparing Patterns 2020 vs 2021</h1>
-<h4 class="author">Binyue Hu</h4>
-<h4 class="date">2022-12-04</h4>
+
+<h1 class="title toc-ignore">Compare 2020 vs 2021</h1>
 
 </div>
 
 
 <div id="number-of-complaints-in-manhattan-2020-vs-2021"
-class="section level4">
-<h4>Number of Complaints in Manhattan 2020 vs 2021</h4>
+class="section level2">
+<h2>Number of Complaints in Manhattan 2020 vs 2021</h2>
 <pre class="r"><code>complaint_plot = read_csv(&quot;./data/nypd_complaint_two_year_data.csv&quot;) %&gt;% 
-  mutate(year = as.integer(year)) %&gt;% 
-  group_by(month, year) %&gt;% 
+  group_by(month,year) %&gt;% 
   summarize(obs = n()) %&gt;% 
-  ggplot(aes(x = month, y = obs, group = year, color = year)) + 
+  ggplot(aes(x = month, y = obs, group = year, color = as.factor(year))) + 
   geom_point() +
   geom_line() +
   labs(x = &quot;Month&quot;, y = &quot;Number of Complaints in Manhattan&quot;, col = &quot;Year&quot;) +
@@ -301,66 +308,55 @@ class="section level4">
   scale_x_continuous(
     breaks = c(1,2,3,4,5,6,7,8,9,10,11,12), 
     labels = c(&quot;Jan&quot;,&quot;Feb&quot;,&quot;Mar&quot;,&quot;Apr&quot;,&quot;May&quot;,&quot;Jun&quot;,&quot;Jul&quot;,&quot;Aug&quot;,&quot;Sep&quot;,&quot;Oct&quot;,&quot;Nov&quot;,&quot;Dec&quot;)) +
-  viridis::scale_color_viridis(discrete = F)</code></pre>
-<pre><code>## Rows: 190474 Columns: 37
-## ── Column specification ────────────────────────────────────────────────────────
-## Delimiter: &quot;,&quot;
-## chr  (21): cmplnt_to_dt, rpt_dt, ofns_desc, pd_desc, crm_atpt_cptd_cd, law_c...
-## dbl  (14): cmplnt_num, month, day, year, addr_pct_cd, ky_cd, pd_cd, jurisdic...
-## time  (2): cmplnt_fr_tm, cmplnt_to_tm
-## 
-## ℹ Use `spec()` to retrieve the full column specification for this data.
-## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
-## `summarise()` has grouped output by &#39;month&#39;. You can override using the `.groups` argument.</code></pre>
-<pre class="r"><code>complaint_plot </code></pre>
+  viridis::scale_color_viridis(discrete = T)
+
+complaint_plot </code></pre>
 <p><img src="Comparing-Patterns-2020-vs-2021_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
 <p>From the plot, we can see that the number of complaints in Manhattan
 in most months of 2021 is more than in 2020, except for January and
-February. That’s probably due to the affect of COVID-19 home isolation
-policy. When COVID-19 broke out at the beginning of 2020, everything in
-the society was locked down and people had to stay at home. Crime
-decreased as the number of people in social activities declined, thus
-the number of complaints in 2020 is less than that in 2021.</p>
+February. That’s probably due to <strong>the affect of COVID-19 home
+isolation policy</strong>. When COVID-19 broke out at the beginning of
+2020, everything in the society was locked down and people had to stay
+at home. Crime decreased as the number of people in social activities
+declined, thus the number of complaints in 2020 is less than that in
+2021.</p>
 </div>
 <div id="number-of-complaints-by-types-2020-vs-2021"
-class="section level4">
-<h4>Number of Complaints by Types 2020 vs 2021</h4>
-<p>NYPD had classified main complaints types into: PETIT LARCENY,
+class="section level2">
+<h2>Number of Complaints by Types 2020 vs 2021</h2>
+<p>NYPD had classified main complaints types into: <em>PETIT LARCENY,
 HARRASSMENT, GRAND LARCENY, ASSAULT 3 &amp; RELATED OFFENSES, CRIMINAL
 MISCHIEF &amp; RELATED OF, FELONY ASSAULT, BURGLARY, ROBBERY, OFF. AGNST
 PUB ORD SENSBLTY &amp;, DANGEROUS DRUGS, MISCELLANEOUS PENAL LAW,
-OFFENSES AGAINST PUBLIC ADMINI, GRAND LARCENY OF MOTOR VEHICLE, VEHICLE
-AND TRAFFIC LAWS, SEX CRIMES. We consider the number of complaints over
-1000 as an effective type of complaint in our comparations.</p>
+OFFENSES AGAINST PUBLIC ADMINI, GRAND LARCENY OF MOTOR VEHICLE</em>. We
+consider the number of complaints over <strong>1000</strong> in both
+years as an effective type of complaint in our comparation.</p>
 <pre class="r"><code>complaint_type_plot = read_csv(&quot;./data/nypd_complaint_two_year_data.csv&quot;)  %&gt;% 
   group_by(ofns_desc, year) %&gt;% 
   summarise(obs = n()) %&gt;% 
   filter(obs &gt; 1000) %&gt;% 
+  filter(ofns_desc != &quot;SEX CRIMES&quot;) %&gt;% 
+  filter(ofns_desc != &quot;VEHICLE AND TRAFFIC LAWS&quot;) %&gt;% 
   arrange(desc(obs)) %&gt;% 
-  ggplot(aes(x = ofns_desc, y = obs, fill = year)) +
+  ggplot(aes(x = ofns_desc, y = obs, fill = as.factor(year))) +
   geom_bar(stat = &quot;identity&quot;,position=position_dodge()) +
   geom_text(aes(label=obs), vjust=1.6, color=&quot;white&quot;,
-            position = position_dodge(0.9), size=2.6) +
+            position = position_dodge(0.9), size=1.5) +
   xlab(&quot;Types pf Complaints&quot;) + ylab(&quot;Number of Complaints&quot;) + 
   ggtitle(&quot;Number of Complaints by Types 2020 vs 2021&quot;) + 
-  theme(axis.text.x = element_text(angle = 60, vjust = 1, hjust = 1, size = 5)) </code></pre>
-<pre><code>## Rows: 190474 Columns: 37
-## ── Column specification ────────────────────────────────────────────────────────
-## Delimiter: &quot;,&quot;
-## chr  (21): cmplnt_to_dt, rpt_dt, ofns_desc, pd_desc, crm_atpt_cptd_cd, law_c...
-## dbl  (14): cmplnt_num, month, day, year, addr_pct_cd, ky_cd, pd_cd, jurisdic...
-## time  (2): cmplnt_fr_tm, cmplnt_to_tm
-## 
-## ℹ Use `spec()` to retrieve the full column specification for this data.
-## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
-## `summarise()` has grouped output by &#39;ofns_desc&#39;. You can override using the `.groups` argument.</code></pre>
-<pre class="r"><code>complaint_type_plot</code></pre>
+  theme(axis.text.x = element_text(angle = 60, vjust = 1, hjust = 1, size = 5)) +
+  scale_fill_discrete(name = &quot;Year&quot;)+
+  viridis::scale_color_viridis(discrete = T)
+
+complaint_type_plot</code></pre>
 <p><img src="Comparing-Patterns-2020-vs-2021_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
 <p>From the plot, we can clearly see that the number of complaints in
-2021 in almost all types is larger than it in 2020.</p>
+2021 for almost all types is larger than it in 2020.<br />
+To better compare the proportion of different types of complaints in
+2020 and 2021, we continuously make pie plots below.</p>
 </div>
-<div id="types-of-complaints-2020-vs-2021" class="section level4">
-<h4>Types of Complaints 2020 vs 2021</h4>
+<div id="types-of-complaints-2020-vs-2021" class="section level2">
+<h2>Types of Complaints 2020 vs 2021</h2>
 <pre class="r"><code>type_pie_2020 = read_csv(&quot;./data/nypd_complaint_2020_data.csv&quot;)  %&gt;% 
   group_by(ofns_desc) %&gt;% 
   summarise(obs = n()) %&gt;% 
@@ -371,101 +367,67 @@ AND TRAFFIC LAWS, SEX CRIMES. We consider the number of complaints over
   geom_bar(stat = &quot;identity&quot;,width=1, color = &quot;white&quot;)  +
   coord_polar(&quot;y&quot;, start=0) +
   geom_text(aes(label = paste0(prop, &quot;%&quot;)), position = position_stack(vjust=0.5), size = 2) +
-  labs(x = NULL, y = NULL, title = &quot;2020&quot;, fill = &quot;Type&quot;)  +  
-  theme(legend.title = element_text(size=3),legend.key.size = unit(0.5, &#39;cm&#39;))+
+  labs(x = NULL, y = NULL, title = &quot;2020&quot;)  +  
+  theme(legend.title = element_text(size=10),legend.key.size = unit(0.5, &#39;cm&#39;))+
   theme(plot.margin = margin(0.1,0.1,0.1,0.1, &quot;cm&quot;))+
-  viridis::scale_color_viridis(discrete = F)</code></pre>
-<pre><code>## Rows: 88484 Columns: 37
-## ── Column specification ────────────────────────────────────────────────────────
-## Delimiter: &quot;,&quot;
-## chr  (21): cmplnt_to_dt, rpt_dt, ofns_desc, pd_desc, crm_atpt_cptd_cd, law_c...
-## dbl  (14): cmplnt_num, month, day, year, addr_pct_cd, ky_cd, pd_cd, jurisdic...
-## time  (2): cmplnt_fr_tm, cmplnt_to_tm
-## 
-## ℹ Use `spec()` to retrieve the full column specification for this data.
-## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
-<pre class="r"><code>type_pie_2021 = read_csv(&quot;./data/nypd_complaint_2021_data.csv&quot;)  %&gt;% 
+  scale_fill_discrete(name = &quot;Complaint Type&quot;) +
+  viridis::scale_color_viridis(discrete = F)
+
+type_pie_2021 = read_csv(&quot;./data/nypd_complaint_2021_data.csv&quot;)  %&gt;% 
   group_by(ofns_desc) %&gt;% 
   summarise(obs = n()) %&gt;% 
   filter(obs &gt; 1000) %&gt;% 
   arrange(desc(obs)) %&gt;% 
+  filter(ofns_desc != &quot;SEX CRIMES&quot;) %&gt;% 
+  filter(ofns_desc != &quot;VEHICLE AND TRAFFIC LAWS&quot;) %&gt;% 
   mutate(prop = round(obs/sum(obs)*100,2)) %&gt;% 
   ggplot(aes(x = &quot;&quot;, y = prop, fill = ofns_desc)) +
   geom_bar(stat = &quot;identity&quot;,width=1, color = &quot;white&quot;) +
-  theme(legend.title = element_text(size=3),legend.key.size = unit(0.5, &#39;cm&#39;))+
+  theme(legend.title = element_text(size=10),legend.key.size = unit(0.5, &#39;cm&#39;))+
   theme(plot.margin = margin(0.1,0.1,0.1,0.1, &quot;cm&quot;))+
   coord_polar(&quot;y&quot;, start=0) +
   geom_text(aes(label = paste0(prop, &quot;%&quot;)), position = position_stack(vjust=0.5), size = 2) +
-  labs(x = NULL, y = NULL, title = &quot;2021&quot;, fill = &quot;Type&quot; ) +
-  viridis::scale_color_viridis(discrete = F)</code></pre>
-<pre><code>## Rows: 101990 Columns: 37
-## ── Column specification ────────────────────────────────────────────────────────
-## Delimiter: &quot;,&quot;
-## chr  (21): cmplnt_to_dt, rpt_dt, ofns_desc, pd_desc, crm_atpt_cptd_cd, law_c...
-## dbl  (14): cmplnt_num, month, day, year, addr_pct_cd, ky_cd, pd_cd, jurisdic...
-## time  (2): cmplnt_fr_tm, cmplnt_to_tm
-## 
-## ℹ Use `spec()` to retrieve the full column specification for this data.
-## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
-<pre class="r"><code>par(mfrow = c(2,1))
+  labs(x = NULL, y = NULL, title = &quot;2021&quot;, fill = &quot;Complaint Type&quot; ) +
+  viridis::scale_color_viridis(discrete = F)
+
+par(mfrow = c(2,1))
 type_pie_2020</code></pre>
 <p><img src="Comparing-Patterns-2020-vs-2021_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
 <pre class="r"><code>type_pie_2021</code></pre>
 <p><img src="Comparing-Patterns-2020-vs-2021_files/figure-html/unnamed-chunk-4-2.png" width="672" /></p>
+<p>From the pie plots above, we can see the proportion of each type of
+complaint didn’t change a lot from 2020 to 2021. <strong>Petit larceny,
+harrassment and grand larceny</strong> are three main types of
+complaints in both two years.</p>
 </div>
 <div id="complaint-locations-in-manhattan-2020-vs-2021"
-class="section level4">
-<h4>Complaint Locations in Manhattan 2020 vs 2021</h4>
+class="section level2">
+<h2>Complaint Locations in Manhattan 2020 vs 2021</h2>
 <p>The following plot is a side by side comparison of monthly complaints
 in Manhattan in 2020 and 2021. Since there were only one complaint in
-too many different locations, this data is not analyzable. We took 10
-compalints and above as the effective number of complaints and got the
-following figure.</p>
+too many different locations, this data is not analyzable. We took
+<strong>10</strong> complaints and above as the effective number of
+complaints and got the following figure.</p>
 <pre class="r"><code>complaint_data = read_csv(&quot;./data/nypd_complaint_two_year_data.csv&quot;) %&gt;% 
   mutate(month = as.integer(month)) %&gt;% 
-  as_tibble(map_data(&quot;state&quot;)) </code></pre>
-<pre><code>## Rows: 190474 Columns: 37
-## ── Column specification ────────────────────────────────────────────────────────
-## Delimiter: &quot;,&quot;
-## chr  (21): cmplnt_to_dt, rpt_dt, ofns_desc, pd_desc, crm_atpt_cptd_cd, law_c...
-## dbl  (14): cmplnt_num, month, day, year, addr_pct_cd, ky_cd, pd_cd, jurisdic...
-## time  (2): cmplnt_fr_tm, cmplnt_to_tm
-## 
-## ℹ Use `spec()` to retrieve the full column specification for this data.
-## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
-<pre class="r"><code>compalint_month_2020 = read_csv(&quot;./data/nypd_complaint_2020_data.csv&quot;) %&gt;% 
+  as_tibble(map_data(&quot;state&quot;)) 
+
+
+complaint_month_2020 = read_csv(&quot;./data/nypd_complaint_2020_data.csv&quot;) %&gt;% 
   mutate(month = as.integer(month)) %&gt;% 
   group_by(month, latitude, longitude) %&gt;% 
   summarise(obs = n()) %&gt;% 
-  filter(obs &gt;= 10)</code></pre>
-<pre><code>## Rows: 88484 Columns: 37
-## ── Column specification ────────────────────────────────────────────────────────
-## Delimiter: &quot;,&quot;
-## chr  (21): cmplnt_to_dt, rpt_dt, ofns_desc, pd_desc, crm_atpt_cptd_cd, law_c...
-## dbl  (14): cmplnt_num, month, day, year, addr_pct_cd, ky_cd, pd_cd, jurisdic...
-## time  (2): cmplnt_fr_tm, cmplnt_to_tm
-## 
-## ℹ Use `spec()` to retrieve the full column specification for this data.
-## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
-## `summarise()` has grouped output by &#39;month&#39;, &#39;latitude&#39;. You can override using the `.groups` argument.</code></pre>
-<pre class="r"><code>compalint_month_2021 = read_csv(&quot;./data/nypd_complaint_2021_data.csv&quot;) %&gt;% 
+  filter(obs &gt;= 10)
+
+complaint_month_2021 = read_csv(&quot;./data/nypd_complaint_2021_data.csv&quot;) %&gt;% 
   mutate(month = as.integer(month)) %&gt;% 
   group_by(month, latitude, longitude) %&gt;% 
   summarise(obs = n()) %&gt;% 
-  filter(obs &gt;= 10)</code></pre>
-<pre><code>## Rows: 101990 Columns: 37
-## ── Column specification ────────────────────────────────────────────────────────
-## Delimiter: &quot;,&quot;
-## chr  (21): cmplnt_to_dt, rpt_dt, ofns_desc, pd_desc, crm_atpt_cptd_cd, law_c...
-## dbl  (14): cmplnt_num, month, day, year, addr_pct_cd, ky_cd, pd_cd, jurisdic...
-## time  (2): cmplnt_fr_tm, cmplnt_to_tm
-## 
-## ℹ Use `spec()` to retrieve the full column specification for this data.
-## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
-## `summarise()` has grouped output by &#39;month&#39;, &#39;latitude&#39;. You can override using the `.groups` argument.</code></pre>
-<pre class="r"><code>map_2020 = 
+  filter(obs &gt;= 10)
+  
+map_2020 = 
   ggplot() +
-  geom_point(data = compalint_month_2020, aes(x = longitude, y = latitude, size = 0.01, color = obs), alpha = 0.5) +
+  geom_point(data = complaint_month_2020, aes(x = longitude, y = latitude, size = 0.01, color = obs), alpha = 0.5) +
   scale_size(range = c(1,8)) +
   transition_time(month) +
     labs(
@@ -481,12 +443,12 @@ following figure.</p>
 
 map_2021 = 
   ggplot() +
-  geom_point(data = compalint_month_2021, aes(x = longitude, y = latitude, size = 0.01, color = obs), alpha = 0.5) +
+  geom_point(data = complaint_month_2021, aes(x = longitude, y = latitude, size = 0.01, color = obs), alpha = 0.5) +
   scale_size(range = c(1,8)) +
   transition_time(month) +
     labs(
     title = &quot;2021 Month: {frame_time}&quot;, 
-    color = &quot;Compalints&quot;,
+    color = &quot;complaints&quot;,
     x = &quot;Longitude&quot;,
     y = &quot;Latitude&quot;) +
   theme(legend.position = &quot;none&quot;) +
@@ -510,13 +472,13 @@ new_month_gif</code></pre>
 <p><img
 src="Comparing-Patterns-2020-vs-2021_files/figure-html/unnamed-chunk-5-1.gif" /><!-- --></p>
 <p>The scatterplots show how complaints were distributed in Manhattan
-comparing 2020 with 2021. Overall, the complaint density of 2021 is
-larger than it in the 2020, especially in April, May and June. The
-lighter color represents more complaints happened in the same location,
-and we can find that most complaints repeated in the upper city. From
-the dynamic plots, we found that there is an area in the middle of the
-image that is almost always blank, and that’s where the central park
-is.</p>
+comparing 2020 with 2021. Overall, the <strong>complaint density of 2021
+is larger</strong> than it in the 2020, especially in April, May and
+June. The lighter color represents more complaints happened in the same
+location, and we can find that most complaints repeated <strong>in the
+upper city</strong>. From the dynamic plots, we found that there is an
+area in the middle of the image that is almost always blank, and that’s
+where the central park is.</p>
 </div>
 
 
@@ -552,6 +514,11 @@ $(document).ready(function () {
 </script>
 
 <!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
 
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
