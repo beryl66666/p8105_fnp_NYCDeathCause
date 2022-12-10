@@ -6,7 +6,7 @@ navbar:
     - text: "About Us"
       href: proposal.html
     - text: "Descriptive Statistics"
-      href: descriptive_statistics.html
+      href: stats.html
     - text: "Patterns"
       href: patterns.html  
     - text: "Shiny App"

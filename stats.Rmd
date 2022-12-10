@@ -1,5 +1,5 @@
 ---
-title: "About Our Project"
+title: "Descriptive Statistics"
 always_allow_html: true
 output: 
   html_document:
@@ -19,8 +19,7 @@ library(zoo)
 library(plotly)
 library(lubridate)
 ```
-
-```{r}
+```{r echo=TRUE, message=FALSE, warning=FALSE}
 nypd_complaint_2020_data = 
   read_csv("./data/nypd_complaint_2020_data.csv")
 
@@ -31,9 +30,7 @@ nypd_complaint_two_year_data =
   read_csv("./data/nypd_complaint_two_year_data.csv")
 ```
 
-
-
-```{r}
+```{r echo=TRUE, message=FALSE, warning=FALSE}
 complaint_df = nypd_complaint_two_year_data %>% 
   janitor::clean_names() %>% 
   filter(
@@ -67,14 +64,9 @@ complaint_1 = complaint_1 %>%
     )
 complaint_1 = complaint_1<-cbind(complaint_1[10],complaint_1[,1:9])
 complaint_1 = arrange_dt(complaint_1,dt)
-
-complaint_1
 ```
-
-
-
 ## Compare the Number of Complaint in 2020 and 2021
-```{r}
+```{r echo=TRUE, message=FALSE, warning=FALSE}
 complaint_1 %>% 
   group_by(month_day, year) %>% 
   summarize(obs = n()) %>% 
@@ -84,13 +76,11 @@ complaint_1 %>%
   labs(title = "Number of Complaint in 2020 and 2021", x = "Complaint Date", y = "Number of Complaint", col = "Year") + 
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1, color = rep(c("black", rep("transparent", each = 15))))) +
   theme(plot.title = element_text(hjust = 0.5))
-  viridis::scale_color_viridis()
 ```
 According to the information in the figure, we can know that the average daily complaint volume in Manhattan in 2021 has exceeded that in 2020 since about February, and continued to the end of 2021. Moreover, the highest monthly complaint volume peaked in 2021, for example, from May to October in 2021. So we can guess that in 2020, people may be unable to go out due to the pandemic, leading to a decrease in the number of complaints.
  
-
-###Number of complaint(suspects) in 2020 and 2021 by Age Group and Gender:
-```{r}
+## Number of complaint(suspects) in 2020 and 2021 by Age Group and Gender:
+```{r echo=TRUE, message=FALSE, warning=FALSE}
 complaint_1 %>% 
   group_by(susp_age_group, susp_sex) %>% 
   summarize(obs = n()) %>% 
@@ -99,13 +89,13 @@ complaint_1 %>%
   geom_line() + 
   geom_smooth() +
   labs(title = "Number of complaint(suspects) in 2020 and 2021 by Age Group and Gender", x = "Age group", y = "Number of Complaint", col = "Gender") 
-  viridis::scale_color_viridis()
+
 ```
 As we can see from the graph, the number of suspects who were complained about were much larger than the number of females and unknown gender. A large number of the complained suspects are in the 25-44 age group, so we should be careful of 25-44 year old males in case of danger.
 
 
 
-```{r}
+```{r echo=TRUE, message=FALSE, warning=FALSE}
 complaint_2 = complaint_1 %>% 
   drop_na(susp_age_group, susp_sex) %>% 
   group_by(susp_age_group, susp_sex) %>% 
@@ -114,15 +104,14 @@ complaint_2 = complaint_1 %>%
   geom_bar(position = "dodge",stat = "identity",colour = "black")+
   
   labs(title = "Number of complaint(suspects) in 2020 and 2021 by Age Group and Gender", x = "Age group", y = "Number of Complaint", col = "Gender") 
-  viridis::scale_color_viridis()
 ```
 
 Through the bar chart we can clearly see that the number of suspects is more than double the number of men than women in 2020 and 2021.
 
 
 
-###Number of complaint(victims) in 2020 and 2021 by Age Group and Gender:
-```{r}
+## Number of complaint(victims) in 2020 and 2021 by Age Group and Gender:
+```{r echo=TRUE, message=FALSE, warning=FALSE}
 complaint_1 %>% 
   group_by(vic_age_group, vic_sex) %>% 
   summarize(obs = n()) %>% 
@@ -130,14 +119,14 @@ complaint_1 %>%
   geom_line() + 
   geom_smooth() +
   labs(title = "Number of complaint(victims) in 2020 and 2021 by Age Group and Gender", x = "Age group", y = "Number of Complaint", col = "Gender") 
-   viridis::scale_color_viridis()
+
 ```
 As can be seen from the graph, the number of Manhattan victims in 2020 and 2021 is much higher for female than male, and the victim group is heavily concentrated in the age group of 25-44. Therefore, women aged 25-44 years old need to pay extra attention to their personal safety in Manhattan.
 
 
 
-###Prime suspected victim site in 2020 and 2021：
-```{r}
+## Prime suspected victim site in 2020 and 2021：
+```{r echo=TRUE, message=FALSE, warning=FALSE}
 complaint_df %>% 
   group_by(prem_typ_desc) %>% 
   count(prem_typ_desc) %>% 
@@ -149,6 +138,5 @@ complaint_df %>%
   labs(title = "Prime suspected victim site in 2020 and 2021",x = "Location ", y = "Frequency") +
   theme(axis.text.x = element_text(angle = 60, hjust = 1))+
   theme(plot.title = element_text(hjust = 0.5))
- viridis::scale_color_viridis()
 ```
 Analysis of the graphs shows that the frequency of crime locations is home is the highest in 2020 and 2021, followed by street and public housing.
