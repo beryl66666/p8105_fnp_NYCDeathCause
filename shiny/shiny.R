@@ -1,4 +1,3 @@
-
 library(flexdashboard)
 library(shiny)
 library(tidyverse)
@@ -6,7 +5,7 @@ library(viridis)
 library(plotly)
 
 nypd_complaint = 
-  read_csv("./data/nypd_complaint_two_year_data.csv")
+  read_csv("./shiny/nypd_complaint_two_year_data.csv")
 
 complaint_select=nypd_complaint %>% 
   janitor::clean_names() %>% 
@@ -23,10 +22,12 @@ group_by(ofns_desc,year) %>%
 
 complaint_select
 
-fluidPage(
-  
-  titlePanel("NYPD Complaints During The Pandemic"),
-  sidebarPanel(
+ui = dashboardPage(
+  dashboardHeader(title ="NYPD Complaints During The Pandemic"),
+  dashboardSidebar(
+    sidebarMenu(
+      menuItem("Dashboard", tabName = "dashboard", icon = icon("dashboard")),
+      menuItem("Widgets", tabName = "widgets", icon = icon("th")),
     #dateRangeInput
     dateRangeInput("dates", 
                    label = h3("Date Range"),
@@ -63,6 +64,19 @@ fluidPage(
     
     hr(),
     fluidRow(column(3, verbatimTextOutput("value")))
-  )
     )
-    
+  )
+)
+
+server = function(input, output) {
+  histdata <- rnorm(500)
+  
+  output$plot1 = renderPlot({
+    data = histdata[seq_len(input$slider)]
+    hist(data)
+  })
+}
+
+output$value = renderPrint({ input$Crime_Type })
+
+shinyApp(ui, server)
