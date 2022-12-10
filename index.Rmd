@@ -28,9 +28,12 @@ This website includes the complaints patterns across NYC changed during the pand
 
 * 
 
-**For [Patterns](Comparing Patterns 2020 vs 2021.html), we have**
+**For [Patterns](patterns.html), we have**
 
-* 
+* Number of Complaints in Manhattan 2020 vs 2021
+* Number of Complaints by Types 2020 vs 2021
+* Types of Complaints 2020 vs 2021
+* Complaint Locations in Manhattan 2020 vs 2021
 
 **For [Shiny App](shiny.html), we have**
 

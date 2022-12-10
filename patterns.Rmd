@@ -3,7 +3,9 @@ title: "Compare 2020 vs 2021"
 always_allow_html: true
 output: 
   html_document:
+    toc: true
     code_folding: hide
+    toc_float: true
 ---
 
 ```{r include= FALSE}
