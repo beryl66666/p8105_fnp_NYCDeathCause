@@ -10,7 +10,7 @@ navbar:
     - text: "Patterns"
       href: patterns.html  
     - text: "Shiny App"
-      href: https://sophieenim.shinyapps.io/p8105_fnp_nypdcomplaint/
+      href: 
     - text: "Final Project Report"
       href: Final_project_report.html
 output:
