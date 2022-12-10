@@ -3,7 +3,7 @@ title: "About us"
 always_allow_html: true
 output: 
   html_document:
-    ctoc: true
+    toc: true
     code_folding: hide
     toc_float: true
 ---
