@@ -1,0 +1,23 @@
+---
+title: "Final Project Report"
+author: "Hengxuan Ma"
+date: "2022-12-09"
+output: github_document
+---
+
+```{r include= FALSE}
+```
+
+# Motivation 
+
+(Motivation: Provide an overview of the project goals and motivation)
+
+Crime rates in New York City have been recorded since at least the 1800s. The highest crime totals were recorded in the late 1980s and early 1990s as the crack epidemic surged, and then declined continuously through the 2000s. During the 1990s, the New York City Police Department (NYPD) adopted CompStat and other strategies in a major effort to reduce crime.
+
+It is the fact that all of our team members have heard crime alerts from NYPD frequently in the past year. Although we believe that New York City is one of the safest big cities in the United States according to the FBI, we have been so curious about the detailed information of historical crimes happened in the New York City, especially in the pattern where we are currently living.
+
+Since in recent years the COVID-19 has brought huge effects to people's life, We are more interested in the changes of complaint numbers each year from 2020 to 2021, especially in the Manhattan borough. In this project, we intended to explore the general information about complaint data in the past two years, and to figure out if COVID-19 influenced the rate or other attributes of crimes.
+
+Thus, Our project aims to examine NYPD complaint data from January 2020 to December 2021 to understand the impact of COVID-19 on complaints (crimes) in Manhatten. 
+
+
