@@ -338,14 +338,19 @@ div.tocify {
   <a href="proposal.html">About Us</a>
 </li>
 <li>
-  <a href="stats.html">Descriptive Statistics</a>
+  <a href="descriptive_statistics.html">Descriptive Statistics</a>
 </li>
 <li>
-  <a href="patterns.html">Patterns</a>
+  <a href="patterns.html">Comparison Patterns</a>
 </li>
-<li class="dropdown-header">Shiny App</li>
 <li>
-  <a href="Final_project_report.html">Final Project Report</a>
+  <a href="shiny_dashboard.html">Shiny App</a>
+</li>
+<li>
+  <a href="regression.html">Additional Analysis</a>
+</li>
+<li>
+  <a href="report.html">Final Project Report</a>
 </li>
       </ul>
     </div><!--/.nav-collapse -->
@@ -885,19 +890,21 @@ src="Final_project_report_files/figure-html/unnamed-chunk-11-1.gif" /><!-- --></
 </div>
 <div id="additional-analysis" class="section level1">
 <h1>Additional Analysis</h1>
+<p><strong>Test Independence between Victim Sex and Suspect
+Sex：</strong></p>
 <p>In order to enhance the confidence of our “safety suggestions”, we
 used the chi-square test to explore whether there is a relationship
 between the victim sex and suspect sex:</p>
+<p>Hypotheses:</p>
 <ul>
 <li>Ho: sex of victim and sex of suspect are independent</li>
 <li>Ha: sex of victim and sex of suspect are not independent</li>
 </ul>
-<p>As results, the p-value of chi-square test was much smaller than
+<p>As the results, the p-value of chi-square test was much smaller than
 alpha = 0.05, we <strong>reject H0</strong>. We draw the conclusion that
 sex of victim and sex of suspect are <em>not independent</em> at 0.05
-significance level, which might indicate that young male suspects and
-yong female victims had the higher likelihood to be correlated with each
-other.</p>
+significance level, which might indicate that male suspects and female
+victims had the higher likelihood to be correlated with each other.</p>
 <pre class="r"><code>sex_data = read_csv(&quot;./data/nypd_complaint_two_year_data.csv&quot;) %&gt;% 
   select(vic_sex, susp_sex) %&gt;% 
   na.omit() 
@@ -977,6 +984,259 @@ chisq.test(test_sex)</code></pre>
 ## 
 ## data:  test_sex
 ## X-squared = 398.25, df = 1, p-value &lt; 2.2e-16</code></pre>
+<p><strong>Test Independence between Victim Race and Suspect
+Race：</strong></p>
+<p>We also used the chi-square test to explore whether there is a
+relationship between the victim race and suspect race:</p>
+<p>Hypotheses:</p>
+<ul>
+<li>Ho: race of victim and race of suspect are independent</li>
+<li>Ha: race of victim and race of suspect are not independent</li>
+</ul>
+<p>As the results, the p-value of chi-square test was much smaller than
+alpha = 0.05, we <strong>reject H0</strong>. We draw the conclusion that
+race of victim and race of suspect are <em>not independent</em> at 0.05
+significance level, which might indicate that young suspects and young
+victims had the higher likelihood to be correlated with each other.</p>
+<pre class="r"><code>race_data = read_csv(&quot;./data/nypd_complaint_two_year_data.csv&quot;) %&gt;% 
+  group_by(vic_race, susp_race) %&gt;% 
+  summarise(obs = n()) %&gt;% 
+  na.omit() %&gt;% 
+  pivot_wider(names_from = vic_race, values_from = obs)
+
+table_race = race_data %&gt;% 
+  as.matrix() %&gt;% 
+  kbl(caption = &quot;Victim Race Corresponding to Suspect Race&quot;, align = &quot;c&quot;) %&gt;% 
+  kable_classic(full_width = F, html_font = &quot;Cambria&quot;)
+
+table_race</code></pre>
+<table class=" lightable-classic" style="font-family: Cambria; width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>
+Victim Race Corresponding to Suspect Race
+</caption>
+<thead>
+<tr>
+<th style="text-align:center;">
+susp_race
+</th>
+<th style="text-align:center;">
+AMERICAN INDIAN/ALASKAN NATIVE
+</th>
+<th style="text-align:center;">
+ASIAN / PACIFIC ISLANDER
+</th>
+<th style="text-align:center;">
+BLACK
+</th>
+<th style="text-align:center;">
+BLACK HISPANIC
+</th>
+<th style="text-align:center;">
+UNKNOWN
+</th>
+<th style="text-align:center;">
+WHITE
+</th>
+<th style="text-align:center;">
+WHITE HISPANIC
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center;">
+AMERICAN INDIAN/ALASKAN NATIVE
+</td>
+<td style="text-align:center;">
+28
+</td>
+<td style="text-align:center;">
+28
+</td>
+<td style="text-align:center;">
+38
+</td>
+<td style="text-align:center;">
+9
+</td>
+<td style="text-align:center;">
+76
+</td>
+<td style="text-align:center;">
+46
+</td>
+<td style="text-align:center;">
+25
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+ASIAN / PACIFIC ISLANDER
+</td>
+<td style="text-align:center;">
+8
+</td>
+<td style="text-align:center;">
+961
+</td>
+<td style="text-align:center;">
+263
+</td>
+<td style="text-align:center;">
+54
+</td>
+<td style="text-align:center;">
+834
+</td>
+<td style="text-align:center;">
+562
+</td>
+<td style="text-align:center;">
+233
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+BLACK
+</td>
+<td style="text-align:center;">
+179
+</td>
+<td style="text-align:center;">
+2699
+</td>
+<td style="text-align:center;">
+17206
+</td>
+<td style="text-align:center;">
+1591
+</td>
+<td style="text-align:center;">
+25616
+</td>
+<td style="text-align:center;">
+6588
+</td>
+<td style="text-align:center;">
+5838
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+BLACK HISPANIC
+</td>
+<td style="text-align:center;">
+21
+</td>
+<td style="text-align:center;">
+296
+</td>
+<td style="text-align:center;">
+987
+</td>
+<td style="text-align:center;">
+1486
+</td>
+<td style="text-align:center;">
+3287
+</td>
+<td style="text-align:center;">
+859
+</td>
+<td style="text-align:center;">
+1788
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+UNKNOWN
+</td>
+<td style="text-align:center;">
+218
+</td>
+<td style="text-align:center;">
+4029
+</td>
+<td style="text-align:center;">
+9702
+</td>
+<td style="text-align:center;">
+2375
+</td>
+<td style="text-align:center;">
+14251
+</td>
+<td style="text-align:center;">
+13753
+</td>
+<td style="text-align:center;">
+7897
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+WHITE
+</td>
+<td style="text-align:center;">
+49
+</td>
+<td style="text-align:center;">
+932
+</td>
+<td style="text-align:center;">
+1283
+</td>
+<td style="text-align:center;">
+241
+</td>
+<td style="text-align:center;">
+8066
+</td>
+<td style="text-align:center;">
+4896
+</td>
+<td style="text-align:center;">
+1254
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+WHITE HISPANIC
+</td>
+<td style="text-align:center;">
+45
+</td>
+<td style="text-align:center;">
+797
+</td>
+<td style="text-align:center;">
+2419
+</td>
+<td style="text-align:center;">
+1050
+</td>
+<td style="text-align:center;">
+9413
+</td>
+<td style="text-align:center;">
+2371
+</td>
+<td style="text-align:center;">
+7155
+</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>matrix_race =  as.matrix(race_data) %&gt;% 
+  as.integer() %&gt;% 
+  na.omit()
+
+chisq.test(matrix_race)</code></pre>
+<pre><code>## 
+##  Chi-squared test for given probabilities
+## 
+## data:  matrix_race
+## X-squared = 397531, df = 48, p-value &lt; 2.2e-16</code></pre>
 </div>
 <div id="discussion" class="section level1">
 <h1>Discussion</h1>
@@ -992,7 +1252,7 @@ Manhattan after we saw the general distribution of all complaints in
 complaints in 2020 and 2021 helped us confirmed our assumption. To
 correlate it with the reality, we considered that one of the reasonable
 explanations may be the <strong>the effect of COVID-19 home isolation
-policy</strong>, which caused a declined number of people in social
+policy</strong>, which declined the number of people in social
 activities and resulted in the decreasing of number of complaints in
 2020 compared to 2021. The result from premise distributions made us to
 be more convincing. Since a higher frequency of crimes occurred at home

@@ -26,6 +26,8 @@ library(plotly)
 library(lubridate)
 library(broom)
 library(kableExtra)
+library(gplots)
+library(corrplot)
 ```
 
 # Motivation 
@@ -431,12 +433,16 @@ new_month_gif
 
 # Additional Analysis
 
+**Test Independence between Victim Sex and Suspect Sex：**
+
 In order to enhance the confidence of our "safety suggestions", we used the chi-square test to explore whether there is a relationship between the victim sex and suspect sex:
 
-* Ho: sex of victim and sex of suspect are independent
+Hypotheses:
+
+*   Ho: sex of victim and sex of suspect are independent
 * Ha: sex of victim and sex of suspect are not independent 
 
-As results, the p-value of chi-square test was much smaller than alpha = 0.05, we **reject H0**. We draw the conclusion that sex of victim and sex of suspect are *not independent* at 0.05 significance level, which might indicate that young male suspects and yong female victims had the higher likelihood to be correlated with each other.
+As the results, the p-value of chi-square test was much smaller than alpha = 0.05, we **reject H0**. We draw the conclusion that sex of victim and sex of suspect are *not independent* at 0.05 significance level, which might indicate that male suspects and female victims had the higher likelihood to be correlated with each other.
 
 ```{r message=FALSE, warning=FALSE}
 sex_data = read_csv("./data/nypd_complaint_two_year_data.csv") %>% 
@@ -475,13 +481,45 @@ test_sex = matrix(c(9850,6199,29030, 26307), ncol = 2, byrow = T)
 chisq.test(test_sex)
 ```
 
+**Test Independence between Victim Race and Suspect Race：**
+
+We also used the chi-square test to explore whether there is a relationship between the victim race and suspect race:
+
+Hypotheses:
+
+*   Ho: race of victim and race of suspect are independent
+*   Ha: race of victim and race of suspect are not independent
+
+As the results, the p-value of chi-square test was much smaller than alpha = 0.05, we **reject H0**. We draw the conclusion that race of victim and race of suspect are *not independent* at 0.05 significance level, which might indicate that young suspects and young victims had the higher likelihood to be correlated with each other.
+
+```{r message=FALSE, warning=FALSE}
+race_data = read_csv("./data/nypd_complaint_two_year_data.csv") %>% 
+  group_by(vic_race, susp_race) %>% 
+  summarise(obs = n()) %>% 
+  na.omit() %>% 
+  pivot_wider(names_from = vic_race, values_from = obs)
+
+table_race = race_data %>% 
+  as.matrix() %>% 
+  kbl(caption = "Victim Race Corresponding to Suspect Race", align = "c") %>% 
+  kable_classic(full_width = F, html_font = "Cambria")
+
+table_race
+
+matrix_race =  as.matrix(race_data) %>% 
+  as.integer() %>% 
+  na.omit()
+
+chisq.test(matrix_race)
+```
+
 
 
 # Discussion
 
 The main goal of our project was to examine the potential influence brought by the COVID-19 pandemic to the complaint data in Manhattan. Our work showed that there did exist a relationship between the development of COVID-19 and the changes in complaints in Manhattan of from 2020 to 2021. 
 
-Initially, we started to make the assumption that the development of COVID-19 did have great influence on the number of complaints in Manhattan after we saw the general distribution of all complaints in 2020 and 2021. Then the comparison we made based on the number of complaints in 2020 and 2021 helped us confirmed our assumption. To correlate it with the reality, we considered that one of the reasonable explanations may be the **the effect of COVID-19 home isolation policy**, which caused a declined number of people in social activities and resulted in the decreasing of number of complaints in 2020 compared to 2021. The result from premise distributions made us to be more convincing. Since a higher frequency of crimes occurred at home would be reasonable if we remembered that in the worst period of COVID-19 outbreaks most people had been blocked in home instead of going out. Meanwhile, we found that the overall **complaint density of 2021 was larger** than that in the 2020. This had also supported our assumption that the recovery of social activities could bring larger density of complaints.
+Initially, we started to make the assumption that the development of COVID-19 did have great influence on the number of complaints in Manhattan after we saw the general distribution of all complaints in 2020 and 2021. Then the comparison we made based on the number of complaints in 2020 and 2021 helped us confirmed our assumption. To correlate it with the reality, we considered that one of the reasonable explanations may be the **the effect of COVID-19 home isolation policy**, which declined the number of people in social activities and resulted in the decreasing of number of complaints in 2020 compared to 2021. The result from premise distributions made us to be more convincing. Since a higher frequency of crimes occurred at home would be reasonable if we remembered that in the worst period of COVID-19 outbreaks most people had been blocked in home instead of going out. Meanwhile, we found that the overall **complaint density of 2021 was larger** than that in the 2020. This had also supported our assumption that the recovery of social activities could bring larger density of complaints.
 
 However, when we conducted further comparisons on the proportion of different types of complaints in 2020 and 2021, the proportion of each type didn't change a lot from 2020 to 2021. we also figured out that the most complaints repeated **in the upper city** of Manhattan in both of the two years, which meant no significant differences in the patterns where compliant occurred. These evidence might suggest that although the COVID-19 pandemic had effects on the overall complaints in Manhattan, the effect was not significant enough to change more detailed attributes of complaints.
 
