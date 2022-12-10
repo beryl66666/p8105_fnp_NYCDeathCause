@@ -1,4 +1,4 @@
-name: "Final Project Website"
+name: "Yay internet!"
 output_dir: "."
 navbar:
   title: "Home"
@@ -15,6 +15,8 @@ navbar:
       href: regression.html
     - text: "Final Project Report"
       href: report.html
+    - icon: fa-github fa-lg
+      href: https://github.com/beryl66666/p8105_fnp_NYPDComplaint.git
 output:
   html_document:
     theme: yeti

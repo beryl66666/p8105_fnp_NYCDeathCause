@@ -49,7 +49,14 @@ This website includes the complaints patterns across NYC changed during the pand
 
 **For [Final Project Report](Final_project_report.html)**
 
-*
+* Motivation
+* Related Work
+* Initial Questions
+* Data
+* Exploratory Analysis
+* Comparisons of complaints in Manhattan between 2020 vs 2021
+* Additional Analysis
+* Discussion
 
 **Collaborators**
 
