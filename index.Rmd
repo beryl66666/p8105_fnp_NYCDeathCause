@@ -1,7 +1,49 @@
 ---
-title: "Final Project"
+title: "About Our Project"
 always_allow_html: true
 output: 
   html_document:
+    toc: true
     code_folding: hide
+    toc_float: true
 ---
+
+### Little About Our Project
+*Insert Screencast here*
+
+### General Overview
+This website includes the complaints patterns across NYC changed during the pandemic that we use data analytically algorithms and plots to see what variables are closely related to NYPD complaints and more importantly, the changes of complaint during the pandemic time is investigated. The data set described complaint number across different time periods, and some other key variables include the location in which the incident occurred, Victim’s Age Group, Victim’s Race and Victim’s Sex. Our whole date set total has 7,830,000 observations and 35 variables. Since we mainly focus on the complaints during pandemic within these two years, we abstract the data into two separate data set: containing the the complaints for the year 2020 and the other containing the complaints for the year 2021. 
+
+
+**For [About Us](proposal.html), we have our proposal listed:**
+
+* Group members 
+* The motivation for this project
+* The intended final products 
+* The anticipated data sources
+* The planned analyses/visualizations/coding challenges
+* The planned timeline
+
+**For [Descriptive Statistics](stats.html), we have**
+
+* 
+
+**For [Patterns](patterns.html), we have**
+
+* 
+
+**For [Shiny App](shiny_dashboard.html), we have**
+
+*
+
+**For [Final Project Report](report.html)**
+
+*
+
+**Collaborators**
+
+* Binyue Hu bh2849
+* Hengxuan Ma hm2900
+* Xin Ren xr2160
+* Sophie Chen jc5924
+

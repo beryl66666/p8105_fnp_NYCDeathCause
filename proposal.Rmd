@@ -20,7 +20,7 @@ library(tidyverse)
 * Sophie Chen jc5924
 
 ### The motivation for this project
-Since gun violence and various incidents happen pretty frequently during pandemic in NYC and we are currently living in such environment. So we are wondering about NYPD's complaints during pandemic and we are also interested in the changing trend in complaints within those two years so that we can get a sense of understanding how safe or dangerous the environment we surrounded across NYC changed during 
+Since gun violence and various incidents happen pretty frequently during pandemic in NYC and we are currently living in such environment. So we are wondering about NYPD's complaints during pandemic and we are also interested in the changing trend in complaints within those two years so that we can get a sense of understanding how safe or dangerous the environment we surrounded across NYC changed during the pandemic.
 
 ### The intended final products 
 * A report summarizing analysis results on NYPD's complaints, and comparing the complaint cases across NYC changed during the pandemic.
