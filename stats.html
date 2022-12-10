@@ -445,10 +445,11 @@ Gender:</h2>
   geom_smooth() +
   labs(title = &quot;Number of complaint(suspects) in 2020 and 2021 by Age Group and Gender&quot;, x = &quot;Age group&quot;, y = &quot;Number of Complaint&quot;, col = &quot;Gender&quot;) </code></pre>
 <p><img src="stats_files/figure-html/unnamed-chunk-4-1.png" width="672" />
-As we can see from the graph, the number of suspects who were complained
-about were much larger than the number of females and unknown gender. A
-large number of the complained suspects are in the 25-44 age group, so
-we should be careful of 25-44 year old males in case of danger.</p>
+As we can see from the graph, the number of malesuspects who were
+complained about were much larger than the number of females and unknown
+gender. A large number of the complained suspects are in the 25-44 age
+group, so we should be careful of 25-44 year old males in case of
+danger.</p>
 <pre class="r"><code>complaint_2 = complaint_1 %&gt;% 
   drop_na(susp_age_group, susp_sex) %&gt;% 
   group_by(susp_age_group, susp_sex) %&gt;% 

@@ -371,8 +371,6 @@ div.tocify {
 
 <div id="motivation" class="section level1">
 <h1>Motivation</h1>
-<p>(Motivation: Provide an overview of the project goals and
-motivation)</p>
 <p>Crime rates in New York City have been recorded since at least the
 1800s. The highest crime totals were recorded in the late 1980s and
 early 1990s as the crack epidemic surged, and then declined continuously
@@ -425,7 +423,6 @@ questions did you consider in the course of your analysis?)</p>
 </div>
 <div id="data" class="section level1">
 <h1>Data</h1>
-<p>(Data: Source, scraping method, cleaning, etc.)</p>
 <p>The raw data we used was from <strong>NYC OpenData: NYPD Complaint
 Data Historic</strong>: <a
 href="https://data.cityofnewyork.us/Public-Safety/NYPD-Complaint-Data-Historic/qgea-i56i"
@@ -440,7 +437,7 @@ size was over 2 GB! It took us more than half an hour to obtain the
 whole raw data, which contained 35 variables and more than 7 million
 observations.</p>
 <p>Then the first step to handle such a huge data set was to tidy out
-the part that we wanted to focuse on:</p>
+the part that we wanted to focus on.</p>
 <pre class="r"><code>nypd_complaint_data = 
   read_csv(&quot;./data/NYPD_Complaint_Data_Historic.csv&quot;) %&gt;%
   janitor::clean_names() %&gt;%
@@ -517,8 +514,10 @@ occurred</li>
 <li><code>ky_cd</code>: Three digit offense classification code</li>
 <li><code>ofns_desc</code>: Description of offense corresponding with
 key code</li>
-<li><code>BORO_NM</code>: The name of the borough in which the incident
+<li><code>boro_nm</code>: The name of the borough in which the incident
 occurred</li>
+<li><code>prem_typ_desc</code>: Specific description of premises;
+grocery store, residence, street, etc.</li>
 <li><code>susp_age_group</code>: Suspect’s Age Group</li>
 <li><code>susp_race</code>: Suspect’s Race Description</li>
 <li><code>susp_sex</code>: Suspect’s Sex Description</li>
@@ -533,29 +532,133 @@ Coordinate System, WGS 1984, decimal degrees (EPSG 4326)</li>
 </div>
 <div id="exploratory-analysis" class="section level1">
 <h1>Exploratory Analysis</h1>
-<p>(Exploratory analysis: Visualizations, summaries, and exploratory
-statistical analyses. Justify the steps you took, and show any major
-changes to your ideas.)</p>
 <div id="descriptive-statistics" class="section level3">
 <h3>Descriptive Statistics:</h3>
+<p>AS an overview, here were the descriptive statistics about our
+data.</p>
+<p><strong>General distribution of complaints:</strong> First of all, we
+made a plot to show the general distribution of all complaints in 2020
+and 2021. Based on the information we got, we suggested that the average
+daily complaint volume in Manhattan in 2021 seemed exceed that in 2020
+since about February, and continued to the end of 2021. Moreover, the
+complaint volume peaked in 2021 especially in May. Later then, we
+started to make the assumption that the development of COVID-19 did have
+great influence on the number of complaints in Manhattan.</p>
+<pre class="r"><code>complaint_df = nypd_complaint_two_year_data %&gt;% 
+  janitor::clean_names() %&gt;% 
+  filter(
+    !susp_age_group == c(&quot;UNKNNOWN&quot;),
+     susp_age_group == c(&quot;&lt;18&quot;, &quot;18-24&quot;,&quot;25-44&quot;,&quot;45-64&quot;,&quot;65+&quot;),
+    vic_age_group == c(&quot;&lt;18&quot;, &quot;18-24&quot;,&quot;25-44&quot;,&quot;45-64&quot;,&quot;65+&quot;)
+  ) %&gt;% 
+  mutate(
+    susp_age_group = ifelse(susp_age_group %in% c(&quot;&lt;18&quot;, &quot;18-24&quot;, &quot;25-44&quot;, &quot;45-64&quot;, &quot;65+&quot;), susp_age_group, &quot;UNKNOWN&quot;),
+    vic_age_group = ifelse(vic_age_group %in% c(&quot;&lt;18&quot;, &quot;18-24&quot;, &quot;25-44&quot;, &quot;45-64&quot;, &quot;65+&quot;), vic_age_group, &quot;UNKNOWN&quot;),
+    vic_race = ifelse(is.na(vic_race), &quot;UNKNOWN&quot;, vic_race),
+    vic_sex = ifelse(vic_sex %in% c(&quot;F&quot;, &quot;M&quot;), vic_sex, &quot;U&quot;),
+    susp_sex = ifelse(susp_sex %in% c(&quot;F&quot;, &quot;M&quot;), susp_sex, &quot;U&quot;),
+    susp_age_group = factor(susp_age_group),
+    susp_race = factor(susp_race),
+    susp_sex = factor(susp_sex),
+    vic_age_group = factor(vic_age_group),
+    vic_race = factor(vic_race),
+    vic_sex = factor(vic_sex),
+    boro_nm = factor(boro_nm)
+  ) 
+complaint_1 = 
+  select(complaint_df, c(&quot;month&quot;, &quot;year&quot;, &quot;day&quot;, &quot;susp_age_group&quot; , &quot;boro_nm&quot; , &quot;loc_of_occur_desc&quot;, &quot;susp_sex&quot;, &quot;vic_age_group&quot;, &quot;vic_age_group&quot;, &quot;vic_sex&quot;)) 
+complaint_1 = complaint_1 %&gt;% 
+  mutate(
+    month = as.numeric(month),
+    month = str_pad(month,width = 2,side = &#39;left&#39;,pad = &#39;0&#39;),
+    day = str_pad(day,width = 2,side = &#39;left&#39;,pad = &#39;0&#39;),
+    month_day = str_c(month, &quot;-&quot;, day),
+    month_day = factor(month_day)
+    )
+complaint_1 = complaint_1 &lt;- cbind(complaint_1[10],complaint_1[,1:9])
+complaint_1 = arrange_dt(complaint_1,dt)</code></pre>
+<pre class="r"><code>complaint_1 %&gt;% 
+  group_by(month_day, year) %&gt;% 
+  summarize(obs = n()) %&gt;% 
+  ggplot(aes(x = month_day, y = obs, group = year, color = as.factor(year))) +
+  geom_line() + 
+  geom_smooth(se = FALSE) +
+  labs(title = &quot;Number of Complaint in 2020 and 2021&quot;, x = &quot;Complaint Date&quot;, y = &quot;Number of Complaint&quot;, col = &quot;Year&quot;) + 
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1, color = rep(c(&quot;black&quot;, rep(&quot;transparent&quot;, each = 15))))) +
+  theme(plot.title = element_text(hjust = 0.5))</code></pre>
+<p><img src="Final_project_report_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p><strong>Attributes of suspects:</strong> In order to get more
+information about the most common suspects recorded in the NYPD
+complaint data, We analyzed the distribution of major attributes (gender
+and age group) of all the suspects in both 2020 and 2021. Actually the
+most suspects were males aged between 25-44. This gave us the suggestion
+that if we are alone and feel in case of danger, better beware of men
+aged 25-40 around you.</p>
+<pre class="r"><code>complaint_1 %&gt;% 
+  group_by(susp_age_group, susp_sex) %&gt;% 
+  summarize(obs = n()) %&gt;% 
+  
+  ggplot(aes(x = as.factor(susp_age_group), y = obs, group = susp_sex, color = as.factor(susp_sex))) +
+  geom_line() + 
+  geom_smooth() +
+  labs(title = &quot;Number of complaint(suspects) in 2020 and 2021 by Age Group and Gender&quot;, x = &quot;Age group&quot;, y = &quot;Number of Complaint&quot;, col = &quot;Gender&quot;) </code></pre>
+<p><img src="Final_project_report_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p><strong>Attributes of victims:</strong> In order to get more
+information about the most common victims recorded in the NYPD complaint
+data, We analyzed the distribution of major attributes (gender and age
+group) of all the victims in both 2020 and 2021. As we could see from
+the results, the number of female victims in 2020 and 2021 was much
+higher than male victims in Manhattan, and the victim age group was
+heavily concentrated in between 25-44. If you are a young female, please
+pay more attention to your personal safety when you are outside alone,
+even in Manhattan.</p>
+<pre class="r"><code>complaint_1 %&gt;% 
+  group_by(vic_age_group, vic_sex) %&gt;% 
+  summarize(obs = n()) %&gt;% 
+  ggplot(aes(x = vic_age_group, y = obs, group = vic_sex, color = vic_sex)) +
+  geom_line() + 
+  geom_smooth() +
+  labs(title = &quot;Number of complaint(victims) in 2020 and 2021 by Age Group and Gender&quot;, x = &quot;Age group&quot;, y = &quot;Number of Complaint&quot;, col = &quot;Gender&quot;) </code></pre>
+<p><img src="Final_project_report_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p><strong>General distribution of premises:</strong> To figure out
+which type of premises was/were the most dangerous for a complaint to
+happen, we plotted the distribution of all the prime suspected victim
+sites in Manhattan in both 2020 and 2021.The results was the safest
+location one might considered as - home! The result was actually
+reasonable if we thought about the background of COVID-19 pandemic at
+the beginning. We may guess that in the worst period of COVID-19
+outbreaks most people had been blocked in home instead of going out,
+which led to a higher frequency of crimes occurred at home.</p>
+<pre class="r"><code>complaint_df %&gt;% 
+  group_by(prem_typ_desc) %&gt;% 
+  count(prem_typ_desc) %&gt;% 
+  filter(n &gt; 2) %&gt;% 
+  mutate(prem_typ_desc = fct_reorder(prem_typ_desc, n)) %&gt;% 
+  ggplot(aes(x = prem_typ_desc, y = n )) + 
+  geom_point(aes(color = n),alpha = 0.5) + 
+  geom_smooth( se = FALSE) +
+  labs(title = &quot;Prime suspected victim site in 2020 and 2021&quot;,x = &quot;Location &quot;, y = &quot;Frequency&quot;) +
+  theme(axis.text.x = element_text(angle = 60, hjust = 1)) +
+  theme(plot.title = element_text(hjust = 0.5))</code></pre>
+<p><img src="Final_project_report_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
 </div>
 <div id="comparisons-of-complaints-in-manhattan-between-2020-vs-2021"
 class="section level3">
 <h3>Comparisons of complaints in Manhattan between 2020 vs 2021:</h3>
 <p>As part of our research body, we conducted several comparisons
 between the two years based on our data sets.</p>
-<p><strong>Number of Complaints in Manhattan 2020 vs 2021:</strong>
-Since 2020 was the year that COVID-19 had almost the most breakouts
-which restricted people’s social activities, while in 2021 people were
-more free from the negative effect from COVID-19, there would be
-corresponding changes on the complaint and crime rates. According to the
-comparison we made based on the number of complaints in 2020 and 2021,
-we confirmed our assumption. The number of complaints in Manhattan of
-2021 is more than in 2020 in most months. One of the reasonable
-explanation may be the <strong>the affect of COVID-19 home isolation
-policy</strong>, which caused a declined number of people in social
-activities and resulted in the decreasing of number of complaints in
-2020 compared to 2021.</p>
+<p><strong>Number of monthly Complaints in Manhattan 2020 vs
+2021:</strong> Since 2020 was the year that COVID-19 had almost the most
+breakouts which restricted people’s social activities, while in 2021
+people were more free from the negative effect from COVID-19, there
+would be corresponding changes on the complaint and crime rates.
+According to the comparison we made based on the number of complaints in
+2020 and 2021, we confirmed our assumption. The number of complaints in
+Manhattan of 2021 is more than in 2020 in most months. One of the
+reasonable explanation may be the <strong>the affect of COVID-19 home
+isolation policy</strong>, which caused a declined number of people in
+social activities and resulted in the decreasing of number of complaints
+in 2020 compared to 2021.</p>
 <pre class="r"><code>complaint_plot = read_csv(&quot;./data/nypd_complaint_two_year_data.csv&quot;) %&gt;% 
   group_by(month,year) %&gt;% 
   summarize(obs = n()) %&gt;% 
@@ -571,7 +674,7 @@ activities and resulted in the decreasing of number of complaints in
   viridis::scale_color_viridis(discrete = T)
 
 complaint_plot </code></pre>
-<p><img src="Final_project_report_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<p><img src="Final_project_report_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
 <p><strong>Number of Complaints by Types 2020 vs 2021:</strong> In order
 to know more details about the types of complaints while making
 comparisons between year 2020 and 2021, we specified the number of each
@@ -610,17 +713,17 @@ main types of complaints.</p>
   filter(ofns_desc != &quot;VEHICLE AND TRAFFIC LAWS&quot;) %&gt;% 
   arrange(desc(obs)) %&gt;% 
   ggplot(aes(x = ofns_desc, y = obs, fill = as.factor(year))) +
-  geom_bar(stat = &quot;identity&quot;,position=position_dodge()) +
-  geom_text(aes(label=obs), vjust=1.6, color=&quot;white&quot;,
-            position = position_dodge(0.9), size=1.5) +
+  geom_bar(stat = &quot;identity&quot;,position = position_dodge()) +
+  geom_text(aes(label = obs), vjust = 1.6, color = &quot;white&quot;,
+            position = position_dodge(0.9), size = 1.5) +
   xlab(&quot;Types pf Complaints&quot;) + ylab(&quot;Number of Complaints&quot;) + 
   ggtitle(&quot;Number of Complaints by Types 2020 vs 2021&quot;) + 
   theme(axis.text.x = element_text(angle = 60, vjust = 1, hjust = 1, size = 5)) +
-  scale_fill_discrete(name = &quot;Year&quot;)+
+  scale_fill_discrete(name = &quot;Year&quot;) +
   viridis::scale_color_viridis(discrete = T)
 
 complaint_type_plot</code></pre>
-<p><img src="Final_project_report_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p><img src="Final_project_report_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
 <pre class="r"><code>type_pie_2020 = read_csv(&quot;./data/nypd_complaint_2020_data.csv&quot;)  %&gt;% 
   group_by(ofns_desc) %&gt;% 
   summarise(obs = n()) %&gt;% 
@@ -628,12 +731,12 @@ complaint_type_plot</code></pre>
   arrange(desc(obs)) %&gt;% 
   mutate(prop = round(obs/sum(obs)*100,2)) %&gt;% 
   ggplot(aes(x = &quot;&quot;, y = prop, fill = ofns_desc)) +
-  geom_bar(stat = &quot;identity&quot;,width=1, color = &quot;white&quot;)  +
-  coord_polar(&quot;y&quot;, start=0) +
-  geom_text(aes(label = paste0(prop, &quot;%&quot;)), position = position_stack(vjust=0.5), size = 2) +
+  geom_bar(stat = &quot;identity&quot;,width = 1, color = &quot;white&quot;)  +
+  coord_polar(&quot;y&quot;, start = 0) +
+  geom_text(aes(label = paste0(prop, &quot;%&quot;)), position = position_stack(vjust = 0.5), size = 2) +
   labs(x = NULL, y = NULL, title = &quot;2020&quot;)  +  
-  theme(legend.title = element_text(size=10),legend.key.size = unit(0.5, &#39;cm&#39;))+
-  theme(plot.margin = margin(0.1,0.1,0.1,0.1, &quot;cm&quot;))+
+  theme(legend.title = element_text(size = 10),legend.key.size = unit(0.5, &#39;cm&#39;)) +
+  theme(plot.margin = margin(0.1,0.1,0.1,0.1, &quot;cm&quot;)) +
   scale_fill_discrete(name = &quot;Complaint Type&quot;) +
   viridis::scale_color_viridis(discrete = F)
 
@@ -646,19 +749,19 @@ type_pie_2021 = read_csv(&quot;./data/nypd_complaint_2021_data.csv&quot;)  %&gt;
   filter(ofns_desc != &quot;VEHICLE AND TRAFFIC LAWS&quot;) %&gt;% 
   mutate(prop = round(obs/sum(obs)*100,2)) %&gt;% 
   ggplot(aes(x = &quot;&quot;, y = prop, fill = ofns_desc)) +
-  geom_bar(stat = &quot;identity&quot;,width=1, color = &quot;white&quot;) +
-  theme(legend.title = element_text(size=10),legend.key.size = unit(0.5, &#39;cm&#39;))+
-  theme(plot.margin = margin(0.1,0.1,0.1,0.1, &quot;cm&quot;))+
-  coord_polar(&quot;y&quot;, start=0) +
-  geom_text(aes(label = paste0(prop, &quot;%&quot;)), position = position_stack(vjust=0.5), size = 2) +
+  geom_bar(stat = &quot;identity&quot;,width = 1, color = &quot;white&quot;) +
+  theme(legend.title = element_text(size = 10),legend.key.size = unit(0.5, &#39;cm&#39;)) +
+  theme(plot.margin = margin(0.1,0.1,0.1,0.1, &quot;cm&quot;)) +
+  coord_polar(&quot;y&quot;, start = 0) +
+  geom_text(aes(label = paste0(prop, &quot;%&quot;)), position = position_stack(vjust = 0.5), size = 2) +
   labs(x = NULL, y = NULL, title = &quot;2021&quot;, fill = &quot;Complaint Type&quot; ) +
   viridis::scale_color_viridis(discrete = F)
 
 par(mfrow = c(2,1))
 type_pie_2020</code></pre>
-<p><img src="Final_project_report_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p><img src="Final_project_report_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
 <pre class="r"><code>type_pie_2021</code></pre>
-<p><img src="Final_project_report_files/figure-html/unnamed-chunk-5-2.png" width="672" /></p>
+<p><img src="Final_project_report_files/figure-html/unnamed-chunk-10-2.png" width="672" /></p>
 <p><strong>Complaint Locations in Manhattan 2020 vs 2021:</strong> After
 analyzing the number and types of complaints, we became more interested
 in whether there is any difference in the distributions of complaint’s
@@ -738,7 +841,7 @@ for (i in 2:12) {
 
 new_month_gif</code></pre>
 <p><img
-src="Final_project_report_files/figure-html/unnamed-chunk-6-1.gif" /><!-- --></p>
+src="Final_project_report_files/figure-html/unnamed-chunk-11-1.gif" /><!-- --></p>
 </div>
 </div>
 <div id="additional-analysis" class="section level1">

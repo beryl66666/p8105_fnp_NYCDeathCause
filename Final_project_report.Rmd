@@ -18,11 +18,15 @@ library(viridis)
 library(RColorBrewer)
 library(ggplot2)
 library(cowplot)
+library(readr)
+library(dplyr)
+library(tidyfst)
+library(zoo)
+library(plotly)
+library(lubridate)
 ```
 
 # Motivation 
-
-(Motivation: Provide an overview of the project goals and motivation)
 
 Crime rates in New York City have been recorded since at least the 1800s. The highest crime totals were recorded in the late 1980s and early 1990s as the crack epidemic surged, and then declined continuously through the 2000s. During the 1990s, the New York City Police Department (NYPD) adopted CompStat and other strategies in a major effort to reduce crime.
 
@@ -46,14 +50,15 @@ Inspired by our regularly received crime alerts from Columbia University Departm
 
 After some initial exploring, we successfully found that resources about NYC crime and complaint data are sufficient and detailed. Based on the information we have gathered, we decided to conduct our analysis on the most recently published NYPD Compliant Data, which contained plenty of attributes correlated with each complaint of crime happened and recorded in the New York City.
 
+
+
 # Initial Questions
 
 (Initial questions: What questions are you trying to answer? How did these questions evolve over the course of the project? What new questions did you consider in the course of your analysis?) 
 
 
-# Data
 
-(Data: Source, scraping method, cleaning, etc.) 
+# Data
 
 The raw data we used was from **NYC OpenData: NYPD Complaint Data Historic**: https://data.cityofnewyork.us/Public-Safety/NYPD-Complaint-Data-Historic/qgea-i56i
 
@@ -61,7 +66,7 @@ The NYPD Complaint Data is public and readily available. The data includes all v
 
 The first and the most difficult challenge we have encountered was that the original data was too large to be downloaded and analyzed - the size was over 2 GB! It took us more than half an hour to obtain the whole raw data, which contained 35 variables and more than 7 million observations.
 
-Then the first step to handle such a huge data set was to tidy out the part that we wanted to focuse on:
+Then the first step to handle such a huge data set was to tidy out the part that we wanted to focus on.
 
 ```{r eval=FALSE}
 nypd_complaint_data = 
@@ -112,7 +117,6 @@ nypd_complaint_two_year_data =
   read_csv("./data/nypd_complaint_two_year_data.csv")
 ```
 
-
 After we obtained the three data sets above, **nypd_complaint_2020_data** had 88,484 observations of complaint data and **nypd_complaint_2021_data** had 101,990 observations of complaint data. **nypd_complaint_two_year_data** was the combination of data from both 2020 and 2021, which had 190,474 observations. Here were some of the important variables within all of the three data sets:
 
 *   `cmplnt_num`: Randomly generated persistent ID for each complaint
@@ -122,7 +126,8 @@ After we obtained the three data sets above, **nypd_complaint_2020_data** had 88
 *   `addr_pct_cd`: The precinct in which the incident occurred
 *   `ky_cd`: Three digit offense classification code
 *   `ofns_desc`: Description of offense corresponding with key code
-*   `BORO_NM`: The name of the borough in which the incident occurred
+*   `boro_nm`: The name of the borough in which the incident occurred
+*   `prem_typ_desc`: Specific description of premises; grocery store, residence, street, etc.
 *   `susp_age_group`: Suspect’s Age Group
 *   `susp_race`: Suspect’s Race Description
 *   `susp_sex`: Suspect’s Sex Description
@@ -132,18 +137,111 @@ After we obtained the three data sets above, **nypd_complaint_2020_data** had 88
 *   `vic_race`: Victim’s Race Description
 *   `vic_sex`: Victim’s Sex Description
 
+
+
 # Exploratory Analysis
 
-(Exploratory analysis: Visualizations, summaries, and exploratory statistical analyses. Justify the steps you took, and show any major changes to your ideas.)
-
 ### Descriptive Statistics:
+
+AS an overview, here were the descriptive statistics about our data.
+
+**General distribution of complaints:** First of all, we made a plot to show the general distribution of all complaints in 2020 and 2021. Based on the information we got, we suggested that the average daily complaint volume in Manhattan in 2021 seemed exceed that in 2020 since about February, and continued to the end of 2021. Moreover, the complaint volume peaked in 2021 especially in May. Later then, we started to make the assumption that the development of COVID-19 did have great influence on the number of complaints in Manhattan.
+
+```{r message=FALSE, warning=FALSE}
+complaint_df = nypd_complaint_two_year_data %>% 
+  janitor::clean_names() %>% 
+  filter(
+    !susp_age_group == c("UNKNNOWN"),
+     susp_age_group == c("<18", "18-24","25-44","45-64","65+"),
+    vic_age_group == c("<18", "18-24","25-44","45-64","65+")
+  ) %>% 
+  mutate(
+    susp_age_group = ifelse(susp_age_group %in% c("<18", "18-24", "25-44", "45-64", "65+"), susp_age_group, "UNKNOWN"),
+    vic_age_group = ifelse(vic_age_group %in% c("<18", "18-24", "25-44", "45-64", "65+"), vic_age_group, "UNKNOWN"),
+    vic_race = ifelse(is.na(vic_race), "UNKNOWN", vic_race),
+    vic_sex = ifelse(vic_sex %in% c("F", "M"), vic_sex, "U"),
+    susp_sex = ifelse(susp_sex %in% c("F", "M"), susp_sex, "U"),
+    susp_age_group = factor(susp_age_group),
+    susp_race = factor(susp_race),
+    susp_sex = factor(susp_sex),
+    vic_age_group = factor(vic_age_group),
+    vic_race = factor(vic_race),
+    vic_sex = factor(vic_sex),
+    boro_nm = factor(boro_nm)
+  ) 
+complaint_1 = 
+  select(complaint_df, c("month", "year", "day", "susp_age_group" , "boro_nm" , "loc_of_occur_desc", "susp_sex", "vic_age_group", "vic_age_group", "vic_sex")) 
+complaint_1 = complaint_1 %>% 
+  mutate(
+    month = as.numeric(month),
+    month = str_pad(month,width = 2,side = 'left',pad = '0'),
+    day = str_pad(day,width = 2,side = 'left',pad = '0'),
+    month_day = str_c(month, "-", day),
+    month_day = factor(month_day)
+    )
+complaint_1 = complaint_1 <- cbind(complaint_1[10],complaint_1[,1:9])
+complaint_1 = arrange_dt(complaint_1,dt)
+```
+
+```{r message=FALSE, warning=FALSE}
+complaint_1 %>% 
+  group_by(month_day, year) %>% 
+  summarize(obs = n()) %>% 
+  ggplot(aes(x = month_day, y = obs, group = year, color = as.factor(year))) +
+  geom_line() + 
+  geom_smooth(se = FALSE) +
+  labs(title = "Number of Complaint in 2020 and 2021", x = "Complaint Date", y = "Number of Complaint", col = "Year") + 
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1, color = rep(c("black", rep("transparent", each = 15))))) +
+  theme(plot.title = element_text(hjust = 0.5))
+```
+
+**Attributes of suspects:** In order to get more information about the most common suspects recorded in the NYPD complaint data, We analyzed the distribution of major attributes (gender and age group) of all the suspects in both 2020 and 2021. Actually the most suspects were males aged between 25-44. This gave us the suggestion that if we are alone and feel in case of danger, better beware of men aged 25-40 around you.
+
+```{r message=FALSE, warning=FALSE}
+complaint_1 %>% 
+  group_by(susp_age_group, susp_sex) %>% 
+  summarize(obs = n()) %>% 
+  
+  ggplot(aes(x = as.factor(susp_age_group), y = obs, group = susp_sex, color = as.factor(susp_sex))) +
+  geom_line() + 
+  geom_smooth() +
+  labs(title = "Number of complaint(suspects) in 2020 and 2021 by Age Group and Gender", x = "Age group", y = "Number of Complaint", col = "Gender") 
+```
+
+**Attributes of victims:** In order to get more information about the most common victims recorded in the NYPD complaint data, We analyzed the distribution of major attributes (gender and age group) of all the victims in both 2020 and 2021. As we could see from the results, the number of female victims in 2020 and 2021 was much higher than male victims in Manhattan, and the victim age group was heavily concentrated in between 25-44. If you are a young female, please pay more attention to your personal safety when you are outside alone, even in Manhattan.
+
+```{r message=FALSE, warning=FALSE}
+complaint_1 %>% 
+  group_by(vic_age_group, vic_sex) %>% 
+  summarize(obs = n()) %>% 
+  ggplot(aes(x = vic_age_group, y = obs, group = vic_sex, color = vic_sex)) +
+  geom_line() + 
+  geom_smooth() +
+  labs(title = "Number of complaint(victims) in 2020 and 2021 by Age Group and Gender", x = "Age group", y = "Number of Complaint", col = "Gender") 
+```
+
+**General distribution of premises:** To figure out which type of premises was/were the most dangerous for a complaint to happen, we plotted the distribution of all the prime suspected victim sites in Manhattan in both 2020 and 2021.The results was the safest location one might considered as - home! The result was actually reasonable if we thought about the background of COVID-19 pandemic at the beginning. We may guess that in the worst period of COVID-19 outbreaks most people had been blocked in home instead of going out, which led to a higher frequency of crimes occurred at home.
+
+```{r message=FALSE, warning=FALSE}
+complaint_df %>% 
+  group_by(prem_typ_desc) %>% 
+  count(prem_typ_desc) %>% 
+  filter(n > 2) %>% 
+  mutate(prem_typ_desc = fct_reorder(prem_typ_desc, n)) %>% 
+  ggplot(aes(x = prem_typ_desc, y = n )) + 
+  geom_point(aes(color = n),alpha = 0.5) + 
+  geom_smooth( se = FALSE) +
+  labs(title = "Prime suspected victim site in 2020 and 2021",x = "Location ", y = "Frequency") +
+  theme(axis.text.x = element_text(angle = 60, hjust = 1)) +
+  theme(plot.title = element_text(hjust = 0.5))
+```
 
 
 ### Comparisons of complaints in Manhattan between 2020 vs 2021:
 
 As part of our research body, we conducted several comparisons between the two years based on our data sets.
 
-**Number of Complaints in Manhattan 2020 vs 2021:** Since 2020 was the year that COVID-19 had almost the most breakouts which restricted people's social activities, while in 2021 people were more free from the negative effect from COVID-19, there would be corresponding changes on the complaint and crime rates. According to the comparison we made based on the number of complaints in 2020 and 2021, we confirmed our assumption. The number of complaints in Manhattan of 2021 is more than in 2020 in most months. One of the reasonable explanation may be the **the affect of COVID-19 home isolation policy**, which caused a declined number of people in social activities and resulted in the decreasing of number of complaints in 2020 compared to 2021.
+**Number of monthly Complaints in Manhattan 2020 vs 2021:** Since 2020 was the year that COVID-19 had almost the most breakouts which restricted people's social activities, while in 2021 people were more free from the negative effect from COVID-19, there would be corresponding changes on the complaint and crime rates. According to the comparison we made based on the number of complaints in 2020 and 2021, we confirmed our assumption. The number of complaints in Manhattan of 2021 is more than in 2020 in most months. One of the reasonable explanation may be the **the affect of COVID-19 home isolation policy**, which caused a declined number of people in social activities and resulted in the decreasing of number of complaints in 2020 compared to 2021.
 
 ```{r message=FALSE, warning=FALSE}
 complaint_plot = read_csv("./data/nypd_complaint_two_year_data.csv") %>% 
@@ -190,13 +288,13 @@ complaint_type_plot = read_csv("./data/nypd_complaint_two_year_data.csv")  %>%
   filter(ofns_desc != "VEHICLE AND TRAFFIC LAWS") %>% 
   arrange(desc(obs)) %>% 
   ggplot(aes(x = ofns_desc, y = obs, fill = as.factor(year))) +
-  geom_bar(stat = "identity",position=position_dodge()) +
-  geom_text(aes(label=obs), vjust=1.6, color="white",
-            position = position_dodge(0.9), size=1.5) +
+  geom_bar(stat = "identity",position = position_dodge()) +
+  geom_text(aes(label = obs), vjust = 1.6, color = "white",
+            position = position_dodge(0.9), size = 1.5) +
   xlab("Types pf Complaints") + ylab("Number of Complaints") + 
   ggtitle("Number of Complaints by Types 2020 vs 2021") + 
   theme(axis.text.x = element_text(angle = 60, vjust = 1, hjust = 1, size = 5)) +
-  scale_fill_discrete(name = "Year")+
+  scale_fill_discrete(name = "Year") +
   viridis::scale_color_viridis(discrete = T)
 
 complaint_type_plot
@@ -210,12 +308,12 @@ type_pie_2020 = read_csv("./data/nypd_complaint_2020_data.csv")  %>%
   arrange(desc(obs)) %>% 
   mutate(prop = round(obs/sum(obs)*100,2)) %>% 
   ggplot(aes(x = "", y = prop, fill = ofns_desc)) +
-  geom_bar(stat = "identity",width=1, color = "white")  +
-  coord_polar("y", start=0) +
-  geom_text(aes(label = paste0(prop, "%")), position = position_stack(vjust=0.5), size = 2) +
+  geom_bar(stat = "identity",width = 1, color = "white")  +
+  coord_polar("y", start = 0) +
+  geom_text(aes(label = paste0(prop, "%")), position = position_stack(vjust = 0.5), size = 2) +
   labs(x = NULL, y = NULL, title = "2020")  +  
-  theme(legend.title = element_text(size=10),legend.key.size = unit(0.5, 'cm'))+
-  theme(plot.margin = margin(0.1,0.1,0.1,0.1, "cm"))+
+  theme(legend.title = element_text(size = 10),legend.key.size = unit(0.5, 'cm')) +
+  theme(plot.margin = margin(0.1,0.1,0.1,0.1, "cm")) +
   scale_fill_discrete(name = "Complaint Type") +
   viridis::scale_color_viridis(discrete = F)
 
@@ -228,11 +326,11 @@ type_pie_2021 = read_csv("./data/nypd_complaint_2021_data.csv")  %>%
   filter(ofns_desc != "VEHICLE AND TRAFFIC LAWS") %>% 
   mutate(prop = round(obs/sum(obs)*100,2)) %>% 
   ggplot(aes(x = "", y = prop, fill = ofns_desc)) +
-  geom_bar(stat = "identity",width=1, color = "white") +
-  theme(legend.title = element_text(size=10),legend.key.size = unit(0.5, 'cm'))+
-  theme(plot.margin = margin(0.1,0.1,0.1,0.1, "cm"))+
-  coord_polar("y", start=0) +
-  geom_text(aes(label = paste0(prop, "%")), position = position_stack(vjust=0.5), size = 2) +
+  geom_bar(stat = "identity",width = 1, color = "white") +
+  theme(legend.title = element_text(size = 10),legend.key.size = unit(0.5, 'cm')) +
+  theme(plot.margin = margin(0.1,0.1,0.1,0.1, "cm")) +
+  coord_polar("y", start = 0) +
+  geom_text(aes(label = paste0(prop, "%")), position = position_stack(vjust = 0.5), size = 2) +
   labs(x = NULL, y = NULL, title = "2021", fill = "Complaint Type" ) +
   viridis::scale_color_viridis(discrete = F)
 

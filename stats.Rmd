@@ -91,7 +91,7 @@ complaint_1 %>%
   labs(title = "Number of complaint(suspects) in 2020 and 2021 by Age Group and Gender", x = "Age group", y = "Number of Complaint", col = "Gender") 
 
 ```
-As we can see from the graph, the number of suspects who were complained about were much larger than the number of females and unknown gender. A large number of the complained suspects are in the 25-44 age group, so we should be careful of 25-44 year old males in case of danger.
+As we can see from the graph, the number of malesuspects who were complained about were much larger than the number of females and unknown gender. A large number of the complained suspects are in the 25-44 age group, so we should be careful of 25-44 year old males in case of danger.
 
 
 
