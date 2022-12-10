@@ -26,8 +26,10 @@ This website includes the complaints patterns across NYC changed during the pand
 
 **For [Descriptive Statistics](stats.html), we have**
 
-* 
-
+* Compare the Number of Complaint in Manhattan 2020 and 2021
+* Number of complaint(suspects) in Manhattan 2020 and 2021 by Age Group and Gender
+* Number of complaint(victims) in Manhattan 2020 and 2021 by Age Group and Gender
+* Prime suspected victim site in 2020 and 2021
 **For [Patterns](patterns.html), we have**
 
 * Number of Complaints in Manhattan 2020 vs 2021
