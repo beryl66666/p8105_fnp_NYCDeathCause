@@ -15,6 +15,8 @@ complaint_select=nypd_complaint %>%
     date=str_c(year,month,day, sep = "-"),
     location=str_c(longitude,latitude,sep=", "))
 
+write.csv(complaint_select, "./shiny/complaint_select.csv", row.names=FALSE)
+
 crime_type=complaint_select %>% 
 group_by(ofns_desc,year) %>% 
   summarise(obs=n()) %>% 
@@ -69,14 +71,18 @@ ui = dashboardPage(
 )
 
 server = function(input, output) {
-  histdata <- rnorm(500)
   
-  output$plot1 = renderPlot({
-    data = histdata[seq_len(input$slider)]
-    hist(data)
+  output$plot1 = renderPlotly({
+    complaint_select %>% 
+      mutate(text_label = str_c("Crime: ", ofns_desc, '\nDate: ', date)) %>% 
+      plot_ly(
+        x = ~longitude, y = ~latitude, type = "scatter", mode = "markers",
+        alpha = 0.5, color = ~ofns_desc, text = ~text_label)
   })
+  
+  output$value = renderPrint({ input$Crime_Type })
 }
 
-output$value = renderPrint({ input$Crime_Type })
+
 
 shinyApp(ui, server)
