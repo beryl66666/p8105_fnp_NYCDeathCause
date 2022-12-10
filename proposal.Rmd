@@ -1,6 +1,11 @@
 ---
-title: "Proposal"
-output: github_document
+title: "About us"
+always_allow_html: true
+output: 
+  html_document:
+    ctoc: true
+    code_folding: hide
+    toc_float: true
 ---
 
 ```{r setup, include=FALSE}
@@ -8,33 +13,26 @@ knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
 ```
 
-### Group member
+### Group members 
 * Binyue Hu bh2849
 * Hengxuan Ma hm2900
 * Xin Ren xr2160
 * Sophie Chen jc5924
 
-### Tentative project title
-* NYCPD Complaint Data Historic  
-
-### The motivation for the project
-* It is the fact that all of our team members have heard crime alerts from NYPD frequently. We have been so curious about the detailed information of historical crimes happened in the New York City, especially in the pattern where we are currently living. 
-
-* Since in recent years COVID-19 brought huge effects to people's life, We are interested in the changes of complaint numbers each year from 2020 to 2021, especially in the Manhattan borough. In this project, we intended to explore the general information about complaint data in the past two years, and to figure out if COVID-19 influenced the rate or other attributes of crimes.
+### The motivation for this project
+Since gun violence and various incidents happen pretty frequently during pandemic in NYC and we are currently living in such environment. So we are wondering about NYPD's complaints during pandemic and we are also interested in the changing trend in complaints within those two years so that we can get a sense of understanding how safe or dangerous the environment we surrounded across NYC changed during 
 
 ### The intended final products 
-* A report summarizing analysis results on the comparisons of NYPD compliant data between 2020 and 2021.
-* A dashboard providing tips and recommendations for physical and mental health, and some details about the relationship between leading causes and deaths will be given.
-* An "instagram filter" has random death causes popping up with recommended algorithms used.
+* A report summarizing analysis results on NYPD's complaints, and comparing the complaint cases across NYC changed during the pandemic.
+* A shiny dashboard providing interactive graphics and web-like applications for people to interact with and details about the relationship between complaints and other variables will be given.
 
 ### The anticipated data sources
-* NYCPD Complaint Data Historic
-https://data.cityofnewyork.us/Public-Safety/NYPD-Complaint-Data-Historic/qgea-i56i
+* NYPD Complaint Data Historic https://data.cityofnewyork.us/Public-Safety/NYPD-Complaint-Data-Historic/qgea-i56i
 
 ### The planned analyses/visualizations/coding challenges
-- The biggest challenge is that the raw data is too large to be analyzed and uploaded
-- Comparisons between NYPD complaint data in different years based on plenty of variables are difficult
-- Difficulties in clearing the data and selecting meaningful information
+- The biggest challenge is that there is too little reference data
+- Difficulties in comparing different data tables and clear the data
+- The causes of complaint are too widely distribution
 
 ### The planned timeline
 ```{r}
