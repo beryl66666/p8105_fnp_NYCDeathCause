@@ -4,7 +4,25 @@ library(tidyverse)
 library(viridis)
 library(plotly)
 
-server = function(input, output) {
+nypd_complaint = 
+  read_csv("./shiny/nypd_complaint_two_year_data.csv")
+
+complaint_select=nypd_complaint %>% 
+  janitor::clean_names() %>% 
+  select(month,day,year,ofns_desc,susp_sex,susp_race,susp_age_group,latitude,longitude,vic_race,vic_sex,vic_age_group) %>% 
+  drop_na(susp_sex,susp_race,susp_age_group,vic_race,vic_sex,vic_age_group)%>% 
+  mutate(
+    date=str_c(year,month,day, sep = "-"),
+    location=str_c(longitude,latitude,sep=", "))
+
+crime_type=complaint_select %>% 
+  group_by(ofns_desc,year) %>% 
+  summarise(obs=n()) %>% 
+  filter(obs>5000)
+
+complaint_select
+
+function(input, output) {
   
   output$plot1 = renderPlotly({
     complaint_select %>% 
