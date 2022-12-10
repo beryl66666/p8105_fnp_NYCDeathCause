@@ -1,0 +1,69 @@
+---
+title: "NYPD Complaints During The Pandemic"
+output: 
+  flexdashboard::flex_dashboard
+runtime: shiny
+---
+
+```{r setup, include=FALSE}
+library(flexdashboard)
+library(shiny)
+library(tidyverse)
+library(plotly)
+library(p8105.datasets)
+
+nypd_complaint = 
+  read_csv("./shiny/nypd_complaint_two_year_data.csv")
+
+complaint_select=nypd_complaint %>% 
+  janitor::clean_names() %>% 
+  select(month,day,year,ofns_desc,susp_sex,susp_race,susp_age_group,latitude,longitude,vic_race,vic_sex,vic_age_group) %>% 
+  drop_na(susp_sex,susp_race,susp_age_group,vic_race,vic_sex,vic_age_group)%>% 
+  mutate(
+    date=str_c(year,month,day, sep = "-"),
+    location=str_c(longitude,latitude,sep=", "))
+
+crime_type=complaint_select %>% 
+  group_by(ofns_desc,year) %>% 
+  summarise(obs=n()) %>% 
+  filter(obs>5000)
+```
+
+Column {.sidebar}
+-----------------------------------------------------------------------
+
+```{r, eval = FALSE}
+date_range= complaint_select %>% distinct(date) %>% pull() %>% as.factor()
+dateRangeInput("date", 
+               label = h3("Date Range"),
+               start = "2020-1-1",
+               end   = "2021-9-9",
+               format = "mm/dd/yy",
+               separator = " - ")
+```
+
+Column {data-width=650}
+-----------------------------------------------------------------------
+
+### Chart A
+
+```{r, eval = FALSE}
+
+```
+
+
+Column {data-width=350}
+-----------------------------------------------------------------------
+
+### Chart B
+
+```{r}
+
+```
+
+### Chart C
+
+```{r}
+
+```
+

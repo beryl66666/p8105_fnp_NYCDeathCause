@@ -10,9 +10,13 @@ navbar:
     - text: "Comparison Patterns"
       href: patterns.html  
     - text: "Shiny App"
+<<<<<<< HEAD
       href: shiny_dashboard.html
     - text: "Additional Analysis"
       href: regression.html
+=======
+      href: 
+>>>>>>> 737bba39bd5b06dfa587a457a8d49cdfc8bf7c8b
     - text: "Final Project Report"
       href: report.html
 output:

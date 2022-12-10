@@ -341,9 +341,7 @@ div.tocify {
 <li>
   <a href="patterns.html">Patterns</a>
 </li>
-<li>
-  <a href="shiny.html">Shiny App</a>
-</li>
+<li class="dropdown-header">Shiny App</li>
 <li>
   <a href="Final_project_report.html">Final Project Report</a>
 </li>
@@ -422,20 +420,24 @@ class="section level2">
   labs(title = &quot;Number of Complaint in 2020 and 2021&quot;, x = &quot;Complaint Date&quot;, y = &quot;Number of Complaint&quot;, col = &quot;Year&quot;) + 
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1, color = rep(c(&quot;black&quot;, rep(&quot;transparent&quot;, each = 15))))) +
   theme(plot.title = element_text(hjust = 0.5))</code></pre>
-<p><img src="stats_files/figure-html/unnamed-chunk-3-1.png" width="672" />
-According to the information in the figure, we can know that the average
-daily complaint volume in Manhattan in 2021 has exceeded that in 2020
-since about February, and continued to the end of 2021. Moreover, the
-highest monthly complaint volume peaked in 2021, for example, from May
-to October in 2021. So we can guess that in 2020, people may be unable
-to go out due to the pandemic, leading to a decrease in the number of
-complaints.</p>
+<p><img src="stats_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<p>According to the information in the figure, we can know that
+<strong>the average daily complaint volume in Manhattan in 2021 has
+exceeded that in 2020 since about February</strong>, and continued to
+the end of 2021. Moreover, the highest monthly complaint volume peaked
+in 2021, for example, from May to October in 2021. So we can guess that
+in 2020, people may be unable to go out due to the COVID-19, leading to
+a decrease in the number of complaints.</p>
 </div>
 <div
 id="number-of-complaintsuspects-in-2020-and-2021-by-age-group-and-gender"
 class="section level2">
 <h2>Number of complaint(suspects) in 2020 and 2021 by Age Group and
 Gender:</h2>
+<p>The New York Police Department has divided the main types of suspects
+and victims in 2020-2021 into five groups according to age. They are
+respectively &lt; Age 18, 18 to 24, 25 to 44, 45 to 64, 65 and older. We
+sorted the data and got the following results：</p>
 <pre class="r"><code>complaint_1 %&gt;% 
   group_by(susp_age_group, susp_sex) %&gt;% 
   summarize(obs = n()) %&gt;% 
@@ -444,11 +446,12 @@ Gender:</h2>
   geom_line() + 
   geom_smooth() +
   labs(title = &quot;Number of complaint(suspects) in 2020 and 2021 by Age Group and Gender&quot;, x = &quot;Age group&quot;, y = &quot;Number of Complaint&quot;, col = &quot;Gender&quot;) </code></pre>
-<p><img src="stats_files/figure-html/unnamed-chunk-4-1.png" width="672" />
-As we can see from the graph, the number of suspects who were complained
-about were much larger than the number of females and unknown gender. A
-large number of the complained suspects are in the 25-44 age group, so
-we should be careful of 25-44 year old males in case of danger.</p>
+<p><img src="stats_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p>As we can see from the graph, the number of malesuspects who were
+complained about were much larger than the number of females and unknown
+gender. <strong>A large number of the complained suspects are in the
+25-44 age group</strong>, so we should be careful of 25-44 year old
+males in case of danger.</p>
 <pre class="r"><code>complaint_2 = complaint_1 %&gt;% 
   drop_na(susp_age_group, susp_sex) %&gt;% 
   group_by(susp_age_group, susp_sex) %&gt;% 
@@ -475,14 +478,19 @@ Gender:</h2>
   labs(title = &quot;Number of complaint(victims) in 2020 and 2021 by Age Group and Gender&quot;, x = &quot;Age group&quot;, y = &quot;Number of Complaint&quot;, col = &quot;Gender&quot;) </code></pre>
 <p><img src="stats_files/figure-html/unnamed-chunk-6-1.png" width="672" />
 As can be seen from the graph, the number of Manhattan victims in 2020
-and 2021 is much higher for female than male, and the victim group is
-heavily concentrated in the age group of 25-44. Therefore, women aged
-25-44 years old need to pay extra attention to their personal safety in
-Manhattan.</p>
+and 2021 is much higher for female than male, and <strong>the victim
+group is heavily concentrated in the age group of 25-44</strong>.
+Therefore, women aged 25-44 years old need to pay extra attention to
+their personal safety in Manhattan.</p>
 </div>
 <div id="prime-suspected-victim-site-in-2020-and-2021"
 class="section level2">
 <h2>Prime suspected victim site in 2020 and 2021：</h2>
+<p>The NYPD categorized the main complaint sites for 2020-2021 by type
+of location, such as banks, ATMs, apartments, streets, bus stops, cabs,
+and hospitals. <strong>We wanted to understand the locations that would
+be high frequency and turn into reported crime scenes</strong>, so we
+categorized the data to get the following results.</p>
 <pre class="r"><code>complaint_df %&gt;% 
   group_by(prem_typ_desc) %&gt;% 
   count(prem_typ_desc) %&gt;% 
@@ -494,10 +502,10 @@ class="section level2">
   labs(title = &quot;Prime suspected victim site in 2020 and 2021&quot;,x = &quot;Location &quot;, y = &quot;Frequency&quot;) +
   theme(axis.text.x = element_text(angle = 60, hjust = 1))+
   theme(plot.title = element_text(hjust = 0.5))</code></pre>
-<p><img src="stats_files/figure-html/unnamed-chunk-7-1.png" width="672" />
-Analysis of the graphs shows that the frequency of crime locations is
-home is the highest in 2020 and 2021, followed by street and public
-housing.</p>
+<p><img src="stats_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p>Analysis of the graphs shows that the frequency of crime locations is
+<strong>home</strong> ,and it is the most frequent in 2020 and 2021,
+followed by street and public housing.</p>
 </div>
 
 
