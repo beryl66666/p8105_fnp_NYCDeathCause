@@ -11,7 +11,7 @@
 
 
 
-<title>About Our Project</title>
+<title>Descriptive Statistics</title>
 
 <script src="site_libs/header-attrs-2.16/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
@@ -336,16 +336,16 @@ div.tocify {
   <a href="proposal.html">About Us</a>
 </li>
 <li>
-  <a href="descriptive_statistics.html">Descriptive Statistics</a>
+  <a href="stats.html">Descriptive Statistics</a>
 </li>
 <li>
   <a href="patterns.html">Patterns</a>
 </li>
 <li>
-  <a href="shiny_dashboard.html">Shiny App</a>
+  <a href="shiny.html">Shiny App</a>
 </li>
 <li>
-  <a href="report.html">Final Project Report</a>
+  <a href="Final_project_report.html">Final Project Report</a>
 </li>
       </ul>
     </div><!--/.nav-collapse -->
@@ -364,44 +364,19 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">About Our Project</h1>
+<h1 class="title toc-ignore">Descriptive Statistics</h1>
 
 </div>
 
 
 <pre class="r"><code>nypd_complaint_2020_data = 
-  read_csv(&quot;./data/nypd_complaint_2020_data.csv&quot;)</code></pre>
-<pre><code>## Rows: 88484 Columns: 37
-## ── Column specification ────────────────────────────────────────────────────────
-## Delimiter: &quot;,&quot;
-## chr  (21): cmplnt_to_dt, rpt_dt, ofns_desc, pd_desc, crm_atpt_cptd_cd, law_c...
-## dbl  (14): cmplnt_num, month, day, year, addr_pct_cd, ky_cd, pd_cd, jurisdic...
-## time  (2): cmplnt_fr_tm, cmplnt_to_tm
-## 
-## ℹ Use `spec()` to retrieve the full column specification for this data.
-## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
-<pre class="r"><code>nypd_complaint_2021_data = 
-  read_csv(&quot;./data/nypd_complaint_2021_data.csv&quot;)</code></pre>
-<pre><code>## Rows: 101990 Columns: 37
-## ── Column specification ────────────────────────────────────────────────────────
-## Delimiter: &quot;,&quot;
-## chr  (21): cmplnt_to_dt, rpt_dt, ofns_desc, pd_desc, crm_atpt_cptd_cd, law_c...
-## dbl  (14): cmplnt_num, month, day, year, addr_pct_cd, ky_cd, pd_cd, jurisdic...
-## time  (2): cmplnt_fr_tm, cmplnt_to_tm
-## 
-## ℹ Use `spec()` to retrieve the full column specification for this data.
-## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
-<pre class="r"><code>nypd_complaint_two_year_data = 
+  read_csv(&quot;./data/nypd_complaint_2020_data.csv&quot;)
+
+nypd_complaint_2021_data = 
+  read_csv(&quot;./data/nypd_complaint_2021_data.csv&quot;)
+
+nypd_complaint_two_year_data = 
   read_csv(&quot;./data/nypd_complaint_two_year_data.csv&quot;)</code></pre>
-<pre><code>## Rows: 190474 Columns: 37
-## ── Column specification ────────────────────────────────────────────────────────
-## Delimiter: &quot;,&quot;
-## chr  (21): cmplnt_to_dt, rpt_dt, ofns_desc, pd_desc, crm_atpt_cptd_cd, law_c...
-## dbl  (14): cmplnt_num, month, day, year, addr_pct_cd, ky_cd, pd_cd, jurisdic...
-## time  (2): cmplnt_fr_tm, cmplnt_to_tm
-## 
-## ℹ Use `spec()` to retrieve the full column specification for this data.
-## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
 <pre class="r"><code>complaint_df = nypd_complaint_two_year_data %&gt;% 
   janitor::clean_names() %&gt;% 
   filter(
@@ -422,12 +397,8 @@ div.tocify {
     vic_race = factor(vic_race),
     vic_sex = factor(vic_sex),
     boro_nm = factor(boro_nm)
-  ) </code></pre>
-<pre><code>## Warning in susp_age_group == c(&quot;&lt;18&quot;, &quot;18-24&quot;, &quot;25-44&quot;, &quot;45-64&quot;, &quot;65+&quot;): 长的对
-## 象长度不是短的对象长度的整倍数</code></pre>
-<pre><code>## Warning in vic_age_group == c(&quot;&lt;18&quot;, &quot;18-24&quot;, &quot;25-44&quot;, &quot;45-64&quot;, &quot;65+&quot;): 长的对象
-## 长度不是短的对象长度的整倍数</code></pre>
-<pre class="r"><code>complaint_1 = 
+  ) 
+complaint_1 = 
   select(complaint_df, c(&quot;month&quot;, &quot;year&quot;, &quot;day&quot;, &quot;susp_age_group&quot; , &quot;boro_nm&quot; , &quot;loc_of_occur_desc&quot;, &quot;susp_sex&quot;, &quot;vic_age_group&quot;, &quot;vic_age_group&quot;, &quot;vic_sex&quot;)) 
 complaint_1 = complaint_1 %&gt;% 
   mutate(
@@ -438,23 +409,7 @@ complaint_1 = complaint_1 %&gt;%
     month_day = factor(month_day)
     )
 complaint_1 = complaint_1&lt;-cbind(complaint_1[10],complaint_1[,1:9])
-complaint_1 = arrange_dt(complaint_1,dt)
-
-complaint_1</code></pre>
-<pre><code>##       month_day  month  year    day susp_age_group   boro_nm loc_of_occur_desc
-##          &lt;fctr&gt; &lt;char&gt; &lt;num&gt; &lt;char&gt;         &lt;fctr&gt;    &lt;fctr&gt;            &lt;char&gt;
-##    1:     01-01     01  2020     01            &lt;18 MANHATTAN            INSIDE
-##    2:     01-01     01  2020     01          18-24 MANHATTAN          FRONT OF
-##    3:     01-01     01  2020     01          25-44 MANHATTAN          FRONT OF
-##    4:     01-01     01  2020     01          25-44 MANHATTAN          FRONT OF
-##    5:     01-01     01  2020     01          25-44 MANHATTAN            INSIDE
-##   ---                                                                         
-## 4910:     12-31     12  2021     31          25-44 MANHATTAN            INSIDE
-## 4911:     12-31     12  2021     31          25-44 MANHATTAN            INSIDE
-## 4912:     12-31     12  2021     31          25-44 MANHATTAN            INSIDE
-## 4913:     12-31     12  2021     31          25-44 MANHATTAN              &lt;NA&gt;
-## 4914:     12-31     12  2021     31          45-64 MANHATTAN            INSIDE
-## 3变量没显示: [susp_sex &lt;fctr&gt;, vic_age_group &lt;fctr&gt;, vic_sex &lt;fctr&gt;]</code></pre>
+complaint_1 = arrange_dt(complaint_1,dt)</code></pre>
 <div id="compare-the-number-of-complaint-in-2020-and-2021"
 class="section level2">
 <h2>Compare the Number of Complaint in 2020 and 2021</h2>
@@ -467,25 +422,20 @@ class="section level2">
   labs(title = &quot;Number of Complaint in 2020 and 2021&quot;, x = &quot;Complaint Date&quot;, y = &quot;Number of Complaint&quot;, col = &quot;Year&quot;) + 
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1, color = rep(c(&quot;black&quot;, rep(&quot;transparent&quot;, each = 15))))) +
   theme(plot.title = element_text(hjust = 0.5))</code></pre>
-<pre><code>## `summarise()` has grouped output by &#39;month_day&#39;. You can override using the
-## `.groups` argument.</code></pre>
-<pre><code>## Warning: Vectorized input to `element_text()` is not officially supported.
-## Results may be unexpected or may change in future versions of ggplot2.</code></pre>
-<pre><code>## `geom_smooth()` using method = &#39;loess&#39; and formula &#39;y ~ x&#39;</code></pre>
-<p><img src="stats_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
-<pre class="r"><code>  viridis::scale_color_viridis()</code></pre>
-<pre><code>## &lt;ScaleContinuous&gt;
-##  Range:  
-##  Limits:    0 --    1</code></pre>
-<p>According to the information in the figure, we can know that the
-average daily complaint volume in Manhattan in 2021 has exceeded that in
-2020 since about February, and continued to the end of 2021. Moreover,
-the highest monthly complaint volume peaked in 2021, for example, from
-May to October in 2021. So we can guess that in 2020, people may be
-unable to go out due to the pandemic, leading to a decrease in the
-number of complaints.</p>
-<p>###Number of complaint(suspects) in 2020 and 2021 by Age Group and
-Gender:</p>
+<p><img src="stats_files/figure-html/unnamed-chunk-3-1.png" width="672" />
+According to the information in the figure, we can know that the average
+daily complaint volume in Manhattan in 2021 has exceeded that in 2020
+since about February, and continued to the end of 2021. Moreover, the
+highest monthly complaint volume peaked in 2021, for example, from May
+to October in 2021. So we can guess that in 2020, people may be unable
+to go out due to the pandemic, leading to a decrease in the number of
+complaints.</p>
+</div>
+<div
+id="number-of-complaintsuspects-in-2020-and-2021-by-age-group-and-gender"
+class="section level2">
+<h2>Number of complaint(suspects) in 2020 and 2021 by Age Group and
+Gender:</h2>
 <pre class="r"><code>complaint_1 %&gt;% 
   group_by(susp_age_group, susp_sex) %&gt;% 
   summarize(obs = n()) %&gt;% 
@@ -494,130 +444,28 @@ Gender:</p>
   geom_line() + 
   geom_smooth() +
   labs(title = &quot;Number of complaint(suspects) in 2020 and 2021 by Age Group and Gender&quot;, x = &quot;Age group&quot;, y = &quot;Number of Complaint&quot;, col = &quot;Gender&quot;) </code></pre>
-<pre><code>## `summarise()` has grouped output by &#39;susp_age_group&#39;. You can override using
-## the `.groups` argument.
-## `geom_smooth()` using method = &#39;loess&#39; and formula &#39;y ~ x&#39;</code></pre>
-<pre><code>## Warning in simpleLoess(y, x, w, span, degree = degree, parametric =
-## parametric, : span too small. fewer data values than degrees of freedom.</code></pre>
-<pre><code>## Warning in simpleLoess(y, x, w, span, degree = degree, parametric =
-## parametric, : pseudoinverse used at 0.98</code></pre>
-<pre><code>## Warning in simpleLoess(y, x, w, span, degree = degree, parametric =
-## parametric, : neighborhood radius 2.02</code></pre>
-<pre><code>## Warning in simpleLoess(y, x, w, span, degree = degree, parametric =
-## parametric, : reciprocal condition number 0</code></pre>
-<pre><code>## Warning in simpleLoess(y, x, w, span, degree = degree, parametric =
-## parametric, : There are other near singularities as well. 4.0804</code></pre>
-<pre><code>## Warning in predLoess(object$y, object$x, newx = if
-## (is.null(newdata)) object$x else if (is.data.frame(newdata))
-## as.matrix(model.frame(delete.response(terms(object)), : span too small. fewer
-## data values than degrees of freedom.</code></pre>
-<pre><code>## Warning in predLoess(object$y, object$x, newx = if
-## (is.null(newdata)) object$x else if (is.data.frame(newdata))
-## as.matrix(model.frame(delete.response(terms(object)), : pseudoinverse used at
-## 0.98</code></pre>
-<pre><code>## Warning in predLoess(object$y, object$x, newx = if
-## (is.null(newdata)) object$x else if (is.data.frame(newdata))
-## as.matrix(model.frame(delete.response(terms(object)), : neighborhood radius 2.02</code></pre>
-<pre><code>## Warning in predLoess(object$y, object$x, newx = if
-## (is.null(newdata)) object$x else if (is.data.frame(newdata))
-## as.matrix(model.frame(delete.response(terms(object)), : reciprocal condition
-## number 0</code></pre>
-<pre><code>## Warning in predLoess(object$y, object$x, newx = if
-## (is.null(newdata)) object$x else if (is.data.frame(newdata))
-## as.matrix(model.frame(delete.response(terms(object)), : There are other near
-## singularities as well. 4.0804</code></pre>
-<pre><code>## Warning in simpleLoess(y, x, w, span, degree = degree, parametric =
-## parametric, : span too small. fewer data values than degrees of freedom.</code></pre>
-<pre><code>## Warning in simpleLoess(y, x, w, span, degree = degree, parametric =
-## parametric, : pseudoinverse used at 0.98</code></pre>
-<pre><code>## Warning in simpleLoess(y, x, w, span, degree = degree, parametric =
-## parametric, : neighborhood radius 2.02</code></pre>
-<pre><code>## Warning in simpleLoess(y, x, w, span, degree = degree, parametric =
-## parametric, : reciprocal condition number 0</code></pre>
-<pre><code>## Warning in simpleLoess(y, x, w, span, degree = degree, parametric =
-## parametric, : There are other near singularities as well. 4.0804</code></pre>
-<pre><code>## Warning in predLoess(object$y, object$x, newx = if
-## (is.null(newdata)) object$x else if (is.data.frame(newdata))
-## as.matrix(model.frame(delete.response(terms(object)), : span too small. fewer
-## data values than degrees of freedom.</code></pre>
-<pre><code>## Warning in predLoess(object$y, object$x, newx = if
-## (is.null(newdata)) object$x else if (is.data.frame(newdata))
-## as.matrix(model.frame(delete.response(terms(object)), : pseudoinverse used at
-## 0.98</code></pre>
-<pre><code>## Warning in predLoess(object$y, object$x, newx = if
-## (is.null(newdata)) object$x else if (is.data.frame(newdata))
-## as.matrix(model.frame(delete.response(terms(object)), : neighborhood radius 2.02</code></pre>
-<pre><code>## Warning in predLoess(object$y, object$x, newx = if
-## (is.null(newdata)) object$x else if (is.data.frame(newdata))
-## as.matrix(model.frame(delete.response(terms(object)), : reciprocal condition
-## number 0</code></pre>
-<pre><code>## Warning in predLoess(object$y, object$x, newx = if
-## (is.null(newdata)) object$x else if (is.data.frame(newdata))
-## as.matrix(model.frame(delete.response(terms(object)), : There are other near
-## singularities as well. 4.0804</code></pre>
-<pre><code>## Warning in simpleLoess(y, x, w, span, degree = degree, parametric =
-## parametric, : span too small. fewer data values than degrees of freedom.</code></pre>
-<pre><code>## Warning in simpleLoess(y, x, w, span, degree = degree, parametric =
-## parametric, : pseudoinverse used at 0.98</code></pre>
-<pre><code>## Warning in simpleLoess(y, x, w, span, degree = degree, parametric =
-## parametric, : neighborhood radius 2.02</code></pre>
-<pre><code>## Warning in simpleLoess(y, x, w, span, degree = degree, parametric =
-## parametric, : reciprocal condition number 0</code></pre>
-<pre><code>## Warning in simpleLoess(y, x, w, span, degree = degree, parametric =
-## parametric, : There are other near singularities as well. 4.0804</code></pre>
-<pre><code>## Warning in predLoess(object$y, object$x, newx = if
-## (is.null(newdata)) object$x else if (is.data.frame(newdata))
-## as.matrix(model.frame(delete.response(terms(object)), : span too small. fewer
-## data values than degrees of freedom.</code></pre>
-<pre><code>## Warning in predLoess(object$y, object$x, newx = if
-## (is.null(newdata)) object$x else if (is.data.frame(newdata))
-## as.matrix(model.frame(delete.response(terms(object)), : pseudoinverse used at
-## 0.98</code></pre>
-<pre><code>## Warning in predLoess(object$y, object$x, newx = if
-## (is.null(newdata)) object$x else if (is.data.frame(newdata))
-## as.matrix(model.frame(delete.response(terms(object)), : neighborhood radius 2.02</code></pre>
-<pre><code>## Warning in predLoess(object$y, object$x, newx = if
-## (is.null(newdata)) object$x else if (is.data.frame(newdata))
-## as.matrix(model.frame(delete.response(terms(object)), : reciprocal condition
-## number 0</code></pre>
-<pre><code>## Warning in predLoess(object$y, object$x, newx = if
-## (is.null(newdata)) object$x else if (is.data.frame(newdata))
-## as.matrix(model.frame(delete.response(terms(object)), : There are other near
-## singularities as well. 4.0804</code></pre>
-<pre><code>## Warning in max(ids, na.rm = TRUE): max里所有的参数都不存在；回覆-Inf
-
-## Warning in max(ids, na.rm = TRUE): max里所有的参数都不存在；回覆-Inf
-
-## Warning in max(ids, na.rm = TRUE): max里所有的参数都不存在；回覆-Inf</code></pre>
-<p><img src="stats_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
-<pre class="r"><code>  viridis::scale_color_viridis()</code></pre>
-<pre><code>## &lt;ScaleContinuous&gt;
-##  Range:  
-##  Limits:    0 --    1</code></pre>
-<p>As we can see from the graph, the number of suspects who were
-complained about were much larger than the number of females and unknown
-gender. A large number of the complained suspects are in the 25-44 age
-group, so we should be careful of 25-44 year old males in case of
-danger.</p>
+<p><img src="stats_files/figure-html/unnamed-chunk-4-1.png" width="672" />
+As we can see from the graph, the number of suspects who were complained
+about were much larger than the number of females and unknown gender. A
+large number of the complained suspects are in the 25-44 age group, so
+we should be careful of 25-44 year old males in case of danger.</p>
 <pre class="r"><code>complaint_2 = complaint_1 %&gt;% 
   drop_na(susp_age_group, susp_sex) %&gt;% 
   group_by(susp_age_group, susp_sex) %&gt;% 
-  summarize(obs = n())</code></pre>
-<pre><code>## `summarise()` has grouped output by &#39;susp_age_group&#39;. You can override using
-## the `.groups` argument.</code></pre>
-<pre class="r"><code>  ggplot(complaint_2, aes(susp_age_group, y = obs,fill = susp_sex)) +
+  summarize(obs = n())
+  ggplot(complaint_2, aes(susp_age_group, y = obs,fill = susp_sex)) +
   geom_bar(position = &quot;dodge&quot;,stat = &quot;identity&quot;,colour = &quot;black&quot;)+
   
   labs(title = &quot;Number of complaint(suspects) in 2020 and 2021 by Age Group and Gender&quot;, x = &quot;Age group&quot;, y = &quot;Number of Complaint&quot;, col = &quot;Gender&quot;) </code></pre>
 <p><img src="stats_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
-<pre class="r"><code>  viridis::scale_color_viridis()</code></pre>
-<pre><code>## &lt;ScaleContinuous&gt;
-##  Range:  
-##  Limits:    0 --    1</code></pre>
 <p>Through the bar chart we can clearly see that the number of suspects
 is more than double the number of men than women in 2020 and 2021.</p>
-<p>###Number of complaint(victims) in 2020 and 2021 by Age Group and
-Gender:</p>
+</div>
+<div
+id="number-of-complaintvictims-in-2020-and-2021-by-age-group-and-gender"
+class="section level2">
+<h2>Number of complaint(victims) in 2020 and 2021 by Age Group and
+Gender:</h2>
 <pre class="r"><code>complaint_1 %&gt;% 
   group_by(vic_age_group, vic_sex) %&gt;% 
   summarize(obs = n()) %&gt;% 
@@ -625,81 +473,16 @@ Gender:</p>
   geom_line() + 
   geom_smooth() +
   labs(title = &quot;Number of complaint(victims) in 2020 and 2021 by Age Group and Gender&quot;, x = &quot;Age group&quot;, y = &quot;Number of Complaint&quot;, col = &quot;Gender&quot;) </code></pre>
-<pre><code>## `summarise()` has grouped output by &#39;vic_age_group&#39;. You can override using the
-## `.groups` argument.
-## `geom_smooth()` using method = &#39;loess&#39; and formula &#39;y ~ x&#39;</code></pre>
-<pre><code>## Warning in simpleLoess(y, x, w, span, degree = degree, parametric =
-## parametric, : span too small. fewer data values than degrees of freedom.</code></pre>
-<pre><code>## Warning in simpleLoess(y, x, w, span, degree = degree, parametric =
-## parametric, : pseudoinverse used at 0.98</code></pre>
-<pre><code>## Warning in simpleLoess(y, x, w, span, degree = degree, parametric =
-## parametric, : neighborhood radius 2.02</code></pre>
-<pre><code>## Warning in simpleLoess(y, x, w, span, degree = degree, parametric =
-## parametric, : reciprocal condition number 0</code></pre>
-<pre><code>## Warning in simpleLoess(y, x, w, span, degree = degree, parametric =
-## parametric, : There are other near singularities as well. 4.0804</code></pre>
-<pre><code>## Warning in predLoess(object$y, object$x, newx = if
-## (is.null(newdata)) object$x else if (is.data.frame(newdata))
-## as.matrix(model.frame(delete.response(terms(object)), : span too small. fewer
-## data values than degrees of freedom.</code></pre>
-<pre><code>## Warning in predLoess(object$y, object$x, newx = if
-## (is.null(newdata)) object$x else if (is.data.frame(newdata))
-## as.matrix(model.frame(delete.response(terms(object)), : pseudoinverse used at
-## 0.98</code></pre>
-<pre><code>## Warning in predLoess(object$y, object$x, newx = if
-## (is.null(newdata)) object$x else if (is.data.frame(newdata))
-## as.matrix(model.frame(delete.response(terms(object)), : neighborhood radius 2.02</code></pre>
-<pre><code>## Warning in predLoess(object$y, object$x, newx = if
-## (is.null(newdata)) object$x else if (is.data.frame(newdata))
-## as.matrix(model.frame(delete.response(terms(object)), : reciprocal condition
-## number 0</code></pre>
-<pre><code>## Warning in predLoess(object$y, object$x, newx = if
-## (is.null(newdata)) object$x else if (is.data.frame(newdata))
-## as.matrix(model.frame(delete.response(terms(object)), : There are other near
-## singularities as well. 4.0804</code></pre>
-<pre><code>## Warning in simpleLoess(y, x, w, span, degree = degree, parametric =
-## parametric, : span too small. fewer data values than degrees of freedom.</code></pre>
-<pre><code>## Warning in simpleLoess(y, x, w, span, degree = degree, parametric =
-## parametric, : pseudoinverse used at 0.98</code></pre>
-<pre><code>## Warning in simpleLoess(y, x, w, span, degree = degree, parametric =
-## parametric, : neighborhood radius 2.02</code></pre>
-<pre><code>## Warning in simpleLoess(y, x, w, span, degree = degree, parametric =
-## parametric, : reciprocal condition number 0</code></pre>
-<pre><code>## Warning in simpleLoess(y, x, w, span, degree = degree, parametric =
-## parametric, : There are other near singularities as well. 4.0804</code></pre>
-<pre><code>## Warning in predLoess(object$y, object$x, newx = if
-## (is.null(newdata)) object$x else if (is.data.frame(newdata))
-## as.matrix(model.frame(delete.response(terms(object)), : span too small. fewer
-## data values than degrees of freedom.</code></pre>
-<pre><code>## Warning in predLoess(object$y, object$x, newx = if
-## (is.null(newdata)) object$x else if (is.data.frame(newdata))
-## as.matrix(model.frame(delete.response(terms(object)), : pseudoinverse used at
-## 0.98</code></pre>
-<pre><code>## Warning in predLoess(object$y, object$x, newx = if
-## (is.null(newdata)) object$x else if (is.data.frame(newdata))
-## as.matrix(model.frame(delete.response(terms(object)), : neighborhood radius 2.02</code></pre>
-<pre><code>## Warning in predLoess(object$y, object$x, newx = if
-## (is.null(newdata)) object$x else if (is.data.frame(newdata))
-## as.matrix(model.frame(delete.response(terms(object)), : reciprocal condition
-## number 0</code></pre>
-<pre><code>## Warning in predLoess(object$y, object$x, newx = if
-## (is.null(newdata)) object$x else if (is.data.frame(newdata))
-## as.matrix(model.frame(delete.response(terms(object)), : There are other near
-## singularities as well. 4.0804</code></pre>
-<pre><code>## Warning in max(ids, na.rm = TRUE): max里所有的参数都不存在；回覆-Inf
-
-## Warning in max(ids, na.rm = TRUE): max里所有的参数都不存在；回覆-Inf</code></pre>
-<p><img src="stats_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
-<pre class="r"><code>   viridis::scale_color_viridis()</code></pre>
-<pre><code>## &lt;ScaleContinuous&gt;
-##  Range:  
-##  Limits:    0 --    1</code></pre>
-<p>As can be seen from the graph, the number of Manhattan victims in
-2020 and 2021 is much higher for female than male, and the victim group
-is heavily concentrated in the age group of 25-44. Therefore, women aged
+<p><img src="stats_files/figure-html/unnamed-chunk-6-1.png" width="672" />
+As can be seen from the graph, the number of Manhattan victims in 2020
+and 2021 is much higher for female than male, and the victim group is
+heavily concentrated in the age group of 25-44. Therefore, women aged
 25-44 years old need to pay extra attention to their personal safety in
 Manhattan.</p>
-<p>###Prime suspected victim site in 2020 and 2021：</p>
+</div>
+<div id="prime-suspected-victim-site-in-2020-and-2021"
+class="section level2">
+<h2>Prime suspected victim site in 2020 and 2021：</h2>
 <pre class="r"><code>complaint_df %&gt;% 
   group_by(prem_typ_desc) %&gt;% 
   count(prem_typ_desc) %&gt;% 
@@ -711,13 +494,8 @@ Manhattan.</p>
   labs(title = &quot;Prime suspected victim site in 2020 and 2021&quot;,x = &quot;Location &quot;, y = &quot;Frequency&quot;) +
   theme(axis.text.x = element_text(angle = 60, hjust = 1))+
   theme(plot.title = element_text(hjust = 0.5))</code></pre>
-<pre><code>## `geom_smooth()` using method = &#39;loess&#39; and formula &#39;y ~ x&#39;</code></pre>
-<p><img src="stats_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
-<pre class="r"><code> viridis::scale_color_viridis()</code></pre>
-<pre><code>## &lt;ScaleContinuous&gt;
-##  Range:  
-##  Limits:    0 --    1</code></pre>
-<p>Analysis of the graphs shows that the frequency of crime locations is
+<p><img src="stats_files/figure-html/unnamed-chunk-7-1.png" width="672" />
+Analysis of the graphs shows that the frequency of crime locations is
 home is the highest in 2020 and 2021, followed by street and public
 housing.</p>
 </div>

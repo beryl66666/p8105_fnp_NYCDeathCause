@@ -6,13 +6,13 @@ navbar:
     - text: "About Us"
       href: proposal.html
     - text: "Descriptive Statistics"
-      href: descriptive_statistics.html
+      href: stats.html
     - text: "Patterns"
       href: patterns.html  
     - text: "Shiny App"
-      href: shiny_dashboard.html
+      href: shiny.html
     - text: "Final Project Report"
-      href: report.html
+      href: Final_project_report.html
 output:
   html_document:
     theme: yeti

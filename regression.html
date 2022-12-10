@@ -11,7 +11,7 @@
 
 
 
-<title>About Our Project</title>
+<title>Statistical Analysis</title>
 
 <script src="site_libs/header-attrs-2.16/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
@@ -36,6 +36,8 @@
 <script src="site_libs/navigation-1.1/codefolding.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<script src="site_libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="site_libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -336,16 +338,16 @@ div.tocify {
   <a href="proposal.html">About Us</a>
 </li>
 <li>
-  <a href="stats.html">Descriptive Statistics</a>
+  <a href="descriptive_statistics.html">Descriptive Statistics</a>
 </li>
 <li>
-  <a href="patterns.html">Patterns</a>
+  <a href="Comparing_Patterns_2020_vs_2021.html">Patterns</a>
 </li>
 <li>
-  <a href="shiny.html">Shiny App</a>
+  <a href="shiny_dashboard.html">Shiny App</a>
 </li>
 <li>
-  <a href="Final_project_report.html">Final Project Report</a>
+  <a href="report.html">Final Project Report</a>
 </li>
       </ul>
     </div><!--/.nav-collapse -->
@@ -364,71 +366,141 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">About Our Project</h1>
+<h1 class="title toc-ignore">Statistical Analysis</h1>
 
 </div>
 
 
-<div id="little-about-our-project" class="section level3">
-<h3>Little About Our Project</h3>
-<p><em>Insert Screencast here</em></p>
+<div id="test-independence-between-victim-sex-and-suspect-sex"
+class="section level3">
+<h3>Test Independence between Victim Sex and Suspect Sex</h3>
+<p>Now we want to test whether there is a relationship between the
+victim sex and suspect sex, and we are going to use chi-square test. The
+columns indicate the</p>
+<pre class="r"><code>sex_data = read_csv(&quot;./data/nypd_complaint_two_year_data.csv&quot;) %&gt;% 
+  select(vic_sex, susp_sex) %&gt;% 
+  na.omit() 
+
+vF_sF = sex_data %&gt;% 
+  filter(vic_sex == &quot;F&quot;) %&gt;% 
+  filter(susp_sex == &quot;F&quot;) %&gt;% 
+  count()
+  
+vM_sF = sex_data %&gt;% 
+  filter(vic_sex == &quot;M&quot;) %&gt;% 
+  filter(susp_sex == &quot;F&quot;) %&gt;% 
+  count()
+  
+vF_sM =sex_data %&gt;% 
+  filter(vic_sex == &quot;F&quot;) %&gt;% 
+  filter(susp_sex == &quot;M&quot;) %&gt;% 
+  count()
+  
+vM_sM = sex_data %&gt;% 
+  filter(vic_sex == &quot;M&quot;) %&gt;% 
+  filter(susp_sex == &quot;M&quot;) %&gt;% 
+  count()
+
+sex = matrix(c(9850,6199,29030, 26307), ncol = 2, byrow = T) 
+colnames(sex) = c(&quot;Female&quot;,&quot;Male&quot;)
+rownames(sex) = c(&quot;Female&quot;,&quot;Male&quot;)
+sex %&gt;% 
+  kbl(caption = &quot;Horizontal: Victim, Vertical: Suspect&quot;, ) %&gt;% 
+  kable_classic(full_width = F, html_font = &quot;Cambria&quot;)</code></pre>
+<table class=" lightable-classic" style="font-family: Cambria; width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>
+Horizontal: Victim, Vertical: Suspect
+</caption>
+<thead>
+<tr>
+<th style="text-align:left;">
+</th>
+<th style="text-align:right;">
+Female
+</th>
+<th style="text-align:right;">
+Male
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Female
+</td>
+<td style="text-align:right;">
+9850
+</td>
+<td style="text-align:right;">
+6199
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Male
+</td>
+<td style="text-align:right;">
+29030
+</td>
+<td style="text-align:right;">
+26307
+</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Ho: sex of victim and sex of suspect are independent</li>
+<li>Ha: sex of victim and sex of suspect are not independent</li>
+</ul>
+<pre class="r"><code>test_sex = matrix(c(9850,6199,29030, 26307), ncol = 2, byrow = T) 
+
+chisq.test(test_sex)</code></pre>
+<pre><code>## 
+##  Pearson&#39;s Chi-squared test with Yates&#39; continuity correction
+## 
+## data:  test_sex
+## X-squared = 398.25, df = 1, p-value &lt; 2.2e-16</code></pre>
+<p>As we can see that the p-value of chi-square test is much smaller
+than alpha = 0.05, we <strong>reject H0</strong>. We can conclude that
+sex of victim and sex of suspect are <em>not independent</em> at 0.05
+significance level.</p>
 </div>
-<div id="general-overview" class="section level3">
-<h3>General Overview</h3>
-<p>This website includes the complaints patterns across NYC changed
-during the pandemic that we use data analytically algorithms and plots
-to see what variables are closely related to NYPD complaints and more
-importantly, the changes of complaint during the pandemic time is
-investigated. The data set described complaint number across different
-time periods, and some other key variables include the location in which
-the incident occurred, Victim’s Age Group, Victim’s Race and Victim’s
-Sex. Our whole date set total has 7,830,000 observations and 35
-variables. Since we mainly focus on the complaints during pandemic
-within these two years, we abstract the data into two separate data set:
-containing the the complaints for the year 2020 and the other containing
-the complaints for the year 2021.</p>
-<p><strong>For <a href="proposal.html">About Us</a>, we have our
-proposal listed:</strong></p>
-<ul>
-<li>Group members</li>
-<li>The motivation for this project</li>
-<li>The intended final products</li>
-<li>The anticipated data sources</li>
-<li>The planned analyses/visualizations/coding challenges</li>
-<li>The planned timeline</li>
-</ul>
-<p><strong>For <a href="stats.html">Descriptive Statistics</a>, we
-have</strong></p>
-<ul>
-<li><p>Compare the Number of Complaint in Manhattan 2020 and
-2021</p></li>
-<li><p>Number of complaint(suspects) in Manhattan 2020 and 2021 by Age
-Group and Gender</p></li>
-<li><p>Number of complaint(victims) in Manhattan 2020 and 2021 by Age
-Group and Gender</p></li>
-<li><p>Prime suspected victim site in 2020 and 2021 <strong>For <a
-href="patterns.html">Patterns</a>, we have</strong></p></li>
-<li><p>Number of Complaints in Manhattan 2020 vs 2021</p></li>
-<li><p>Number of Complaints by Types 2020 vs 2021</p></li>
-<li><p>Types of Complaints 2020 vs 2021</p></li>
-<li><p>Complaint Locations in Manhattan 2020 vs 2021</p></li>
-</ul>
-<p><strong>For <a href="shiny.html">Shiny App</a>, we have</strong></p>
-<ul>
-<li></li>
-</ul>
-<p><strong>For <a href="Final_project_report.html">Final Project
-Report</a></strong></p>
-<ul>
-<li></li>
-</ul>
-<p><strong>Collaborators</strong></p>
-<ul>
-<li>Binyue Hu bh2849</li>
-<li>Hengxuan Ma hm2900</li>
-<li>Xin Ren xr2160</li>
-<li>Sophie Chen jc5924</li>
-</ul>
+<div id="test-independence-between-victim-sex-and-suspect-sex-1"
+class="section level3">
+<h3>Test Independence between Victim Sex and Suspect Sex</h3>
+<pre class="r"><code>race_data = read_csv(&quot;./data/nypd_complaint_two_year_data.csv&quot;) %&gt;% 
+  group_by(vic_race, susp_race) %&gt;% 
+  summarise(n()) %&gt;% 
+  na.omit() 
+
+table(race_data$vic_race, race_data$susp_race)</code></pre>
+<pre><code>##                                 
+##                                  AMERICAN INDIAN/ALASKAN NATIVE
+##   AMERICAN INDIAN/ALASKAN NATIVE                              1
+##   ASIAN / PACIFIC ISLANDER                                    1
+##   BLACK                                                       1
+##   BLACK HISPANIC                                              1
+##   UNKNOWN                                                     1
+##   WHITE                                                       1
+##   WHITE HISPANIC                                              1
+##                                 
+##                                  ASIAN / PACIFIC ISLANDER BLACK BLACK HISPANIC
+##   AMERICAN INDIAN/ALASKAN NATIVE                        1     1              1
+##   ASIAN / PACIFIC ISLANDER                              1     1              1
+##   BLACK                                                 1     1              1
+##   BLACK HISPANIC                                        1     1              1
+##   UNKNOWN                                               1     1              1
+##   WHITE                                                 1     1              1
+##   WHITE HISPANIC                                        1     1              1
+##                                 
+##                                  UNKNOWN WHITE WHITE HISPANIC
+##   AMERICAN INDIAN/ALASKAN NATIVE       1     1              1
+##   ASIAN / PACIFIC ISLANDER             1     1              1
+##   BLACK                                1     1              1
+##   BLACK HISPANIC                       1     1              1
+##   UNKNOWN                              1     1              1
+##   WHITE                                1     1              1
+##   WHITE HISPANIC                       1     1              1</code></pre>
 </div>
 
 
