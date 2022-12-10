@@ -5,9 +5,6 @@ date: "2022-12-09"
 output: github_document
 ---
 
-```{r include= FALSE}
-```
-
 # Motivation 
 
 (Motivation: Provide an overview of the project goals and motivation)
@@ -16,8 +13,22 @@ Crime rates in New York City have been recorded since at least the 1800s. The hi
 
 It is the fact that all of our team members have heard crime alerts from NYPD frequently in the past year. Although we believe that New York City is one of the safest big cities in the United States according to the FBI, we have been so curious about the detailed information of historical crimes happened in the New York City, especially in the pattern where we are currently living.
 
-Since in recent years the COVID-19 has brought huge effects to people's life, We are more interested in the changes of complaint numbers each year from 2020 to 2021, especially in the Manhattan borough. In this project, we intended to explore the general information about complaint data in the past two years, and to figure out if COVID-19 influenced the rate or other attributes of crimes.
+Since in recent years the COVID-19 has brought huge effects to people's life, We are more interested in the changes of complaint each year from 2020 to 2021, especially in the Manhattan borough. In this project, we intended to explore the general information about complaint data in the past two years, and to figure out if COVID-19 influenced the rate or other attributes of crimes.
 
-Thus, Our project aims to examine NYPD complaint data from January 2020 to December 2021 to understand the impact of COVID-19 on complaints (crimes) in Manhatten. 
+Thus, Our project aims to examine NYPD complaint data from January 2020 to December 2021 to understand the impact of COVID-19 on complaints (crimes) in Manhattan. 
+
+# Related Work
+
+(Related work: Anything that inspired you, such as a paper, a web site, or something we discussed in class.)
+
+![](./data/NYC_Crime_Map_2021_2022.png)
+
+*Pictured resource: https://maps.nyc.gov/crime/*
+
+Inspired by our regularly received crime alerts from Columbia University Department of Public Safety, when we mentioned the crime rate of NYC, all of our teammates showed great interest. After some initial exploring, we successfully found that resources about NYC crime and complaint data are sufficient and detailed. 
+
+Based on the information we have gathered, we decided to conduct our analysis on the most recently published NYPD Compliant Data, which contained plenty of attributes correlated with each complaint of crime happened and recorded in the New York City.
+
+
 
 
