@@ -32,7 +32,7 @@ This website includes the complaints patterns across NYC changed during the pand
 
 * 
 
-**For [Shiny App](shiny_dashboard.html), we have**
+**For [Shiny App](shiny.html), we have**
 
 *
 
