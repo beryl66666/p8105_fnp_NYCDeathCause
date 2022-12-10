@@ -8,7 +8,7 @@ navbar:
     - text: "Descriptive Statistics"
       href: descriptive_statistics.html
     - text: "Patterns"
-      href: patterns.html  
+      href: Comparing Patterns 2020 vs 2021.html  
     - text: "Shiny App"
       href: shiny_dashboard.html
     - text: "Final Project Report"
