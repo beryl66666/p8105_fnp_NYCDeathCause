@@ -11,7 +11,7 @@
 
 
 
-<title>Proposal</title>
+<title>About us</title>
 
 <script src="site_libs/header-attrs-2.16/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
@@ -30,6 +30,7 @@
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
 
@@ -223,6 +224,9 @@ $(document).ready(function () {
 </style>
 
 <!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
 
 
 
@@ -274,15 +278,23 @@ $(document).ready(function () {
 
 <div id="header">
 
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
 
 
-<h1 class="title toc-ignore">Proposal</h1>
+
+<h1 class="title toc-ignore">About us</h1>
 
 </div>
 
 
-<div id="group-member" class="section level3">
-<h3>Group member</h3>
+<div id="group-members" class="section level3">
+<h3>Group members</h3>
 <ul>
 <li>Binyue Hu bh2849</li>
 <li>Hengxuan Ma hm2900</li>
@@ -290,43 +302,30 @@ $(document).ready(function () {
 <li>Sophie Chen jc5924</li>
 </ul>
 </div>
-<div id="tentative-project-title" class="section level3">
-<h3>Tentative project title</h3>
-<ul>
-<li>NYCPD Complaint Data Historic</li>
-</ul>
-</div>
-<div id="the-motivation-for-the-project" class="section level3">
-<h3>The motivation for the project</h3>
-<ul>
-<li><p>It is the fact that all of our team members have heard crime
-alerts from NYPD frequently. We have been so curious about the detailed
-information of historical crimes happened in the New York City,
-especially in the pattern where we are currently living.</p></li>
-<li><p>Since in recent years COVID-19 brought huge effects to people’s
-life, We are interested in the changes of complaint numbers each year
-from 2020 to 2021, especially in the Manhattan borough. In this project,
-we intended to explore the general information about complaint data in
-the past two years, and to figure out if COVID-19 influenced the rate or
-other attributes of crimes.</p></li>
-</ul>
+<div id="the-motivation-for-this-project" class="section level3">
+<h3>The motivation for this project</h3>
+<p>Since gun violence and various incidents happen pretty frequently
+during pandemic in NYC and we are currently living in such environment.
+So we are wondering about NYPD’s complaints during pandemic and we are
+also interested in the changing trend in complaints within those two
+years so that we can get a sense of understanding how safe or dangerous
+the environment we surrounded across NYC changed during</p>
 </div>
 <div id="the-intended-final-products" class="section level3">
 <h3>The intended final products</h3>
 <ul>
-<li>A report summarizing analysis results on the comparisons of NYPD
-compliant data between 2020 and 2021.</li>
-<li>A dashboard providing tips and recommendations for physical and
-mental health, and some details about the relationship between leading
-causes and deaths will be given.</li>
-<li>An “instagram filter” has random death causes popping up with
-recommended algorithms used.</li>
+<li>A report summarizing analysis results on NYPD’s complaints, and
+comparing the complaint cases across NYC changed during the
+pandemic.</li>
+<li>A shiny dashboard providing interactive graphics and web-like
+applications for people to interact with and details about the
+relationship between complaints and other variables will be given.</li>
 </ul>
 </div>
 <div id="the-anticipated-data-sources" class="section level3">
 <h3>The anticipated data sources</h3>
 <ul>
-<li>NYCPD Complaint Data Historic <a
+<li>NYPD Complaint Data Historic <a
 href="https://data.cityofnewyork.us/Public-Safety/NYPD-Complaint-Data-Historic/qgea-i56i"
 class="uri">https://data.cityofnewyork.us/Public-Safety/NYPD-Complaint-Data-Historic/qgea-i56i</a></li>
 </ul>
@@ -335,12 +334,11 @@ class="uri">https://data.cityofnewyork.us/Public-Safety/NYPD-Complaint-Data-Hist
 class="section level3">
 <h3>The planned analyses/visualizations/coding challenges</h3>
 <ul>
-<li>The biggest challenge is that the raw data is too large to be
-analyzed and uploaded</li>
-<li>Comparisons between NYPD complaint data in different years based on
-plenty of variables are difficult</li>
-<li>Difficulties in clearing the data and selecting meaningful
-information</li>
+<li>The biggest challenge is that there is too little reference
+data</li>
+<li>Difficulties in comparing different data tables and clear the
+data</li>
+<li>The causes of complaint are too widely distribution</li>
 </ul>
 </div>
 <div id="the-planned-timeline" class="section level3">
@@ -450,6 +448,11 @@ $(document).ready(function () {
 </script>
 
 <!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
 
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
