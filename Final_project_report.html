@@ -261,7 +261,7 @@ $(document).ready(function () {
   <a href="descriptive_statistics.html">Descriptive Statistics</a>
 </li>
 <li>
-  <a href="Comparing_Patterns_2020_vs_2021.html">Patterns</a>
+  <a href="patterns.html">Patterns</a>
 </li>
 <li>
   <a href="shiny_dashboard.html">Shiny App</a>
@@ -310,6 +310,9 @@ rate or other attributes of crimes.</p>
 <p>Thus, Our project aims to examine NYPD complaint data from January
 2020 to December 2021 to understand the impact of COVID-19 on complaints
 (crimes) in Manhattan.</p>
+<p><em>Reference: <a
+href="https://en.wikipedia.org/wiki/Crime_in_New_York_City"
+class="uri">https://en.wikipedia.org/wiki/Crime_in_New_York_City</a></em></p>
 </div>
 <div id="related-work" class="section level1">
 <h1>Related Work</h1>
@@ -402,38 +405,13 @@ interest (i.e., strict the pattern to where we live)</li>
 <strong>nypd_complaint_two_year_data</strong> for further analysis</li>
 </ul>
 <pre class="r"><code>nypd_complaint_2020_data = 
-  read_csv(&quot;./data/nypd_complaint_2020_data.csv&quot;)</code></pre>
-<pre><code>## Rows: 88484 Columns: 37
-## ── Column specification ────────────────────────────────────────────────────────
-## Delimiter: &quot;,&quot;
-## chr  (21): cmplnt_to_dt, rpt_dt, ofns_desc, pd_desc, crm_atpt_cptd_cd, law_c...
-## dbl  (14): cmplnt_num, month, day, year, addr_pct_cd, ky_cd, pd_cd, jurisdic...
-## time  (2): cmplnt_fr_tm, cmplnt_to_tm
-## 
-## ℹ Use `spec()` to retrieve the full column specification for this data.
-## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
-<pre class="r"><code>nypd_complaint_2021_data = 
-  read_csv(&quot;./data/nypd_complaint_2021_data.csv&quot;)</code></pre>
-<pre><code>## Rows: 101990 Columns: 37
-## ── Column specification ────────────────────────────────────────────────────────
-## Delimiter: &quot;,&quot;
-## chr  (21): cmplnt_to_dt, rpt_dt, ofns_desc, pd_desc, crm_atpt_cptd_cd, law_c...
-## dbl  (14): cmplnt_num, month, day, year, addr_pct_cd, ky_cd, pd_cd, jurisdic...
-## time  (2): cmplnt_fr_tm, cmplnt_to_tm
-## 
-## ℹ Use `spec()` to retrieve the full column specification for this data.
-## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
-<pre class="r"><code>nypd_complaint_two_year_data = 
+  read_csv(&quot;./data/nypd_complaint_2020_data.csv&quot;)
+
+nypd_complaint_2021_data = 
+  read_csv(&quot;./data/nypd_complaint_2021_data.csv&quot;)
+
+nypd_complaint_two_year_data = 
   read_csv(&quot;./data/nypd_complaint_two_year_data.csv&quot;)</code></pre>
-<pre><code>## Rows: 190474 Columns: 37
-## ── Column specification ────────────────────────────────────────────────────────
-## Delimiter: &quot;,&quot;
-## chr  (21): cmplnt_to_dt, rpt_dt, ofns_desc, pd_desc, crm_atpt_cptd_cd, law_c...
-## dbl  (14): cmplnt_num, month, day, year, addr_pct_cd, ky_cd, pd_cd, jurisdic...
-## time  (2): cmplnt_fr_tm, cmplnt_to_tm
-## 
-## ℹ Use `spec()` to retrieve the full column specification for this data.
-## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
 <p>After we obtained the three data sets above,
 <strong>nypd_complaint_2020_data</strong> had 88,484 observations of
 complaint data and <strong>nypd_complaint_2021_data</strong> had 101,990
@@ -468,6 +446,226 @@ Coordinate System, WGS 1984, decimal degrees (EPSG 4326)</li>
 <li><code>vic_race</code>: Victim’s Race Description</li>
 <li><code>vic_sex</code>: Victim’s Sex Description</li>
 </ul>
+</div>
+<div id="exploratory-analysis" class="section level1">
+<h1>Exploratory Analysis</h1>
+<p>(Exploratory analysis: Visualizations, summaries, and exploratory
+statistical analyses. Justify the steps you took, and show any major
+changes to your ideas.)</p>
+<div id="descriptive-statistics" class="section level3">
+<h3>Descriptive Statistics:</h3>
+</div>
+<div id="comparisons-of-complaints-in-manhattan-between-2020-vs-2021"
+class="section level3">
+<h3>Comparisons of complaints in Manhattan between 2020 vs 2021:</h3>
+<p>As part of our research body, we conducted several comparisons
+between the two years based on our data sets.</p>
+<p><strong>Number of Complaints in Manhattan 2020 vs 2021:</strong>
+Since 2020 was the year that COVID-19 had almost the most breakouts
+which restricted people’s social activities, while in 2021 people were
+more free from the negative effect from COVID-19, there would be
+corresponding changes on the complaint and crime rates. According to the
+comparison we made based on the number of complaints in 2020 and 2021,
+we confirmed our assumption. The number of complaints in Manhattan of
+2021 is more than in 2020 in most months. One of the reasonable
+explanation may be the <strong>the affect of COVID-19 home isolation
+policy</strong>, which caused a declined number of people in social
+activities and resulted in the decreasing of number of complaints in
+2020 compared to 2021.</p>
+<pre class="r"><code>complaint_plot = read_csv(&quot;./data/nypd_complaint_two_year_data.csv&quot;) %&gt;% 
+  group_by(month,year) %&gt;% 
+  summarize(obs = n()) %&gt;% 
+  ggplot(aes(x = month, y = obs, group = year, color = as.factor(year))) + 
+  geom_point() +
+  geom_line() +
+  labs(x = &quot;Month&quot;, y = &quot;Number of Complaints in Manhattan&quot;, col = &quot;Year&quot;) +
+  ggtitle(&quot;Number of Complaints in Manhattan 2020 vs 2021&quot;) +
+  theme(axis.text.x = element_text(angle = 60, vjust = 0.2, hjust = 0.5)) +
+  scale_x_continuous(
+    breaks = c(1,2,3,4,5,6,7,8,9,10,11,12), 
+    labels = c(&quot;Jan&quot;,&quot;Feb&quot;,&quot;Mar&quot;,&quot;Apr&quot;,&quot;May&quot;,&quot;Jun&quot;,&quot;Jul&quot;,&quot;Aug&quot;,&quot;Sep&quot;,&quot;Oct&quot;,&quot;Nov&quot;,&quot;Dec&quot;)) +
+  viridis::scale_color_viridis(discrete = T)
+
+complaint_plot </code></pre>
+<p><img src="Final_project_report_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<p><strong>Number of Complaints by Types 2020 vs 2021:</strong> In order
+to know more details about the types of complaints while making
+comparisons between year 2020 and 2021, we specified the number of each
+types of compliant and selected those types with a number over
+<strong>1000</strong> in both years as effective types of complaint in
+our comparison. The resulted types were classified by the NYPD as
+variable <code>ofns_desc</code> in the data set and listed as
+following:</p>
+<ul>
+<li>PETIT LARCENY</li>
+<li>HARRASSMENT</li>
+<li>GRAND LARCENY</li>
+<li>ASSAULT 3 &amp; RELATED OFFENSES</li>
+<li>CRIMINAL MISCHIEF &amp; RELATED OF</li>
+<li>FELONY ASSAULT</li>
+<li>BURGLARY</li>
+<li>ROBBERY</li>
+<li>OFF. AGNST PUB ORD SENSBLTY &amp;</li>
+<li>DANGEROUS DRUGS</li>
+<li>MISCELLANEOUS PENAL LAW</li>
+<li>OFFENSES AGAINST PUBLIC ADMINI</li>
+<li>GRAND LARCENY OF MOTOR VEHICLE</li>
+</ul>
+<p>AS a result, that the numbers of complaints in 2021 for almost all
+types were larger than in 2020. However, when we conducted further
+comparisons on the proportion of different types of complaints in 2020
+and 2021, the proportion of each type didn’t change a lot from 2020 to
+2021. In both two years, <strong>PETIT LARCENY</strong>,
+<strong>HARRASSMENT</strong> and <strong>GRAND LARCENY</strong> were the
+main types of complaints.</p>
+<pre class="r"><code>complaint_type_plot = read_csv(&quot;./data/nypd_complaint_two_year_data.csv&quot;)  %&gt;% 
+  group_by(ofns_desc, year) %&gt;% 
+  summarise(obs = n()) %&gt;% 
+  filter(obs &gt; 1000) %&gt;% 
+  filter(ofns_desc != &quot;SEX CRIMES&quot;) %&gt;% 
+  filter(ofns_desc != &quot;VEHICLE AND TRAFFIC LAWS&quot;) %&gt;% 
+  arrange(desc(obs)) %&gt;% 
+  ggplot(aes(x = ofns_desc, y = obs, fill = as.factor(year))) +
+  geom_bar(stat = &quot;identity&quot;,position=position_dodge()) +
+  geom_text(aes(label=obs), vjust=1.6, color=&quot;white&quot;,
+            position = position_dodge(0.9), size=1.5) +
+  xlab(&quot;Types pf Complaints&quot;) + ylab(&quot;Number of Complaints&quot;) + 
+  ggtitle(&quot;Number of Complaints by Types 2020 vs 2021&quot;) + 
+  theme(axis.text.x = element_text(angle = 60, vjust = 1, hjust = 1, size = 5)) +
+  scale_fill_discrete(name = &quot;Year&quot;)+
+  viridis::scale_color_viridis(discrete = T)
+
+complaint_type_plot</code></pre>
+<p><img src="Final_project_report_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<pre class="r"><code>type_pie_2020 = read_csv(&quot;./data/nypd_complaint_2020_data.csv&quot;)  %&gt;% 
+  group_by(ofns_desc) %&gt;% 
+  summarise(obs = n()) %&gt;% 
+  filter(obs &gt; 1000) %&gt;% 
+  arrange(desc(obs)) %&gt;% 
+  mutate(prop = round(obs/sum(obs)*100,2)) %&gt;% 
+  ggplot(aes(x = &quot;&quot;, y = prop, fill = ofns_desc)) +
+  geom_bar(stat = &quot;identity&quot;,width=1, color = &quot;white&quot;)  +
+  coord_polar(&quot;y&quot;, start=0) +
+  geom_text(aes(label = paste0(prop, &quot;%&quot;)), position = position_stack(vjust=0.5), size = 2) +
+  labs(x = NULL, y = NULL, title = &quot;2020&quot;)  +  
+  theme(legend.title = element_text(size=10),legend.key.size = unit(0.5, &#39;cm&#39;))+
+  theme(plot.margin = margin(0.1,0.1,0.1,0.1, &quot;cm&quot;))+
+  scale_fill_discrete(name = &quot;Complaint Type&quot;) +
+  viridis::scale_color_viridis(discrete = F)
+
+type_pie_2021 = read_csv(&quot;./data/nypd_complaint_2021_data.csv&quot;)  %&gt;% 
+  group_by(ofns_desc) %&gt;% 
+  summarise(obs = n()) %&gt;% 
+  filter(obs &gt; 1000) %&gt;% 
+  arrange(desc(obs)) %&gt;% 
+  filter(ofns_desc != &quot;SEX CRIMES&quot;) %&gt;% 
+  filter(ofns_desc != &quot;VEHICLE AND TRAFFIC LAWS&quot;) %&gt;% 
+  mutate(prop = round(obs/sum(obs)*100,2)) %&gt;% 
+  ggplot(aes(x = &quot;&quot;, y = prop, fill = ofns_desc)) +
+  geom_bar(stat = &quot;identity&quot;,width=1, color = &quot;white&quot;) +
+  theme(legend.title = element_text(size=10),legend.key.size = unit(0.5, &#39;cm&#39;))+
+  theme(plot.margin = margin(0.1,0.1,0.1,0.1, &quot;cm&quot;))+
+  coord_polar(&quot;y&quot;, start=0) +
+  geom_text(aes(label = paste0(prop, &quot;%&quot;)), position = position_stack(vjust=0.5), size = 2) +
+  labs(x = NULL, y = NULL, title = &quot;2021&quot;, fill = &quot;Complaint Type&quot; ) +
+  viridis::scale_color_viridis(discrete = F)
+
+par(mfrow = c(2,1))
+type_pie_2020</code></pre>
+<p><img src="Final_project_report_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<pre class="r"><code>type_pie_2021</code></pre>
+<p><img src="Final_project_report_files/figure-html/unnamed-chunk-5-2.png" width="672" /></p>
+<p><strong>Complaint Locations in Manhattan 2020 vs 2021:</strong> After
+analyzing the number and types of complaints, we became more interested
+in whether there is any difference in the distributions of complaint’s
+specific locations in Manhattan between 2020 and 2021. If complaints
+occurred in 2020 had a larger density than in 2021? Which patterns were
+the most complaints occurred in each year? Was there any correlation
+between the distribution of complaints and the COVID-19 status in 2020
+and 2021?</p>
+<p>We took locations that had <strong>10</strong> complaints and above
+as the effective locations and made comparisons based on monthly
+complaints in Manhattan in 2020 and 2021. Based on the results, we found
+that the overall <strong>complaint density of 2021 is larger</strong>
+than that in the 2020, especially in April, May and June. This had
+confirmed our assumption that the recovery of social activities could
+bring larger density of complaints. Meanwhile, we figured out that the
+most complaints repeated <strong>in the upper city</strong> of Manhattan
+in both of the two years.</p>
+<pre class="r"><code>complaint_data = read_csv(&quot;./data/nypd_complaint_two_year_data.csv&quot;) %&gt;% 
+  mutate(month = as.integer(month)) %&gt;% 
+  as_tibble(map_data(&quot;state&quot;)) 
+
+
+complaint_month_2020 = read_csv(&quot;./data/nypd_complaint_2020_data.csv&quot;) %&gt;% 
+  mutate(month = as.integer(month)) %&gt;% 
+  group_by(month, latitude, longitude) %&gt;% 
+  summarise(obs = n()) %&gt;% 
+  filter(obs &gt;= 10)
+
+complaint_month_2021 = read_csv(&quot;./data/nypd_complaint_2021_data.csv&quot;) %&gt;% 
+  mutate(month = as.integer(month)) %&gt;% 
+  group_by(month, latitude, longitude) %&gt;% 
+  summarise(obs = n()) %&gt;% 
+  filter(obs &gt;= 10)
+  
+map_2020 = 
+  ggplot() +
+  geom_point(data = complaint_month_2020, aes(x = longitude, y = latitude, size = 0.01, color = obs), alpha = 0.5) +
+  scale_size(range = c(1,8)) +
+  transition_time(month) +
+    labs(
+    title = &quot;2020 Month: {frame_time}&quot;, 
+    color = &quot;Complaints&quot;,
+    x = &quot;Longitude&quot;,
+    y = &quot;Latitude&quot;) +
+  enter_grow() +
+  exit_shrink() +
+  ease_aes(&quot;sine-in-out&quot;) +
+  coord_cartesian(ylim = c(40.68, 40.87), xlim = c(-74.02, -73.925)) +
+   viridis::scale_color_viridis()
+
+map_2021 = 
+  ggplot() +
+  geom_point(data = complaint_month_2021, aes(x = longitude, y = latitude, size = 0.01, color = obs), alpha = 0.5) +
+  scale_size(range = c(1,8)) +
+  transition_time(month) +
+    labs(
+    title = &quot;2021 Month: {frame_time}&quot;, 
+    color = &quot;complaints&quot;,
+    x = &quot;Longitude&quot;,
+    y = &quot;Latitude&quot;) +
+  theme(legend.position = &quot;none&quot;) +
+  enter_grow() +
+  exit_shrink() +
+  ease_aes(&quot;sine-in-out&quot;) +
+  coord_cartesian(ylim = c(40.68, 40.87), xlim = c(-74.02, -73.925)) +
+   viridis::scale_color_viridis()
+
+
+map_gif_2020 = image_read(animate(map_2020, duration = 12, fps = 1, width = 400, height = 400))
+map_gif_2021 = image_read(animate(map_2021, duration = 12, fps = 1, width = 400, height = 400))
+
+new_month_gif = image_append(c(map_gif_2020[1], map_gif_2021[1]))
+for (i in 2:12) {
+  combined_month = image_append(c(map_gif_2020[i], map_gif_2021[i]))
+  new_month_gif = c(new_month_gif, combined_month)
+}
+
+new_month_gif</code></pre>
+<p><img
+src="Final_project_report_files/figure-html/unnamed-chunk-6-1.gif" /><!-- --></p>
+</div>
+</div>
+<div id="additional-analysis" class="section level1">
+<h1>Additional Analysis</h1>
+<p>(Additional analysis: If you undertake formal statistical analyses,
+describe these in detail)</p>
+</div>
+<div id="discussion" class="section level1">
+<h1>Discussion</h1>
+<p>(Discussion: What were your findings? Are they what you expect? What
+insights into the data can you make?)</p>
 </div>
 
 
