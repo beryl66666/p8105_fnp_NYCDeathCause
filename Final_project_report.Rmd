@@ -54,7 +54,25 @@ After some initial exploring, we successfully found that resources about NYC cri
 
 # Initial Questions
 
-(Initial questions: What questions are you trying to answer? How did these questions evolve over the course of the project? What new questions did you consider in the course of your analysis?) 
+Initially, we wanted to figure if the COVID-19 had any effects on the complaints occurred in Manhattan (i.e., if the compliant rate changed, etc.). In order to examine the changes on complaints and to correlate it with the COVID-19 pandemic, we decided to use the complete NYPD compliant data in year 2020 and 2021, which could represent the worst period and the recovery period of the pandemic in recent years. 
+
+While we initiated the analyzing of our data, we found that despite the number of complaints, we have gathered more information such as the attributes of suspects and victims. Then we decided to do more exploration about what could we get through the data to make peers like us be safer.
+
+Fortunately, the available data did allow us to explore what we cared about. Ultimately, we landed on two main categories of exploration:
+
+1. **Descriptive Statistics:** 
+*   What is the general distribution of all the complaints in two year (2020 and 2021)? 
+*   When did the peak of complaints occurred? Where did most of complaints occurred? 
+*   Was there any possible trend of compliant rate changes related with the COVID-19 pandemic? 
+*   What were the most common characters of suspects and victims? What about the premises? 
+*   Could we get any suggestions from the summary of complaints?
+
+2. **Comparisons of complaints between 2020 vs 2021:** 
+*   What assumption could we made from the results of descriptive statistics? 
+*   What changes could we see from the comparisons of complaint frequencies between 2020 and 2021? 
+*   What changes could we see from the comparisons of complaint distributions between 2020 and 2021? 
+*   What about the locations of complaints in the two years? 
+*   Did these changes support our assumption or not? 
 
 
 
@@ -195,7 +213,7 @@ complaint_1 %>%
   theme(plot.title = element_text(hjust = 0.5))
 ```
 
-**Attributes of suspects:** In order to get more information about the most common suspects recorded in the NYPD complaint data, We analyzed the distribution of major attributes (gender and age group) of all the suspects in both 2020 and 2021. Actually the most suspects were males aged between 25-44. This gave us the suggestion that if we are alone and feel in case of danger, better beware of men aged 25-40 around you.
+**Characteristics of suspects:** In order to get more information about the most common suspects recorded in the NYPD complaint data, We analyzed the distribution of major Characteristics (gender and age group) of all the suspects in both 2020 and 2021. Actually the most suspects were males aged between 25-44. This gave us the suggestion that if we are alone and feel in case of danger, better beware of men aged 25-40 around you.
 
 ```{r message=FALSE, warning=FALSE}
 complaint_1 %>% 
@@ -208,7 +226,7 @@ complaint_1 %>%
   labs(title = "Number of complaint(suspects) in 2020 and 2021 by Age Group and Gender", x = "Age group", y = "Number of Complaint", col = "Gender") 
 ```
 
-**Attributes of victims:** In order to get more information about the most common victims recorded in the NYPD complaint data, We analyzed the distribution of major attributes (gender and age group) of all the victims in both 2020 and 2021. As we could see from the results, the number of female victims in 2020 and 2021 was much higher than male victims in Manhattan, and the victim age group was heavily concentrated in between 25-44. If you are a young female, please pay more attention to your personal safety when you are outside alone, even in Manhattan.
+**Characteristics of victims:** In order to get more information about the most common victims recorded in the NYPD complaint data, We analyzed the distribution of major characteristics (gender and age group) of all the victims in both 2020 and 2021. As we could see from the results, the number of female victims in 2020 and 2021 was much higher than male victims in Manhattan, and the victim age group was heavily concentrated in between 25-44. If you are a young female, please pay more attention to your personal safety when you are outside alone, even in Manhattan.
 
 ```{r message=FALSE, warning=FALSE}
 complaint_1 %>% 
@@ -341,7 +359,7 @@ type_pie_2021
 
 **Complaint Locations in Manhattan 2020 vs 2021:** After analyzing the number and types of complaints, we became more interested in whether there is any difference in the distributions of complaint's specific locations in Manhattan between 2020 and 2021. If complaints occurred in 2020 had a larger density than in 2021? Which patterns were the most complaints occurred in each year? Was there any correlation between the distribution of complaints and the COVID-19 status in 2020 and 2021?
 
-We took locations that had **10** complaints and above as the effective locations and made comparisons based on monthly complaints in Manhattan in 2020 and 2021. Based on the results, we found that the overall **complaint density of 2021 is larger** than that in the 2020, especially in April, May and June. This had confirmed our assumption that the recovery of social activities could bring larger density of complaints. Meanwhile, we figured out that the most complaints repeated **in the upper city** of Manhattan in both of the two years.
+We took locations that had **10** complaints and above as the effective locations and made comparisons based on monthly complaints in Manhattan in 2020 and 2021. Based on the results, we found that the overall **complaint density of 2021 is larger** than that in the 2020, especially in April, May and June. This had confirmed our assumption that the recovery of social activities could bring larger density of complaints. Meanwhile, we figured out that the most complaints repeated **in the upper city** of Manhattan in both of the two years, which meant that the upper city might be less safer compared with other areas in Manhattan.
 
 ```{r message=FALSE, warning=FALSE}
 complaint_data = read_csv("./data/nypd_complaint_two_year_data.csv") %>% 

@@ -417,9 +417,47 @@ recorded in the New York City.</p>
 </div>
 <div id="initial-questions" class="section level1">
 <h1>Initial Questions</h1>
-<p>(Initial questions: What questions are you trying to answer? How did
-these questions evolve over the course of the project? What new
-questions did you consider in the course of your analysis?)</p>
+<p>Initially, we wanted to figure if the COVID-19 had any effects on the
+complaints occurred in Manhattan (i.e., if the compliant rate changed,
+etc.). In order to examine the changes on complaints and to correlate it
+with the COVID-19 pandemic, we decided to use the complete NYPD
+compliant data in year 2020 and 2021, which could represent the worst
+period and the recovery period of the pandemic in recent years.</p>
+<p>While we initiated the analyzing of our data, we found that despite
+the number of complaints, we have gathered more information such as the
+attributes of suspects and victims. Then we decided to do more
+exploration about what could we get through the data to make peers like
+us be safer.</p>
+<p>Fortunately, the available data did allow us to explore what we cared
+about. Ultimately, we landed on two main categories of exploration:</p>
+<ol style="list-style-type: decimal">
+<li><strong>Descriptive Statistics:</strong></li>
+</ol>
+<ul>
+<li>What is the general distribution of all the complaints in two year
+(2020 and 2021)?</li>
+<li>When did the peak of complaints occurred? Where did most of
+complaints occurred?</li>
+<li>Was there any possible trend of compliant rate changes related with
+the COVID-19 pandemic?</li>
+<li>What were the most common characters of suspects and victims? What
+about the premises?</li>
+<li>Could we get any suggestions from the summary of complaints?</li>
+</ul>
+<ol start="2" style="list-style-type: decimal">
+<li><strong>Comparisons of complaints between 2020 vs
+2021:</strong></li>
+</ol>
+<ul>
+<li>What assumption could we made from the results of descriptive
+statistics?</li>
+<li>What changes could we see from the comparisons of complaint
+frequencies between 2020 and 2021?</li>
+<li>What changes could we see from the comparisons of complaint
+distributions between 2020 and 2021?</li>
+<li>What about the locations of complaints in the two years?</li>
+<li>Did these changes support our assumption or not?</li>
+</ul>
 </div>
 <div id="data" class="section level1">
 <h1>Data</h1>
@@ -587,13 +625,13 @@ complaint_1 = arrange_dt(complaint_1,dt)</code></pre>
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1, color = rep(c(&quot;black&quot;, rep(&quot;transparent&quot;, each = 15))))) +
   theme(plot.title = element_text(hjust = 0.5))</code></pre>
 <p><img src="Final_project_report_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
-<p><strong>Attributes of suspects:</strong> In order to get more
+<p><strong>Characteristics of suspects:</strong> In order to get more
 information about the most common suspects recorded in the NYPD
-complaint data, We analyzed the distribution of major attributes (gender
-and age group) of all the suspects in both 2020 and 2021. Actually the
-most suspects were males aged between 25-44. This gave us the suggestion
-that if we are alone and feel in case of danger, better beware of men
-aged 25-40 around you.</p>
+complaint data, We analyzed the distribution of major Characteristics
+(gender and age group) of all the suspects in both 2020 and 2021.
+Actually the most suspects were males aged between 25-44. This gave us
+the suggestion that if we are alone and feel in case of danger, better
+beware of men aged 25-40 around you.</p>
 <pre class="r"><code>complaint_1 %&gt;% 
   group_by(susp_age_group, susp_sex) %&gt;% 
   summarize(obs = n()) %&gt;% 
@@ -603,11 +641,11 @@ aged 25-40 around you.</p>
   geom_smooth() +
   labs(title = &quot;Number of complaint(suspects) in 2020 and 2021 by Age Group and Gender&quot;, x = &quot;Age group&quot;, y = &quot;Number of Complaint&quot;, col = &quot;Gender&quot;) </code></pre>
 <p><img src="Final_project_report_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
-<p><strong>Attributes of victims:</strong> In order to get more
+<p><strong>Characteristics of victims:</strong> In order to get more
 information about the most common victims recorded in the NYPD complaint
-data, We analyzed the distribution of major attributes (gender and age
-group) of all the victims in both 2020 and 2021. As we could see from
-the results, the number of female victims in 2020 and 2021 was much
+data, We analyzed the distribution of major characteristics (gender and
+age group) of all the victims in both 2020 and 2021. As we could see
+from the results, the number of female victims in 2020 and 2021 was much
 higher than male victims in Manhattan, and the victim age group was
 heavily concentrated in between 25-44. If you are a young female, please
 pay more attention to your personal safety when you are outside alone,
@@ -778,7 +816,8 @@ than that in the 2020, especially in April, May and June. This had
 confirmed our assumption that the recovery of social activities could
 bring larger density of complaints. Meanwhile, we figured out that the
 most complaints repeated <strong>in the upper city</strong> of Manhattan
-in both of the two years.</p>
+in both of the two years, which meant that the upper city might be less
+safer compared with other areas in Manhattan.</p>
 <pre class="r"><code>complaint_data = read_csv(&quot;./data/nypd_complaint_two_year_data.csv&quot;) %&gt;% 
   mutate(month = as.integer(month)) %&gt;% 
   as_tibble(map_data(&quot;state&quot;)) 
