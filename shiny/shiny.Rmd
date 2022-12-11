@@ -35,7 +35,9 @@ max_latitude=complaint_select %>% distinct(latitude) %>% max()
 
 complaint_select %>% distinct(date) %>% pull()
 
-crime_type %>% distinct(ofns_desc) %>% pull()
+crime_distinct=crime_type %>% 
+  distinct(ofns_desc) %>% 
+  pull()
 ```
 
 Column {.sidebar}
@@ -90,37 +92,21 @@ Column {.sidebar}
       #checkboxInput
       checkboxGroupInput("Crime_Type", 
                          label = h3("Crime Type"), 
-                         choices = list("ASSAULT 3 & RELATED OFFENSES" = 1, 
-                                        "CRIMINAL MISCHIEF & RELATED OF" = 2, 
-                                        "GRAND LARCENY" = 3,
-                                        "HARRASSMENT 2" =4,
-                                        "PETIT LARCENY"=5
+                         choices = list("ASSAULT 3 & RELATED OFFENSES", 
+                                        "CRIMINAL MISCHIEF & RELATED OF" , 
+                                        "GRAND LARCENY",
+                                        "HARRASSMENT 2",
+                                        "PETIT LARCENY"
                          ),
-                         selected = 1)
+                         selected = list("ASSAULT 3 & RELATED OFFENSES", 
+                                        "CRIMINAL MISCHIEF & RELATED OF" , 
+                                        "GRAND LARCENY",
+                                        "HARRASSMENT 2",
+                                        "PETIT LARCENY"
+                         ))
 ```
 
 Column {data-width=650}
------------------------------------------------------------------------
-
-### NYPD Complaints of Location VS Crime
-
-```{r}
-renderPlotly({
-    complaint_select %>% 
-    filter(
-      longitude <= max(input[["longitude_start"]], input[["longitude_end"]]) & longitude >= min(input[["longitude_start"]], input[["longitude_end"]]),
-      latitude <= max(input[["latitude_start"]],input[["latitude_end"]]) & latitude >= min(input[["latitude_start"]],input[["latitude_end"]]),
-      ofns_desc == input[["Crime_Type"]]
-      ) %>%
-      mutate(text_label = str_c("Crime: ", ofns_desc, '\nLongitude: ', longitude, '\nLatitude: ', latitude)) %>% 
-      plot_ly(
-        x = ~longitude, y = ~latitude, type = "scatter", mode = "markers",
-        alpha = 0.5, color = ~ofns_desc, text = ~text_label)
-  })
-```
-
-
-Column {data-width=350}
 -----------------------------------------------------------------------
 
 ### Complaints of Date VS Crime
@@ -134,10 +120,36 @@ renderPlotly({
       ) %>%
     group_by(ofns_desc,date) %>% 
     summarise(obs=n()) %>% 
-    mutate(text_label=str_c("Crime: ", ofns_desc, '\nDate: ', date)) %>% 
+    mutate(text_label=str_c("Crime: ", ofns_desc, '\nDate: ', date)
+           ) %>% 
       plot_ly(
         x = ~date, type = "bar",
         alpha = 0.5, color = ~ofns_desc, text = ~text_label)
+  })
+
+```
+
+
+Column {data-width=350}
+-----------------------------------------------------------------------
+
+### NYPD Complaints of Location VS Crime
+
+```{r}
+renderPlotly({
+    complaint_select %>% 
+    filter(
+      longitude <= max(input[["longitude_start"]], input[["longitude_end"]]) & longitude >= min(input[["longitude_start"]], input[["longitude_end"]]),
+      latitude <= max(input[["latitude_start"]],input[["latitude_end"]]) & latitude >= min(input[["latitude_start"]],input[["latitude_end"]]),
+      ofns_desc == input[["Crime_Type"]]
+      ) %>%
+    
+      mutate(text_label = str_c("Crime: ", ofns_desc, '\nLongitude: ', longitude, '\nLatitude: ', latitude)) %>% 
+    x = min_latitude:max_longitude %>% 
+    y = min_latitude:max_latitude %>% 
+      plot_ly(
+        x=~latitude, y = ~longitude, type = "scatter", mode = "markers",
+        alpha = 0.5, color = ~ofns_desc, text = ~text_label, showlegend = FALSE)
   })
 ```
 
