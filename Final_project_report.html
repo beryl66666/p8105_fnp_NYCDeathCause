@@ -345,7 +345,9 @@ div.tocify {
 <li>
   <a href="patterns.html">Comparison Patterns</a>
 </li>
-<li class="dropdown-header">Shiny App</li>
+<li>
+  <a href="https://sophieenim.shinyapps.io/shiny_1/">Shiny App</a>
+</li>
 <li>
   <a href="regression.html">Additional Analysis</a>
 </li>
@@ -912,84 +914,104 @@ sex of victim and sex of suspect are <em>not independent</em> at 0.05
 significance level, which might indicate that male suspects and female
 victims had the higher likelihood to be correlated with each other.</p>
 <pre class="r"><code>sex_data = read_csv(&quot;./data/nypd_complaint_two_year_data.csv&quot;) %&gt;% 
-  select(vic_sex, susp_sex) %&gt;% 
-  na.omit() 
+  group_by(vic_sex, susp_sex) %&gt;% 
+  summarise(obs = n()) %&gt;% 
+  na.omit() %&gt;% 
+  pivot_wider(names_from = vic_sex, values_from = obs )
 
-vF_sF = sex_data %&gt;% 
-  filter(vic_sex == &quot;F&quot;) %&gt;% 
-  filter(susp_sex == &quot;F&quot;) %&gt;% 
-  count()
-  
-vM_sF = sex_data %&gt;% 
-  filter(vic_sex == &quot;M&quot;) %&gt;% 
-  filter(susp_sex == &quot;F&quot;) %&gt;% 
-  count()
-  
-vF_sM = sex_data %&gt;% 
-  filter(vic_sex == &quot;F&quot;) %&gt;% 
-  filter(susp_sex == &quot;M&quot;) %&gt;% 
-  count()
-  
-vM_sM = sex_data %&gt;% 
-  filter(vic_sex == &quot;M&quot;) %&gt;% 
-  filter(susp_sex == &quot;M&quot;) %&gt;% 
-  count()
+table_sex = sex_data %&gt;% 
+  as.matrix() %&gt;% 
+  kbl(caption = &quot;Victim Sex Corresponding to Suspect Sex&quot;, align = &quot;c&quot;) %&gt;% 
+  kable_classic(full_width = F, html_font = &quot;Cambria&quot;)
 
-sex = matrix(c(9850,6199,29030, 26307), ncol = 2, byrow = T) 
-colnames(sex) = c(&quot;Female&quot;,&quot;Male&quot;)
-rownames(sex) = c(&quot;Female&quot;,&quot;Male&quot;)
-sex %&gt;% 
-  kbl(caption = &quot;Horizontal: Victim, Vertical: Suspect&quot;, ) %&gt;% 
-  kable_classic(full_width = F, html_font = &quot;Cambria&quot;)</code></pre>
+table_sex</code></pre>
 <table class=" lightable-classic" style="font-family: Cambria; width: auto !important; margin-left: auto; margin-right: auto;">
 <caption>
-Horizontal: Victim, Vertical: Suspect
+Victim Sex Corresponding to Suspect Sex
 </caption>
 <thead>
 <tr>
-<th style="text-align:left;">
+<th style="text-align:center;">
+susp_sex
 </th>
-<th style="text-align:right;">
-Female
+<th style="text-align:center;">
+D
 </th>
-<th style="text-align:right;">
-Male
+<th style="text-align:center;">
+E
+</th>
+<th style="text-align:center;">
+F
+</th>
+<th style="text-align:center;">
+M
 </th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td style="text-align:left;">
-Female
+<td style="text-align:center;">
+F
 </td>
-<td style="text-align:right;">
+<td style="text-align:center;">
+4575
+</td>
+<td style="text-align:center;">
+1065
+</td>
+<td style="text-align:center;">
 9850
 </td>
-<td style="text-align:right;">
+<td style="text-align:center;">
 6199
 </td>
 </tr>
 <tr>
-<td style="text-align:left;">
-Male
+<td style="text-align:center;">
+M
 </td>
-<td style="text-align:right;">
+<td style="text-align:center;">
+31248
+</td>
+<td style="text-align:center;">
+8789
+</td>
+<td style="text-align:center;">
 29030
 </td>
-<td style="text-align:right;">
+<td style="text-align:center;">
 26307
+</td>
+</tr>
+<tr>
+<td style="text-align:center;">
+U
+</td>
+<td style="text-align:center;">
+9297
+</td>
+<td style="text-align:center;">
+1810
+</td>
+<td style="text-align:center;">
+15765
+</td>
+<td style="text-align:center;">
+19867
 </td>
 </tr>
 </tbody>
 </table>
-<pre class="r"><code>test_sex = matrix(c(9850,6199,29030, 26307), ncol = 2, byrow = T) 
+<pre class="r"><code>matrix_sex =  as.matrix(sex_data) %&gt;% 
+  as.integer() %&gt;% 
+  na.omit()
 
-chisq.test(test_sex)</code></pre>
+chisq.test(matrix_sex)</code></pre>
 <pre><code>## 
-##  Pearson&#39;s Chi-squared test with Yates&#39; continuity correction
+##  Chi-squared test for given probabilities
 ## 
-## data:  test_sex
-## X-squared = 398.25, df = 1, p-value &lt; 2.2e-16</code></pre>
+## data:  matrix_sex
+## X-squared = 91062, df = 11, p-value &lt; 2.2e-16</code></pre>
 <p><strong>Test Independence between Victim Race and Suspect
 Race：</strong></p>
 <p>We also used the chi-square test to explore whether there is a
