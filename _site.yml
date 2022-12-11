@@ -6,7 +6,7 @@ navbar:
     - text: "About Us"
       href: proposal.html
     - text: "Descriptive Statistics"
-      href: descriptive_statistics.html
+      href: stats.html
     - text: "Comparison Patterns"
       href: patterns.html  
     - text: "Shiny App"
@@ -14,7 +14,7 @@ navbar:
     - text: "Additional Analysis"
       href: regression.html
     - text: "Final Project Report"
-      href: report.html
+      href: Final_project_report.html
     - icon: fa-github fa-lg
       href: https://github.com/beryl66666/p8105_fnp_NYPDComplaint.git
 output:
