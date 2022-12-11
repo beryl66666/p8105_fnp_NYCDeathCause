@@ -126,7 +126,6 @@ renderPlotly({
         x = ~date, type = "bar",
         alpha = 0.5, color = ~ofns_desc, text = ~text_label)
   })
-
 ```
 
 
@@ -143,13 +142,15 @@ renderPlotly({
       latitude <= max(input[["latitude_start"]],input[["latitude_end"]]) & latitude >= min(input[["latitude_start"]],input[["latitude_end"]]),
       ofns_desc == input[["Crime_Type"]]
       ) %>%
-    
-      mutate(text_label = str_c("Crime: ", ofns_desc, '\nLongitude: ', longitude, '\nLatitude: ', latitude)) %>% 
-    x = min_latitude:max_longitude %>% 
-    y = min_latitude:max_latitude %>% 
+    mutate(text_label = str_c("Crime: ", ofns_desc, '\nLongitude: ', longitude, '\nLatitude: ', latitude)) %>% 
       plot_ly(
         x=~latitude, y = ~longitude, type = "scatter", mode = "markers",
-        alpha = 0.5, color = ~ofns_desc, text = ~text_label, showlegend = FALSE)
+        alpha = 0.5, color = ~ofns_desc, text = ~text_label, showlegend = FALSE) %>% 
+      layout(
+    xaxis = list(
+      range=c(min_latitude,max_latitude)
+    )) %>% 
+      layout(yaxis = list(range = c(min_longitude,max_longitude)))
   })
 ```
 
