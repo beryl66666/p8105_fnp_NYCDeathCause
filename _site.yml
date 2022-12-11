@@ -1,4 +1,4 @@
-name: "Yay internet!"
+name: "Final Project"
 output_dir: "."
 navbar:
   title: "Home"
@@ -10,7 +10,7 @@ navbar:
     - text: "Comparison Patterns"
       href: patterns.html  
     - text: "Shiny App"
-      href: shiny_dashboard.html
+      href: 
     - text: "Additional Analysis"
       href: regression.html
     - text: "Final Project Report"
