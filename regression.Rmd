@@ -7,6 +7,10 @@ output:
     code_folding: hide
     toc_float: true
 ---
+```{r}
+install.packages("gplots")
+```
+
 
 ```{r setup, include=FALSE}
 library(tidyverse)
