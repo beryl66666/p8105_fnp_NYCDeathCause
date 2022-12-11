@@ -10,7 +10,7 @@ navbar:
     - text: "Comparison Patterns"
       href: patterns.html  
     - text: "Shiny App"
-      href: 
+      href: https://sophieenim.shinyapps.io/shiny_1/
     - text: "Additional Analysis"
       href: regression.html
     - text: "Final Project Report"

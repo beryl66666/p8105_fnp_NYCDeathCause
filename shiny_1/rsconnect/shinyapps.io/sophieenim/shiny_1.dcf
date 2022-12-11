@@ -1,0 +1,13 @@
+name: shiny_1
+title: shiny_1
+username:
+account: sophieenim
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 7865823
+bundleId: 6621950
+url: https://sophieenim.shinyapps.io/shiny_1/
+when: 1670730226.12043
+lastSyncTime: 1670730226.12044
+asMultiple: FALSE
+asStatic: FALSE
